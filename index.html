@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="HandheldFriendly" content="false">
+  <title>Pembelian Produk Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+      background-image: url('https://files.catbox.moe/ele9lp.jpg');
+      background-size: cover;
+      background-position: center;
+      min-width: 1024px;
+    }
+
+    #barcode-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .produk-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .produk-row {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .produk-item {
+      border: 1px solid #ddd;
+      padding: 20px;
+      width: 200px;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .produk-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .produk-item img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+
+    button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    .payment-btn {
+      display: block;
+      margin: 30px auto;
+      background: linear-gradient(45deg, #ff6ec4, #7873f5, #1fd1f9);
+      background-size: 200% 200%;
+      animation: gradientBtn 4s ease infinite;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: 0.3s;
+      max-width: 300px;
+    }
+
+    .payment-btn:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes gradientBtn {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple-animation 0.6s linear;
+      background-color: rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    @keyframes ripple-animation {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    footer {
+      text-align: center;
+      margin: 30px 0;
+      font-size: 16px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    footer a {
+      color: #00aaff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: #00ddff;
+      text-decoration: underline;
+    }
+
+    canvas#salju {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    h1 {
+      text-align: center;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 15px;
+      margin: 0 0 20px 0;
+      border-radius: 5px;
+    }
+
+    .mobile-warning {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 255, 0.9);
+      color: white;
+      padding: 15px;
+      font-size: 18px;
+      z-index: 10000;
+      white-space: nowrap;
+      animation: runningText 15s linear infinite;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    @keyframes runningText {
+      0% {
+        left: 100%;
+      }
+      100% {
+        left: -100%;
+      }
+    }
+
+    .desktop-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    #music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      color: white;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    #music-control:hover {
+      background-color: rgba(0, 0, 0, 0.9);
+      transform: scale(1.1);
+    }
+
+    /* Loading overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      color: white;
+      font-size: 24px;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="salju"></canvas>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p>Mengarahkan ke halaman pembayaran...</p>
+  </div>
+
+  <!-- Elemen audio -->
+  <audio id="background-music" loop>
+    <source src="https://nathanprinsley-files.prinsh.com/data-1/mp3/safe-and-sound_rebelution.mp3" type="audio/mpeg">
+    Browser Anda tidak mendukung elemen audio.
+  </audio>
+
+  <!-- Tombol kontrol musik -->
+  <div id="music-control" title="Play/Pause Music">♪</div>
+
+  <div class="mobile-warning" id="mobile-warning">
+    ⚠️ Untuk pengalaman terbaik, silakan gunakan perangkat desktop atau aktifkan mode desktop di browser mobile Anda! ⚠️
+  </div>
+
+  <div class="desktop-container">
+    <div id="barcode-container">
+      <img id="barcode" src="https://cdn.xtermai.xyz/l2yV0.jpg" alt="Barcode" style="width: 500px; height: 450px;">
+    </div>
+
+    <h1>Pembelian Produk Panel</h1>
+    <div id="produk" class="produk-wrapper"></div>
+
+    <!-- Tombol untuk menuju halaman pembayaran -->
+    <button class="payment-btn" id="go-to-payment-page">Lanjut ke Pembayaran</button>
+
+    <footer>
+      Kunjungi Instagram saya: <a href="https://instagram.com/septiyanda_putra" target="_blank">@septiyanda_putra</a>
+    </footer>
+  </div>
+
+  <script>
+    // Sembunyikan loading overlay saat halaman selesai dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('loadingOverlay').style.display = 'none';
+    });
+
+    // Inisialisasi musik
+    const backgroundMusic = document.getElementById('background-music');
+    const musicControl = document.getElementById('music-control');
+    let isMusicPlaying = false;
+
+    function toggleMusic() {
+      if (isMusicPlaying) {
+        backgroundMusic.pause();
+        musicControl.textContent = '♪';
+      } else {
+        backgroundMusic.play().catch(e => console.log('Autoplay prevented:', e));
+        musicControl.textContent = '❚❚';
+      }
+      isMusicPlaying = !isMusicPlaying;
+    }
+
+    musicControl.addEventListener('click', toggleMusic);
+
+    document.addEventListener('DOMContentLoaded', function() {
+      backgroundMusic.volume = 0.5;
+      
+      setTimeout(() => {
+        const playPromise = backgroundMusic.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.log('Autoplay prevented, showing play button');
+            musicControl.style.display = 'flex';
+          });
+        }
+      }, 1000);
+    });
+
+    const produk = [
+      { id: 1, nama: 'Panel 1GB', harga: 1000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+      { id: 2, nama: 'Panel 2GB', harga: 2000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+      { id: 3, nama: 'Panel 3GB', harga: 3000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+      { id: 4, nama: 'Panel 4GB', harga: 4000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+      { id: 5, nama: 'Panel 5GB', harga: 5000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+      { id: 6, nama: 'Panel 6GB', harga: 6000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+      { id: 7, nama: 'Panel 7GB', harga: 7000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+      { id: 8, nama: 'Panel 8GB', harga: 8000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+      { id: 9, nama: 'Panel 9GB', harga: 9000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+      { id: 10, nama: 'Panel 10GB', harga: 10000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+      { id: 11, nama: 'Panel Unli', harga: 15000, gambar: 'https://cdn.xtermai.xyz/K9cGG.jpg' },
+    ];
+
+    const produkContainer = document.getElementById('produk');
+
+    // Menampilkan produk dalam 3 kolom untuk desktop
+    for (let i = 0; i < produk.length; i += 3) {
+      const row = document.createElement('div');
+      row.classList.add('produk-row');
+
+      for (let j = 0; j < 3; j++) {
+        if (i + j < produk.length) {
+          const item = produk[i + j];
+          const itemDiv = document.createElement('div');
+          itemDiv.classList.add('produk-item');
+          itemDiv.innerHTML = `
+            <img src="${item.gambar}" alt="${item.nama}">
+            <h2>${item.nama}</h2>
+            <p>Rp ${item.harga.toLocaleString()}</p>
+            <button onclick="beli(${item.id}, event)">Beli</button>
+          `;
+          row.appendChild(itemDiv);
+        }
+      }
+
+      produkContainer.appendChild(row);
+    }
+
+    // Fungsi untuk menuju halaman pembayaran
+    document.getElementById('go-to-payment-page').addEventListener('click', function() {
+      // Tampilkan loading overlay
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      
+      // Redirect setelah 1 detik untuk memberi kesan loading
+      setTimeout(() => {
+        window.location.href = 'https://tiyanpalestine.github.io/Website-payment/';
+      }, 1000);
+    });
+
+    function beli(id, event) {
+      const produkDipilih = produk.find((item) => item.id === id);
+      if (produkDipilih) {
+        createRipple(event);
+        const pesan = `Halo, saya ingin membeli ${produkDipilih.nama} seharga Rp ${produkDipilih.harga}`;
+        const nomorWhatsApp = '6285972533957';
+        const urlWhatsApp = `https://wa.me/${nomorWhatsApp}?text=${encodeURIComponent(pesan)}`;
+        setTimeout(() => {
+          window.open(urlWhatsApp, '_blank');
+        }, 300);
+      } else {
+        alert('Produk tidak ditemukan');
+      }
+    }
+
+    function createRipple(event) {
+      const button = event.currentTarget;
+      const circle = document.createElement("span");
+      const diameter = Math.max(button.clientWidth, button.clientHeight);
+      const radius = diameter / 2;
+
+      circle.classList.add("ripple");
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${event.offsetX - radius}px`;
+      circle.style.top = `${event.offsetY - radius}px`;
+
+      const existingRipple = button.querySelector(".ripple");
+      if (existingRipple) {
+        existingRipple.remove();
+      }
+
+      button.appendChild(circle);
+    }
+
+    // Animasi Salju
+    const canvas = document.getElementById('salju');
+    const ctx = canvas.getContext('2d');
+    let snowflakes = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createSnowflakes() {
+      for (let i = 0; i < 100; i++) {
+        snowflakes.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 4 + 1,
+          speedY: Math.random() * 2 + 1,
+          speedX: Math.random() * 1 - 0.5,
+        });
+      }
+    }
+
+    function drawSnowflakes() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      for (let flake of snowflakes) {
+        ctx.moveTo(flake.x, flake.y);
+        ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+      }
+      ctx.fill();
+      updateSnowflakes();
+    }
+
+    function updateSnowflakes() {
+      for (let flake of snowflakes) {
+        flake.y += flake.speedY;
+        flake.x += flake.speedX;
+
+        if (flake.y > canvas.height) {
+          flake.y = -flake.radius;
+          flake.x = Math.random() * canvas.width;
+        }
+      }
+    }
+
+    function animateSnow() {
+      drawSnowflakes();
+      requestAnimationFrame(animateSnow);
+    }
+
+    // Deteksi perangkat mobile
+    function isMobileDevice() {
+      return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+    }
+
+    // Inisialisasi
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    createSnowflakes();
+    animateSnow();
+
+    // Tampilkan peringatan jika di mobile
+    if (isMobileDevice()) {
+      document.getElementById('mobile-warning').style.display = 'block';
+      
+      // Coba memaksa zoom out
+      document.querySelector('meta[name="viewport"]').content = "width=1200, initial-scale=0.5, maximum-scale=1.0, user-scalable=yes";
+      
+      // Scroll ke tengah untuk memastikan konten terlihat
+      window.scrollTo(300, 300);
+    }
+  </script>
+</body>
+</html>
