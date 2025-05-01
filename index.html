@@ -17,6 +17,60 @@
       min-width: 1024px;
     }
 
+    /* Product Glitch effect styles */
+    .produk-glitch {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      background-size: cover;
+      mix-blend-mode: difference;
+      border-radius: 10px;
+    }
+    
+    .produk-glitch::before, .produk-glitch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      opacity: 0.5;
+      border-radius: 10px;
+    }
+    
+    .produk-glitch::before {
+      left: 2px;
+      animation: glitch-anim-1 2s infinite linear alternate-reverse;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    }
+    
+    .produk-glitch::after {
+      left: -2px;
+      animation: glitch-anim-2 2s infinite linear alternate-reverse;
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+    }
+    
+    @keyframes glitch-anim-1 {
+      0% { transform: translate(2px, 2px); }
+      100% { transform: translate(-2px, -2px); }
+    }
+    
+    @keyframes glitch-anim-2 {
+      0% { transform: translate(-2px, 2px); }
+      100% { transform: translate(2px, -2px); }
+    }
+    
+    .glitch-text {
+      position: relative;
+      text-shadow: 1px 1px 0 #ff00ff, -1px -1px 0 #00ffff;
+    }
+
     #barcode-container {
       text-align: center;
       margin-bottom: 20px;
@@ -43,6 +97,8 @@
       background-color: rgba(255, 255, 255, 0.9);
       border-radius: 10px;
       transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .produk-item:hover {
@@ -121,20 +177,32 @@
       font-size: 16px;
       color: white;
       background-color: rgba(0, 0, 0, 0.5);
-      padding: 10px;
+      padding: 15px;
       border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
     }
 
     footer a {
-      color: #00aaff;
+      color: #fff;
       text-decoration: none;
       font-weight: bold;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     footer a:hover {
-      color: #00ddff;
-      text-decoration: underline;
+      transform: scale(1.1);
+    }
+
+    .social-icon {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
     }
 
     canvas#salju {
@@ -270,14 +338,21 @@
       <img id="barcode" src="https://cdn.xtermai.xyz/l2yV0.jpg" alt="Barcode" style="width: 500px; height: 450px;">
     </div>
 
-    <h1>Pembelian Produk Panel</h1>
+    <h1 class="glitch-text">Pembelian Produk Panel</h1>
     <div id="produk" class="produk-wrapper"></div>
 
     <!-- Tombol untuk menuju halaman pembayaran -->
     <button class="payment-btn" id="go-to-payment-page">Lanjut ke Pembayaran</button>
 
     <footer>
-      Kunjungi Instagram saya: <a href="https://instagram.com/septiyanda_putra" target="_blank">@septiyanda_putra</a>
+      <a href="https://instagram.com/septiyanda_putra" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" class="social-icon">
+        @septiyanda_putra
+      </a>
+      <a href="https://chat.whatsapp.com/EQkSNg1QgWG0pEaGWwdnuv" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp" class="social-icon">
+        Grup WhatsApp
+      </a>
     </footer>
   </div>
 
@@ -285,7 +360,42 @@
     // Sembunyikan loading overlay saat halaman selesai dimuat
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('loadingOverlay').style.display = 'none';
+      
+      // Start product glitch effects
+      startProductGlitchEffect();
     });
+
+    // Product glitch effect functionality
+    function startProductGlitchEffect() {
+      const productItems = document.querySelectorAll('.produk-item');
+      
+      function triggerGlitch(item) {
+        // Create glitch element if it doesn't exist
+        if (!item.querySelector('.produk-glitch')) {
+          const glitch = document.createElement('div');
+          glitch.className = 'produk-glitch';
+          glitch.style.backgroundImage = `url('${item.querySelector('img').src}')`;
+          item.appendChild(glitch);
+        }
+        
+        const glitch = item.querySelector('.produk-glitch');
+        
+        // Apply glitch effect with random intensity
+        const intensity = Math.random() * 0.5;
+        glitch.style.opacity = intensity;
+        
+        // Schedule next glitch for this item
+        setTimeout(() => {
+          glitch.style.opacity = '0';
+          setTimeout(() => triggerGlitch(item), Math.random() * 5000 + 3000);
+        }, 200);
+      }
+      
+      // Start glitch effects for each product
+      productItems.forEach(item => {
+        setTimeout(() => triggerGlitch(item), Math.random() * 3000);
+      });
+    }
 
     // Inisialisasi musik
     const backgroundMusic = document.getElementById('background-music');
@@ -374,6 +484,18 @@
       const produkDipilih = produk.find((item) => item.id === id);
       if (produkDipilih) {
         createRipple(event);
+        
+        // Add glitch effect to the clicked product
+        const productItem = event.currentTarget.closest('.produk-item');
+        const glitch = productItem.querySelector('.produk-glitch');
+        
+        if (glitch) {
+          glitch.style.opacity = '0.5';
+          setTimeout(() => {
+            glitch.style.opacity = '0';
+          }, 300);
+        }
+        
         const pesan = `Halo, saya ingin membeli ${produkDipilih.nama} seharga Rp ${produkDipilih.harga}`;
         const nomorWhatsApp = '6285972533957';
         const urlWhatsApp = `https://wa.me/${nomorWhatsApp}?text=${encodeURIComponent(pesan)}`;
