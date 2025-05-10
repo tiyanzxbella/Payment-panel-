@@ -31,7 +31,7 @@
       mix-blend-mode: difference;
       border-radius: 10px;
     }
-    
+
     .produk-glitch::before, .produk-glitch::after {
       content: '';
       position: absolute;
@@ -43,29 +43,29 @@
       opacity: 0.5;
       border-radius: 10px;
     }
-    
+
     .produk-glitch::before {
       left: 2px;
       animation: glitch-anim-1 2s infinite linear alternate-reverse;
       clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
     }
-    
+
     .produk-glitch::after {
       left: -2px;
       animation: glitch-anim-2 2s infinite linear alternate-reverse;
       clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
     }
-    
+
     @keyframes glitch-anim-1 {
       0% { transform: translate(2px, 2px); }
       100% { transform: translate(-2px, -2px); }
     }
-    
+
     @keyframes glitch-anim-2 {
       0% { transform: translate(-2px, 2px); }
       100% { transform: translate(2px, -2px); }
     }
-    
+
     .glitch-text {
       position: relative;
       text-shadow: 1px 1px 0 #ff00ff, -1px -1px 0 #00ffff;
@@ -130,9 +130,15 @@
       background-color: #555;
     }
 
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px; /* Jarak antara tombol */
+      margin-top: 30px;
+      flex-wrap: wrap; /* Agar tombol wrap di layar kecil */
+    }
+
     .payment-btn {
-      display: block;
-      margin: 30px auto;
       background: linear-gradient(45deg, #ff6ec4, #7873f5, #1fd1f9);
       background-size: 200% 200%;
       animation: gradientBtn 4s ease infinite;
@@ -141,10 +147,25 @@
       border-radius: 12px;
       text-decoration: none;
       transition: 0.3s;
-      max-width: 300px;
+      padding: 14px 24px; /* Padding disesuaikan agar terlihat seperti tombol link sebelumnya */
+      display: inline-block; /* Mengubah dari block menjadi inline-block */
     }
 
-    .payment-btn:hover {
+     .store-btn {
+      background: linear-gradient(45deg, #00c6ff, #0072ff, #a166cc); /* Warna gradien berbeda */
+      background-size: 200% 200%;
+      animation: gradientBtn 4s ease infinite;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: 0.3s;
+      padding: 14px 24px;
+      display: inline-block;
+    }
+
+
+    .payment-btn:hover, .store-btn:hover {
       transform: scale(1.05);
     }
 
@@ -183,6 +204,7 @@
       justify-content: center;
       align-items: center;
       gap: 20px;
+      flex-wrap: wrap; /* Agar footer item wrap di layar kecil */
     }
 
     footer a {
@@ -314,19 +336,16 @@
 <body>
   <canvas id="salju"></canvas>
 
-  <!-- Loading overlay -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <p>Mengarahkan ke halaman pembayaran...</p>
+    <p id="loading-text">Mengarahkan...</p>
   </div>
 
-  <!-- Elemen audio -->
   <audio id="background-music" loop>
     <source src="https://nathanprinsley-files.prinsh.com/data-1/mp3/safe-and-sound_rebelution.mp3" type="audio/mpeg">
     Browser Anda tidak mendukung elemen audio.
   </audio>
 
-  <!-- Tombol kontrol musik -->
   <div id="music-control" title="Play/Pause Music">♪</div>
 
   <div class="mobile-warning" id="mobile-warning">
@@ -341,8 +360,10 @@
     <h1 class="glitch-text">Pembelian Produk Panel</h1>
     <div id="produk" class="produk-wrapper"></div>
 
-    <!-- Tombol untuk menuju halaman pembayaran -->
-    <button class="payment-btn" id="go-to-payment-page">Lanjut ke Pembayaran</button>
+    <div class="btn-container">
+      <button class="store-btn" id="go-to-store">Lanjut ke Web Store</button>
+      <button class="payment-btn" id="go-to-payment-page">Lanjut ke Pembayaran</button>
+    </div>
 
     <footer>
       <a href="https://instagram.com/septiyanda_putra" target="_blank">
@@ -360,7 +381,7 @@
     // Sembunyikan loading overlay saat halaman selesai dimuat
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('loadingOverlay').style.display = 'none';
-      
+
       // Start product glitch effects
       startProductGlitchEffect();
     });
@@ -368,7 +389,7 @@
     // Product glitch effect functionality
     function startProductGlitchEffect() {
       const productItems = document.querySelectorAll('.produk-item');
-      
+
       function triggerGlitch(item) {
         // Create glitch element if it doesn't exist
         if (!item.querySelector('.produk-glitch')) {
@@ -377,20 +398,20 @@
           glitch.style.backgroundImage = `url('${item.querySelector('img').src}')`;
           item.appendChild(glitch);
         }
-        
+
         const glitch = item.querySelector('.produk-glitch');
-        
+
         // Apply glitch effect with random intensity
         const intensity = Math.random() * 0.5;
         glitch.style.opacity = intensity;
-        
+
         // Schedule next glitch for this item
         setTimeout(() => {
           glitch.style.opacity = '0';
           setTimeout(() => triggerGlitch(item), Math.random() * 5000 + 3000);
         }, 200);
       }
-      
+
       // Start glitch effects for each product
       productItems.forEach(item => {
         setTimeout(() => triggerGlitch(item), Math.random() * 3000);
@@ -417,18 +438,24 @@
 
     document.addEventListener('DOMContentLoaded', function() {
       backgroundMusic.volume = 0.5;
-      
+
       setTimeout(() => {
         const playPromise = backgroundMusic.play();
-        
+
         if (playPromise !== undefined) {
           playPromise.catch(error => {
             console.log('Autoplay prevented, showing play button');
-            musicControl.style.display = 'flex';
+            musicControl.style.display = 'flex'; // Tampilkan tombol kontrol musik jika autoplay gagal
           });
+        } else {
+          // Jika playPromise tidak didefinisikan (browser lama), pastikan kontrol terlihat
+           musicControl.style.display = 'flex';
         }
+         // Sembunyikan loading overlay setelah mencoba autoplay atau jika berhasil
+        document.getElementById('loadingOverlay').style.display = 'none';
       }, 1000);
     });
+
 
     const produk = [
       { id: 1, nama: 'Panel 1GB', harga: 1000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
@@ -469,33 +496,48 @@
       produkContainer.appendChild(row);
     }
 
+    // Fungsi untuk menuju halaman top up (Web Store)
+    document.getElementById('go-to-store').addEventListener('click', function() {
+      // Tampilkan loading overlay
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loading-text').textContent = 'Mengarahkan ke Web Store...';
+
+      // Redirect setelah 1 detik untuk memberi kesan loading
+      setTimeout(() => {
+        window.location.href = 'https://buylink.id/Tiyanstore'; // URL Web Store
+      }, 1000);
+    });
+
     // Fungsi untuk menuju halaman pembayaran
     document.getElementById('go-to-payment-page').addEventListener('click', function() {
       // Tampilkan loading overlay
       document.getElementById('loadingOverlay').style.display = 'flex';
-      
+      document.getElementById('loading-text').textContent = 'Mengarahkan ke halaman pembayaran...';
+
+
       // Redirect setelah 1 detik untuk memberi kesan loading
       setTimeout(() => {
-        window.location.href = 'https://tiyanpalestine.github.io/Website-payment/';
+        window.location.href = 'https://tiyanpalestine.github.io/Website-payment/'; // URL halaman pembayaran
       }, 1000);
     });
+
 
     function beli(id, event) {
       const produkDipilih = produk.find((item) => item.id === id);
       if (produkDipilih) {
         createRipple(event);
-        
+
         // Add glitch effect to the clicked product
         const productItem = event.currentTarget.closest('.produk-item');
         const glitch = productItem.querySelector('.produk-glitch');
-        
+
         if (glitch) {
           glitch.style.opacity = '0.5';
           setTimeout(() => {
             glitch.style.opacity = '0';
           }, 300);
         }
-        
+
         const pesan = `Halo, saya ingin membeli ${produkDipilih.nama} seharga Rp ${produkDipilih.harga}`;
         const nomorWhatsApp = '6285972533957';
         const urlWhatsApp = `https://wa.me/${nomorWhatsApp}?text=${encodeURIComponent(pesan)}`;
@@ -591,10 +633,10 @@
     // Tampilkan peringatan jika di mobile
     if (isMobileDevice()) {
       document.getElementById('mobile-warning').style.display = 'block';
-      
+
       // Coba memaksa zoom out
       document.querySelector('meta[name="viewport"]').content = "width=1200, initial-scale=0.5, maximum-scale=1.0, user-scalable=yes";
-      
+
       // Scroll ke tengah untuk memastikan konten terlihat
       window.scrollTo(300, 300);
     }
