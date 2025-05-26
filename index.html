@@ -245,30 +245,57 @@
       border-radius: 5px;
     }
 
-    .mobile-warning {
-      display: none;
-      position: fixed;
-      top: 20px;
-      left: 100%;
-      width: 100%;
-      background-color: rgba(0, 0, 255, 0.9);
-      color: white;
-      padding: 5px;
-      font-size: 18px;
-      z-index: 10000;
-      white-space: nowrap;
-      animation: runningText 15s linear infinite;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    /* Pop-up Warning Styles */
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: none; /* Hidden by default */
+        justify-content: center;
+        align-items: center;
+        z-index: 10001; /* Above other elements */
     }
 
-    @keyframes runningText {
-      0% {
-        left: 100%;
-      }
-      100% {
-        left: -100%;
-      }
+    .popup-content {
+        background-color: white;
+        padding: 30px 40px;
+        border-radius: 10px;
+        text-align: center;
+        width: 80%;
+        max-width: 450px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        color: #333;
+        font-size: 18px; /* Slightly larger text */
     }
+
+    .popup-content h2 {
+        margin-top: 0;
+        color: #e63946; /* A distinct color for the warning title */
+        background-color: transparent;
+        text-shadow: none;
+        padding: 0;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .popup-content p {
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    .popup-content button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+     .popup-content button:hover {
+        background-color: #0056b3;
+     }
 
     .desktop-container {
       width: 100%;
@@ -341,16 +368,21 @@
     <p id="loading-text">Mengarahkan...</p>
   </div>
 
+  <div id="popup-warning" class="popup-overlay">
+      <div class="popup-content">
+          <h2>Peringatan Perangkat Mobile</h2>
+          <p>⚠️ Untuk pengalaman visual dan fungsionalitas terbaik, sangat disarankan menggunakan perangkat desktop atau mengaktifkan mode desktop pada browser mobile Anda, dan disarankan untuk berhati-hati dalam bertransaksi pada siapapun dan dimanapun. ⚠️</p>
+          <button id="close-popup">Saya Mengerti</button>
+      </div>
+  </div>
+
+
   <audio id="background-music" loop>
     <source src="https://nathanprinsley-files.prinsh.com/data-1/mp3/safe-and-sound_rebelution.mp3" type="audio/mpeg">
     Browser Anda tidak mendukung elemen audio.
   </audio>
 
   <div id="music-control" title="Play/Pause Music">♪</div>
-
-  <div class="mobile-warning" id="mobile-warning">
-    ⚠️ Untuk pengalaman terbaik, silakan gunakan perangkat desktop atau aktifkan mode desktop di browser mobile Anda! ⚠️
-  </div>
 
   <div class="desktop-container">
     <div id="barcode-container">
@@ -378,6 +410,9 @@
   </div>
 
   <script>
+    const popupWarning = document.getElementById('popup-warning');
+    const closePopupBtn = document.getElementById('close-popup');
+
     // Sembunyikan loading overlay saat halaman selesai dimuat
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('loadingOverlay').style.display = 'none';
@@ -621,7 +656,8 @@
 
     // Deteksi perangkat mobile
     function isMobileDevice() {
-      return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+      // Check for touch events OR specific user agent strings for more reliability
+      return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0) || /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|rim)|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(navigator.userAgent||navigator.vendor||window.opera);
     }
 
     // Inisialisasi
@@ -630,16 +666,22 @@
     createSnowflakes();
     animateSnow();
 
-    // Tampilkan peringatan jika di mobile
+    // Tampilkan peringatan pop-up jika di mobile
     if (isMobileDevice()) {
-      document.getElementById('mobile-warning').style.display = 'block';
+      popupWarning.style.display = 'flex'; // Show the popup
 
-      // Coba memaksa zoom out
+      // Coba memaksa zoom out (Mungkin tidak bekerja di semua browser/perangkat)
+      // Hapus ini jika menyebabkan masalah atau tidak diinginkan
       document.querySelector('meta[name="viewport"]').content = "width=1200, initial-scale=0.5, maximum-scale=1.0, user-scalable=yes";
 
       // Scroll ke tengah untuk memastikan konten terlihat
       window.scrollTo(300, 300);
     }
+
+    // Tambahkan event listener untuk tombol tutup pop-up
+    closePopupBtn.addEventListener('click', function() {
+        popupWarning.style.display = 'none';
+    });
   </script>
 </body>
 </html>
