@@ -794,10 +794,12 @@
         <!-- Riwayat chat akan dimuat di sini -->
         <div class="no-history">Tidak ada riwayat percakapan</div>
       </div>
+      <!-- Tombol Hapus Semua Riwayat -->
+      <button class="clear-history-btn" id="clear-history-btn">Hapus Semua Riwayat</button>
     </div>
     
     <div class="chat-body" id="chat-body">
-      <!-- Pesan awal akan dimuat secara dinamis -->
+      <!-- Pesan awal akan dimuat secara dinamis oleh initChat() -->
     </div>
     <div class="chat-input">
       <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." autocomplete="off">
@@ -814,52 +816,62 @@
     const backgroundMusic = document.getElementById('background-music');
     const musicControl = document.getElementById('music-control');
     let isMusicPlaying = false;
-    let musicAttemptedToPlay = false;
+    let musicAttemptedToPlay = false; // Flag untuk memastikan autoplay hanya mencoba sekali per interaksi
 
+    // Fungsi untuk mencoba memutar musik saat ada interaksi pertama
     function setupAudio() {
+      // Hapus event listener setelah dipicu sekali
       document.removeEventListener('click', setupAudio);
       document.removeEventListener('touchstart', setupAudio);
       playBackgroundMusic();
     }
 
+    // Fungsi utama untuk memutar musik
     function playBackgroundMusic() {
-      if (musicAttemptedToPlay) return;
+      if (musicAttemptedToPlay) return; // Pastikan hanya mencoba sekali
       
-      musicAttemptedToPlay = true;
-      backgroundMusic.volume = 0.3;
-      
+      musicAttemptedToPlay = true; // Set flag setelah mencoba
+      backgroundMusic.volume = 0.3; // Atur volume
+
       const playPromise = backgroundMusic.play();
       
       if (playPromise !== undefined) {
         playPromise.then(() => {
+          // Autoplay berhasil dimulai
           isMusicPlaying = true;
-          musicControl.textContent = '❚❚';
+          musicControl.textContent = '❚❚'; // Ubah ikon menjadi 'pause'
+          console.log('Musik berhasil diputar secara otomatis.');
         }).catch(error => {
-          console.log('Autoplay prevented:', error);
-          musicControl.textContent = '♪';
+          // Autoplay dicegah oleh browser
+          console.warn('Autoplay musik dicegah oleh browser:', error);
           isMusicPlaying = false;
+          musicControl.textContent = '♪'; // Pastikan ikon tetap 'play'
+          // Tidak perlu alert lagi, karena tombol kontrol musik selalu terlihat
         });
       }
     }
 
+    // Fungsi untuk mengaktifkan/menonaktifkan musik secara manual
     function toggleMusic() {
       if (isMusicPlaying) {
         backgroundMusic.pause();
-        musicControl.textContent = '♪';
+        musicControl.textContent = '♪'; // Ubah ikon menjadi 'play'
       } else {
         backgroundMusic.play().then(() => {
-          musicControl.textContent = '❚❚';
+          musicControl.textContent = '❚❚'; // Ubah ikon menjadi 'pause'
           isMusicPlaying = true;
         }).catch(error => {
-          console.log('Playback failed:', error);
-          musicControl.textContent = '♪';
+          console.error('Gagal memutar musik secara manual:', error);
+          musicControl.textContent = '♪'; // Pastikan ikon tetap 'play'
           isMusicPlaying = false;
         });
       }
-      isMusicPlaying = !isMusicPlaying;
+      isMusicPlaying = !isMusicPlaying; // Update status setelah toggle
     }
 
+    // Event listener untuk tombol kontrol musik
     musicControl.addEventListener('click', toggleMusic);
+    // Event listener untuk mencoba autoplay pada interaksi pertama di seluruh dokumen
     document.addEventListener('click', setupAudio, { once: true });
     document.addEventListener('touchstart', setupAudio, { once: true });
 
@@ -878,7 +890,7 @@
       { id: 11, nama: 'Panel Unli', harga: 15000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
     ];
 
-    // Render produk
+    // Render produk ke halaman
     const produkContainer = document.getElementById('produk');
     for (let i = 0; i < produk.length; i += 3) {
       const row = document.createElement('div');
@@ -900,7 +912,7 @@
       produkContainer.appendChild(row);
     }
 
-    // Fungsi beli produk
+    // Fungsi beli produk (tetap sama)
     function beliProduk(id, event) {
       const produkDipilih = produk.find((item) => item.id === id);
       if (produkDipilih) {
@@ -924,7 +936,7 @@
       }
     }
 
-    // Fungsi ripple effect
+    // Fungsi ripple effect (tetap sama)
     function createRipple(event) {
       const button = event.currentTarget;
       const circle = document.createElement("span");
@@ -937,7 +949,7 @@
       button.appendChild(circle);
     }
 
-    // Redirect ke store
+    // Redirect ke store (tetap sama)
     document.getElementById('go-to-store').addEventListener('click', function() {
       document.getElementById('loadingOverlay').style.display = 'flex';
       document.getElementById('loading-text').textContent = 'Mengarahkan ke Web Store...';
@@ -946,12 +958,12 @@
       }, 1000);
     });
 
-    // Redirect ke payment
+    // Redirect ke payment (tetap sama)
     document.getElementById('go-to-payment-page').addEventListener('click', function() {
       document.getElementById('loadingOverlay').style.display = 'flex';
       document.getElementById('loading-text').textContent = 'Mengarahkan ke halaman pembayaran...';
       setTimeout(() => {
-        window.location.href = 'https://tiyanzxbella.github.io/Website-payment/';
+        window.location.href = 'https://tiyanpalestine.github.io/Website-payment/';
       }, 1000);
     });
 
@@ -967,10 +979,49 @@
     const chatHistoryPanel = document.getElementById('chat-history-panel');
     const closeHistoryBtn = document.getElementById('close-history');
     const historyList = document.getElementById('history-list');
-    
-    let conversationHistory = [];
-    const CHAT_HISTORY_KEY = 'chatHistory';
-    const MAX_HISTORY_ITEMS = 50; // Batas maksimal riwayat
+    const clearHistoryBtn = document.getElementById('clear-history-btn'); // Tombol Hapus Riwayat
+
+    let conversationHistory = []; // Ini akan menyimpan pesan untuk sesi chat yang sedang aktif
+    const CHAT_HISTORY_KEY = 'yolaAssistantChatHistory'; // Kunci untuk Local Storage
+    const MAX_HISTORY_ITEMS = 10; // Batas maksimal jumlah percakapan yang disimpan
+
+    // Inisialisasi chat (dipanggil saat DOMContentLoaded)
+    function initChat() {
+      clearChat(); // Selalu mulai dengan tampilan chat yang baru
+    }
+
+    // Fungsi untuk mengosongkan tampilan chat dan mereset riwayat sesi aktif
+    function clearChat() {
+      chatBody.innerHTML = '';
+      conversationHistory = []; // Reset riwayat sesi aktif
+      addWelcomeMessage(); // Tambahkan pesan selamat datang untuk sesi baru
+    }
+
+    // Tambahkan pesan selamat datang AI ke chat body
+    function addWelcomeMessage() {
+      // Set riwayat sesi aktif dengan pesan selamat datang
+      conversationHistory = [{ 
+        role: "assistant", 
+        content: "Halo! Saya adalah AI Assistant yang siap membantu Anda dengan pertanyaan seputar produk dan pembelian.\n\nAnda bisa menanyakan tentang:\n- Detail produk dan spesifikasi\n- Harga dan promo terbaru\n- Metode pembayaran yang tersedia\n- Status pesanan\n- grup wa/grup bot\n\nBagaimana saya bisa membantu Anda hari ini?" 
+      }];
+
+      const welcomeMessageHtml = `
+        <div class="chat-message bot-message">
+          <div class="message-header">
+            <strong>AI Assistant</strong>
+            <span class="message-time">${getCurrentTime()}</span>
+          </div>
+          ${formatMessageWithLinks(conversationHistory[0].content).innerHTML}
+          ${addSuggestedQuestionsHTML()}
+          <div class="ai-notification">
+            <strong>Penting:</strong> AI ini dapat mengenali kata-kata dengan typo seperti "prodiukk", "pembayaran", "harga", dll.
+          </div>
+        </div>
+      `;
+      
+      chatBody.innerHTML = welcomeMessageHtml;
+      chatBody.scrollTop = chatBody.scrollHeight; // Scroll ke bawah
+    }
 
     // Pertanyaan saran
     const suggestedQuestions = [
@@ -982,69 +1033,26 @@
       "Bagaimana cara bergabung ke Grup WhatsApp?"
     ];
 
-    // Inisialisasi chat
-    function initChat() {
-      clearChat();
-      startProductGlitchEffect();
-    }
-
-    // Fungsi clear chat
-    function clearChat() {
-      chatBody.innerHTML = '';
-      conversationHistory = [];
-      addWelcomeMessage();
-    }
-
-    // Tambahkan pesan selamat datang
-    function addWelcomeMessage() {
-      const welcomeMessage = `
-        <div class="chat-message bot-message">
-          <div class="message-header">
-            <strong>AI Assistant</strong>
-            <span class="message-time">${getCurrentTime()}</span>
-          </div>
-          Halo! Saya adalah AI Assistant yang siap membantu Anda dengan pertanyaan seputar produk dan pembelian.
-          <br><br>Anda bisa menanyakan tentang:
-          <br>- Detail produk dan spesifikasi
-          <br>- Harga dan promo terbaru
-          <br>- Metode pembayaran yang tersedia
-          <br>- Status pesanan
-          <br>- grup wa/grup bot
-          <br><br>Bagaimana saya bisa membantu Anda hari ini?
-          ${addSuggestedQuestionsHTML()}
-          <div class="ai-notification">
-            <strong>Penting:</strong> AI ini dapat mengenali kata-kata dengan typo seperti "prodiukk", "pembayaran", "harga", dll.
-          </div>
-        </div>
-      `;
-      
-      chatBody.innerHTML = welcomeMessage;
-      conversationHistory.push({ 
-        role: "assistant", 
-        content: "Halo! Saya adalah AI Assistant yang siap membantu Anda dengan pertanyaan seputar produk dan pembelian.\n\nAnda bisa menanyakan tentang:\n- Detail produk dan spesifikasi\n- Harga dan promo terbaru\n- Metode pembayaran yang tersedia\n- Status pesanan\n- grup wa/grup bot\n\nBagaimana saya bisa membantu Anda hari ini?" 
-      });
-    }
-
-    // Fungsi untuk pertanyaan saran
+    // Fungsi untuk menghasilkan HTML pertanyaan saran
     function addSuggestedQuestionsHTML() {
       let html = '<div class="suggested-questions">';
       suggestedQuestions.forEach(question => {
-        html += `<div class="suggested-question" onclick="setSuggestedQuestion('${question}')">${question}</div>`;
+        html += `<div class="suggested-question" onclick="setSuggestedQuestion('${question.replace(/'/g, "\\'")}')">${question}</div>`;
       });
       html += '</div>';
       return html;
     }
 
-    // Set pertanyaan saran ke input
+    // Set pertanyaan saran ke input chat
     function setSuggestedQuestion(question) {
       chatInput.value = question;
       chatInput.focus();
     }
 
-    // Toggle panel riwayat chat
+    // Event listener untuk tombol buka riwayat chat
     showHistoryBtn.addEventListener('click', function() {
       if (chatHistoryPanel.style.display === 'none' || !chatHistoryPanel.style.display) {
-        loadChatHistory();
+        loadChatHistory(); // Muat riwayat saat panel dibuka
         chatHistoryPanel.style.display = 'block';
         setTimeout(() => {
           chatHistoryPanel.style.right = '0';
@@ -1057,6 +1065,7 @@
       }
     });
 
+    // Event listener untuk tombol tutup riwayat chat
     closeHistoryBtn.addEventListener('click', function() {
       chatHistoryPanel.style.right = '-350px';
       setTimeout(() => {
@@ -1064,85 +1073,100 @@
       }, 300);
     });
 
-    // Muat riwayat chat dari localStorage
-    function loadChatHistory() {
-      const savedChats = getChatHistory();
-      historyList.innerHTML = '';
-      
-      if (savedChats.length === 0) {
-        historyList.innerHTML = '<div class="no-history">Tidak ada riwayat percakapan</div>';
-        return;
-      }
-      
-      // Tambahkan tombol hapus semua
-      const clearBtn = document.createElement('button');
-      clearBtn.className = 'clear-history-btn';
-      clearBtn.textContent = 'Hapus Semua Riwayat';
-      clearBtn.addEventListener('click', clearAllChatHistory);
-      historyList.appendChild(clearBtn);
-      
-      // Tampilkan riwayat
-      savedChats.forEach((chat, index) => {
-        const chatItem = document.createElement('div');
-        chatItem.className = 'chat-history-item';
-        chatItem.innerHTML = `
-          <h4>Percakapan ${new Date(chat.id).toLocaleDateString()}</h4>
-          <p>${chat.preview}${chat.preview.length < 100 ? '' : '...'}</p>
-          <div class="time">${new Date(chat.timestamp).toLocaleTimeString()}</div>
-        `;
-        
-        chatItem.addEventListener('click', () => {
-          loadSelectedChat(chat.messages);
-          chatHistoryPanel.style.right = '-350px';
-          setTimeout(() => {
-            chatHistoryPanel.style.display = 'none';
-          }, 300);
-        });
-        
-        historyList.appendChild(chatItem);
-      });
-    }
-
-    // Dapatkan riwayat chat
+    // Fungsi untuk mendapatkan riwayat chat dari Local Storage
     function getChatHistory() {
       const saved = localStorage.getItem(CHAT_HISTORY_KEY);
       return saved ? JSON.parse(saved) : [];
     }
 
-    // Hapus semua riwayat chat
+    // Fungsi untuk menyimpan percakapan sesi aktif ke riwayat
+    function saveCurrentConversationToHistory() {
+      // Simpan jika ada pesan apapun dalam riwayat sesi aktif
+      if (conversationHistory.length > 0) { // <-- PERUBAHAN DI SINI
+        const chatData = {
+          id: Date.now(), // ID unik untuk setiap sesi
+          timestamp: Date.now(),
+          messages: [...conversationHistory], // Salin seluruh riwayat sesi aktif
+          // Gunakan pesan pengguna pertama sebagai pratinjau, atau "Percakapan baru" jika hanya ada pesan AI
+          preview: conversationHistory.find(msg => msg.role === 'user')?.content.substring(0, 100) || 
+                   conversationHistory[0].content.substring(0, 100) + (conversationHistory[0].content.length > 100 ? '...' : '') || 
+                   "Percakapan baru"
+        };
+
+        let history = getChatHistory();
+        
+        // Tambahkan sesi baru ke riwayat
+        history.push(chatData);
+
+        // Batasi jumlah riwayat
+        if (history.length > MAX_HISTORY_ITEMS) {
+          history = history.slice(history.length - MAX_HISTORY_ITEMS); // Pertahankan N sesi terbaru
+        }
+
+        localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(history));
+      }
+    }
+
+    // Fungsi untuk memuat dan menampilkan riwayat chat di panel riwayat
+    function loadChatHistory() {
+      const savedChats = getChatHistory();
+      historyList.innerHTML = ''; // Bersihkan daftar sebelumnya
+      
+      if (savedChats.length === 0) {
+        historyList.innerHTML = '<div class="no-history">Tidak ada riwayat percakapan</div>';
+      } else {
+        // Tampilkan riwayat dari yang paling baru ke yang paling lama
+        savedChats.slice().reverse().forEach((chat) => { // Menggunakan slice().reverse() untuk menampilkan yang terbaru di atas
+          const chatItem = document.createElement('div');
+          chatItem.className = 'chat-history-item';
+          
+          const chatDate = new Date(chat.timestamp);
+          const formattedDate = chatDate.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          });
+          const formattedTime = chatDate.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          
+          chatItem.innerHTML = `
+            <h4>Percakapan pada ${formattedDate}</h4>
+            <p>${chat.preview}</p>
+            <div class="time">${formattedTime}</div>
+          `;
+          
+          // Event listener untuk memuat percakapan yang dipilih
+          chatItem.addEventListener('click', () => {
+            loadSelectedChat(chat.messages);
+            chatHistoryPanel.style.right = '-350px';
+            setTimeout(() => {
+              chatHistoryPanel.style.display = 'none';
+            }, 300);
+          });
+          
+          historyList.appendChild(chatItem);
+        });
+      }
+    }
+
+    // Fungsi untuk menghapus semua riwayat chat dari Local Storage
     function clearAllChatHistory() {
-      if (confirm('Apakah Anda yakin ingin menghapus semua riwayat percakapan?')) {
+      if (confirm('Apakah Anda yakin ingin menghapus semua riwayat percakapan? Tindakan ini tidak dapat dibatalkan.')) {
         localStorage.removeItem(CHAT_HISTORY_KEY);
-        loadChatHistory(); // Refresh panel
+        loadChatHistory(); // Muat ulang panel riwayat untuk menampilkan bahwa sudah kosong
+        alert('Semua riwayat percakapan telah dihapus.');
       }
     }
 
-    // Simpan riwayat chat
-    function saveChatToHistory() {
-      if (conversationHistory.length === 0) return;
-      
-      const chatData = {
-        id: Date.now(),
-        timestamp: new Date().toISOString(),
-        messages: [...conversationHistory],
-        preview: conversationHistory[0].content.substring(0, 100)
-      };
-      
-      let history = getChatHistory();
-      
-      // Batasi jumlah riwayat
-      if (history.length >= MAX_HISTORY_ITEMS) {
-        history.shift(); // Hapus yang terlama
-      }
-      
-      history.push(chatData);
-      localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(history));
-    }
+    // Event listener untuk tombol Hapus Semua Riwayat
+    clearHistoryBtn.addEventListener('click', clearAllChatHistory);
 
-    // Muat percakapan yang dipilih dari riwayat
+    // Fungsi untuk memuat percakapan yang dipilih ke tampilan chat utama
     function loadSelectedChat(messages) {
-      chatBody.innerHTML = '';
-      conversationHistory = [...messages];
+      chatBody.innerHTML = ''; // Bersihkan chat body
+      conversationHistory = [...messages]; // Set riwayat sesi aktif dengan yang dipilih
       
       messages.forEach(msg => {
         const messageDiv = document.createElement('div');
@@ -1153,47 +1177,68 @@
         header.innerHTML = `<strong>${msg.role === 'user' ? 'Anda' : 'AI Assistant'}</strong><span class="message-time">${getCurrentTime()}</span>`;
         
         messageDiv.appendChild(header);
-        messageDiv.appendChild(formatMessageWithLinks(msg.content));
+        
+        // Format konten pesan dengan link dan baris baru
+        const contentDiv = formatMessageWithLinks(msg.content);
+        messageDiv.appendChild(contentDiv);
         
         chatBody.appendChild(messageDiv);
       });
       
-      chatBody.scrollTop = chatBody.scrollHeight;
+      chatBody.scrollTop = chatBody.scrollHeight; // Scroll ke bawah
     }
 
-    // Format pesan dengan link interaktif
+    // Fungsi untuk membuat link dapat diklik dan menangani baris baru dalam pesan
     function formatMessageWithLinks(text) {
       const div = document.createElement('div');
-      
-      // Regex untuk mendeteksi URL
       const urlRegex = /(https?:\/\/[^\s]+)/g;
       
-      // Pisahkan teks menjadi bagian-bagian
-      const parts = text.split(urlRegex);
-      
-      parts.forEach(part => {
-        if (urlRegex.test(part)) {
-          // Ini adalah URL
+      // Pisahkan teks berdasarkan baris baru
+      const lines = text.split('\n');
+
+      lines.forEach((line, lineIndex) => {
+        const lineFragment = document.createDocumentFragment();
+        let lastIndex = 0;
+        
+        // Cari URL dalam setiap baris
+        const matches = [...line.matchAll(urlRegex)];
+        
+        matches.forEach(match => {
+          const url = match[0];
+          const matchIndex = match.index;
+          
+          // Tambahkan teks sebelum URL
+          if (matchIndex > lastIndex) {
+            lineFragment.appendChild(document.createTextNode(line.substring(lastIndex, matchIndex)));
+          }
+          
+          // Buat elemen link
           const link = document.createElement('a');
-          link.href = part;
-          link.textContent = part;
+          link.href = url;
+          link.textContent = url;
           link.target = '_blank';
           link.rel = 'noopener noreferrer';
           link.style.color = '#007bff';
           link.style.textDecoration = 'none';
           link.style.fontWeight = 'bold';
           link.style.cursor = 'pointer';
-          link.addEventListener('mouseover', () => {
-            link.style.textDecoration = 'underline';
-          });
-          link.addEventListener('mouseout', () => {
-            link.style.textDecoration = 'none';
-          });
-          div.appendChild(link);
-        } else {
-          // Ini adalah teks biasa
-          const textNode = document.createTextNode(part);
-          div.appendChild(textNode);
+          link.addEventListener('mouseover', () => { link.style.textDecoration = 'underline'; });
+          link.addEventListener('mouseout', () => { link.style.textDecoration = 'none'; });
+          lineFragment.appendChild(link);
+          
+          lastIndex = matchIndex + url.length;
+        });
+        
+        // Tambahkan sisa teks setelah URL terakhir dalam baris
+        if (lastIndex < line.length) {
+          lineFragment.appendChild(document.createTextNode(line.substring(lastIndex)));
+        }
+        
+        div.appendChild(lineFragment);
+        
+        // Tambahkan <br> untuk baris baru, kecuali setelah baris terakhir
+        if (lineIndex < lines.length - 1) {
+          div.appendChild(document.createElement('br'));
         }
       });
       
@@ -1216,50 +1261,47 @@
       return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
-    // Fungsi untuk mengenali typo
+    // Fungsi untuk mengenali typo dan mengoreksi kata kunci
     function recognizeTypo(word) {
-      // Daftar kata kunci dan variasi typo yang umum
       const keywordMap = {
-        'produk': ['prodiuk', 'prodak', 'produck', 'produt', 'prooduk'],
-        'pembayaran': ['pembayran', 'pembayarn', 'pembayaran', 'pembayarran'],
-        'harga': ['hargga', 'harha', 'harg', 'harganya'],
+        'produk': ['prodiuk', 'prodak', 'produck', 'produt', 'prooduk', 'produkt'],
+        'pembayaran': ['pembayran', 'pembayarn', 'pembayran', 'pembayarran', 'bayar', 'payment'],
+        'harga': ['hargga', 'harha', 'harg', 'harganya', 'price', 'brp'],
         'panel': ['panell', 'pannel', 'panal', 'penel'],
         'unli': ['unli', 'unlimited', 'unlimeted', 'unl'],
         'gb': ['gb', 'g', 'gigabyte', 'giga'],
-        'whatsapp': ['wa', 'whatsapp', 'watsapp', 'whatsap'],
-        'cs': ['cs', 'customer service', 'cust service', 'cust svc']
+        'whatsapp': ['wa', 'whatsapp', 'watsapp', 'whatsap', 'grup wa', 'grup bot'],
+        'cs': ['cs', 'customer service', 'cust service', 'cust svc', 'bantuan', 'kontak']
       };
       
-      // Normalisasi kata
       const normalizedWord = word.toLowerCase().trim();
       
-      // Cari kecocokan
       for (const [correctWord, variations] of Object.entries(keywordMap)) {
         if (variations.includes(normalizedWord) || normalizedWord.includes(correctWord)) {
           return correctWord;
         }
       }
       
-      return word;
+      return word; // Kembalikan kata asli jika tidak ada typo yang dikenali
     }
 
-    // Kirim pesan
+    // Fungsi untuk mengirim pesan dan mendapatkan respons AI
     async function sendMessage() {
       const message = chatInput.value.trim();
       if (message !== '') {
         // Tambahkan pesan pengguna ke chat
-        const userMessage = document.createElement('div');
-        userMessage.className = 'chat-message user-message';
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.className = 'chat-message user-message';
         
         const userHeader = document.createElement('div');
         userHeader.className = 'message-header';
         userHeader.innerHTML = `<strong>Anda</strong><span class="message-time">${getCurrentTime()}</span>`;
         
-        userMessage.appendChild(userHeader);
-        userMessage.appendChild(document.createTextNode(message));
-        chatBody.appendChild(userMessage);
+        userMessageDiv.appendChild(userHeader);
+        userMessageDiv.appendChild(document.createTextNode(message));
+        chatBody.appendChild(userMessageDiv);
         
-        // Tambahkan ke riwayat percakapan
+        // Tambahkan ke riwayat percakapan sesi aktif
         conversationHistory.push({ role: "user", content: message });
         
         // Kosongkan input
@@ -1282,37 +1324,37 @@
         sendButton.disabled = false;
         
         // Tambahkan respons AI ke chat
-        const botMessage = document.createElement('div');
-        botMessage.className = 'chat-message bot-message';
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'chat-message bot-message';
         
         const botHeader = document.createElement('div');
         botHeader.className = 'message-header';
         botHeader.innerHTML = `<strong>AI Assistant</strong><span class="message-time">${getCurrentTime()}</span>`;
         
-        botMessage.appendChild(botHeader);
-        botMessage.appendChild(formatMessageWithLinks(aiResponse));
+        botMessageDiv.appendChild(botHeader);
         
-        // Tambahkan pertanyaan saran untuk percakapan baru
-        if (conversationHistory.length <= 2) {
+        // Format konten dengan link dan baris baru
+        const contentDiv = formatMessageWithLinks(aiResponse);
+        botMessageDiv.appendChild(contentDiv);
+        
+        // Tambahkan pertanyaan saran untuk percakapan baru (jika diperlukan)
+        if (conversationHistory.length <= 2) { // Hanya tampilkan saran di awal percakapan
           const suggestedDiv = document.createElement('div');
           suggestedDiv.innerHTML = addSuggestedQuestionsHTML();
-          botMessage.appendChild(suggestedDiv);
+          botMessageDiv.appendChild(suggestedDiv);
         }
         
-        chatBody.appendChild(botMessage);
+        chatBody.appendChild(botMessageDiv);
         
-        // Tambahkan ke riwayat percakapan
+        // Tambahkan ke riwayat percakapan sesi aktif
         conversationHistory.push({ role: "assistant", content: aiResponse });
         
         // Scroll ke bawah
         chatBody.scrollTop = chatBody.scrollHeight;
-        
-        // Simpan ke riwayat chat
-        saveChatToHistory();
       }
     }
 
-    // Dapatkan respons AI dengan pengenalan typo
+    // Fungsi untuk mendapatkan respons AI dengan pengenalan typo
     async function getAIResponse(message) {
       // Simulasi penundaan API
       await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1500));
@@ -1322,7 +1364,7 @@
       const normalizedWords = words.map(word => recognizeTypo(word));
       const normalizedMessage = normalizedWords.join(' ');
       
-      // Respons informasi produk
+      // Logika respons AI
       if (normalizedMessage.includes('produk') || normalizedMessage.includes('panel') || normalizedMessage.includes('gb')) {
         if (normalizedMessage.includes('1gb') || normalizedMessage.includes('satu')) {
           return "Panel 1GB dijual dengan harga Rp 1.000. Produk ini cocok untuk penggunaan ringan dengan kuota 1GB.\n\nFitur:\n- Kecepatan tinggi\n- Masa aktif 30 hari\n- Support 24/7\n\nKunjungi https://buylink.id/Tiyanstore untuk informasi lebih lanjut.";
@@ -1336,35 +1378,27 @@
           return "Kami menyediakan berbagai panel dengan kuota mulai dari 1GB hingga Unlimited. Setiap produk memiliki keunggulan:\n\n- Panel Reguler (1GB-10GB): Harga ekonomis\n- Panel Unlimited: Tanpa batas kuota\n\nProduk kami mendukung semua operator utama dengan koneksi stabil. Kunjungi https://buylink.id/Tiyanstore untuk informasi lengkap. Ada yang bisa saya bantu lebih spesifik?";
         }
       }
-      // Informasi pembayaran
       else if (normalizedMessage.includes('pembayaran') || normalizedMessage.includes('bayar') || normalizedMessage.includes('payment')) {
         return "Kami menerima berbagai metode pembayaran:\n\n1. Transfer Bank (BCA, BRI, Mandiri, BNI)\n2. E-Wallet (DANA, OVO, ShopeePay, Gopay)\n3. QRIS\n4. Alfamart/Indomaret\n\nSetelah pembayaran, produk akan dikirim secara instan ke email Anda. Untuk petunjuk lengkap, kunjungi https://tiyanpalestine.github.io/Website-payment/ atau klik tombol 'Lanjut ke Pembayaran' di bawah.";
       }
-      // Informasi promo
       else if (normalizedMessage.includes('promo') || normalizedMessage.includes('diskon') || normalizedMessage.includes('voucher')) {
         return "Saat ini kami memiliki promo spesial:\n\n🔥 Paket Hemat 5GB + 5GB hanya Rp 7.500 (normal Rp 10.000)\n🎁 Beli 2 Panel Unli gratis 1 Panel 5GB\n\nPromo berlaku hingga akhir bulan. Gunakan kode 'HEMAT10' untuk diskon tambahan 10%! Info lengkap: https://buylink.id/Tiyanstore";
       }
-      // Layanan pelanggan
       else if (normalizedMessage.includes('cs') || normalizedMessage.includes('customer service') || normalizedMessage.includes('bantuan')) {
         return "Tim customer service kami siap membantu 24 jam melalui:\n\n📞 WhatsApp: https://wa.me/6285972533957\n📧 Email: support@tiyanstore.com\n\nAnda juga bisa bergabung dengan grup WhatsApp resmi kami untuk informasi lebih cepat: https://chat.whatsapp.com/EQkSNg1QgWG0pEaGWwdnuv";
       }
-      // Status pesanan
       else if (normalizedMessage.includes('status') || normalizedMessage.includes('pesanan') || normalizedMessage.includes('order')) {
         return "Untuk mengecek status pesanan, Anda perlu:\n\n1. ID Transaksi (contoh: TY-20240620-123)\n2. Email yang digunakan saat pembelian\n\nSilakan kirim detail tersebut atau screenshot bukti transfer ke CS kami di https://wa.me/6285972533957 untuk bantuan lebih lanjut.";
       }
-      // Grup WhatsApp
       else if (normalizedMessage.includes('grup whatsapp') || normalizedMessage.includes('grup wa') || normalizedMessage.includes('grup bot')) {
         return "Anda bisa bergabung dengan Grup WhatsApp resmi kami untuk mendapatkan informasi terbaru dan berdiskusi dengan komunitas kami:\n\n📱 Klik di sini untuk bergabung: https://chat.whatsapp.com/EQkSNg1QgWG0pEaGWwdnuv\n\nDi grup ini, Anda bisa mendapatkan update promo, bertanya langsung ke admin, dan berbagi pengalaman dengan pengguna lain.";
       }
-      // Salam umum
       else if (normalizedMessage.includes('halo') || normalizedMessage.includes('hai') || normalizedMessage.includes('hello')) {
         return "Halo juga! 😊 Senang bisa membantu Anda hari ini. Ada yang bisa saya bantu seputar produk panel kami?";
       }
-      // Terima kasih
       else if (normalizedMessage.includes('terima kasih') || normalizedMessage.includes('thanks') || normalizedMessage.includes('makasih')) {
         return "Sama-sama! 😊 Jika ada pertanyaan lain, jangan ragu untuk bertanya ya. Semoga harimu menyenangkan!";
       }
-      // Respons default
       else {
         const randomResponses = [
           "Saya bisa membantu dengan informasi produk dan pembelian. Bisakah Anda menjelaskan lebih detail pertanyaan Anda?",
@@ -1376,35 +1410,43 @@
       }
     }
 
-    // Event listeners untuk chat
+    // Event listener untuk tombol buka chat
     chatButton.addEventListener('click', function() {
       chatContainer.style.display = 'flex';
       document.getElementById('loadingOverlay').style.display = 'none';
       chatInput.focus();
     });
 
+    // Event listener untuk tombol tutup chat
     closeChatButton.addEventListener('click', function() {
+      saveCurrentConversationToHistory(); // Simpan riwayat sesi aktif saat chat ditutup
       chatContainer.style.display = 'none';
+      clearChat(); // Bersihkan chat untuk sesi berikutnya
     });
 
+    // Event listener untuk input chat (Enter key)
     chatInput.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         sendMessage();
       }
     });
 
+    // Event listener untuk tombol kirim pesan
     sendButton.addEventListener('click', sendMessage);
 
-    // Redirect dari chat
+    // Redirect dari chat ke Web Store
     document.getElementById('chat-go-to-store').addEventListener('click', function() {
       window.location.href = 'https://buylink.id/Tiyanstore';
     });
 
+    // Redirect dari chat ke halaman pembayaran
     document.getElementById('chat-go-to-payment').addEventListener('click', function() {
       window.location.href = 'https://tiyanpalestine.github.io/Website-payment/';
     });
 
     // ==================== KODE SALJU DAN DETEKSI MOBILE ====================
+    const popupWarning = document.getElementById('popup-warning');
+    const closePopupBtn = document.getElementById('close-popup');
     const canvas = document.getElementById('salju');
     const ctx = canvas.getContext('2d');
     let snowflakes = [];
@@ -1458,33 +1500,30 @@
       return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0) || /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|rim)|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(navigator.userAgent||navigator.vendor||window.opera);
     }
 
-    // Inisialisasi
+    // Inisialisasi efek salju dan deteksi mobile saat DOM siap
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
     createSnowflakes();
     animateSnow();
 
-    // Deteksi mobile dan tampilkan peringatan
     if (isMobileDevice()) {
-      document.getElementById('popup-warning').style.display = 'flex';
+      popupWarning.style.display = 'flex';
       document.querySelector('meta[name="viewport"]').content = "width=1200, initial-scale=0.5, maximum-scale=1.0, user-scalable=yes";
       window.scrollTo(300, 300);
     }
 
-    document.getElementById('close-popup').addEventListener('click', function() {
-      document.getElementById('popup-warning').style.display = 'none';
+    closePopupBtn.addEventListener('click', function() {
+        popupWarning.style.display = 'none';
     });
 
-    // Inisialisasi chat saat halaman dimuat
+    // Inisialisasi semua fungsionalitas saat DOM siap
     document.addEventListener('DOMContentLoaded', function() {
-      initChat();
-      playBackgroundMusic();
-      setTimeout(() => {
-        document.getElementById('loadingOverlay').style.display = 'none';
-      }, 1000);
+      document.getElementById('loadingOverlay').style.display = 'none';
+      initChat(); // Inisialisasi chat
+      startProductGlitchEffect(); // Mulai efek glitch produk
     });
 
-    // Fungsi efek glitch pada produk
+    // Fungsi efek glitch pada produk (tetap sama)
     function startProductGlitchEffect() {
       const productItems = document.querySelectorAll('.produk-item');
       
