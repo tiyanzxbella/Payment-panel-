@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
@@ -639,6 +639,12 @@
       background-color: #f5f5f5;
       cursor: pointer;
       transition: background-color 0.3s;
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     .chat-history-item:hover {
@@ -677,6 +683,34 @@
       font-size: 20px;
       cursor: pointer;
       color: #666;
+    }
+    
+    /* Tombol Hapus Riwayat */
+    .clear-history-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 15px;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+    
+    .clear-history-btn:hover {
+      background-color: #c0392b;
+    }
+    
+    /* Pemberitahuan AI */
+    .ai-notification {
+      background-color: #f8f9fa;
+      border-left: 4px solid #4CAF50;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+      border-radius: 0 5px 5px 0;
     }
   </style>
 </head>
@@ -935,6 +969,8 @@
     const historyList = document.getElementById('history-list');
     
     let conversationHistory = [];
+    const CHAT_HISTORY_KEY = 'chatHistory';
+    const MAX_HISTORY_ITEMS = 50; // Batas maksimal riwayat
 
     // Pertanyaan saran
     const suggestedQuestions = [
@@ -976,6 +1012,9 @@
           <br>- grup wa/grup bot
           <br><br>Bagaimana saya bisa membantu Anda hari ini?
           ${addSuggestedQuestionsHTML()}
+          <div class="ai-notification">
+            <strong>Penting:</strong> AI ini dapat mengenali kata-kata dengan typo seperti "prodiukk", "pembayaran", "harga", dll.
+          </div>
         </div>
       `;
       
@@ -1027,38 +1066,77 @@
 
     // Muat riwayat chat dari localStorage
     function loadChatHistory() {
-      const savedChats = localStorage.getItem('chatHistory');
-      if (savedChats) {
-        const chats = JSON.parse(savedChats);
-        historyList.innerHTML = '';
-        
-        if (chats.length === 0) {
-          historyList.innerHTML = '<div class="no-history">Tidak ada riwayat percakapan</div>';
-          return;
-        }
-        
-        chats.forEach((chat, index) => {
-          const chatItem = document.createElement('div');
-          chatItem.className = 'chat-history-item';
-          chatItem.innerHTML = `
-            <h4>Percakapan ${index + 1}</h4>
-            <p>${chat.messages[0].content.substring(0, 50)}${chat.messages[0].content.length > 50 ? '...' : ''}</p>
-            <div class="time">${new Date(chat.timestamp).toLocaleString()}</div>
-          `;
-          
-          chatItem.addEventListener('click', () => {
-            loadSelectedChat(chat.messages);
-            chatHistoryPanel.style.right = '-350px';
-            setTimeout(() => {
-              chatHistoryPanel.style.display = 'none';
-            }, 300);
-          });
-          
-          historyList.appendChild(chatItem);
-        });
-      } else {
+      const savedChats = getChatHistory();
+      historyList.innerHTML = '';
+      
+      if (savedChats.length === 0) {
         historyList.innerHTML = '<div class="no-history">Tidak ada riwayat percakapan</div>';
+        return;
       }
+      
+      // Tambahkan tombol hapus semua
+      const clearBtn = document.createElement('button');
+      clearBtn.className = 'clear-history-btn';
+      clearBtn.textContent = 'Hapus Semua Riwayat';
+      clearBtn.addEventListener('click', clearAllChatHistory);
+      historyList.appendChild(clearBtn);
+      
+      // Tampilkan riwayat
+      savedChats.forEach((chat, index) => {
+        const chatItem = document.createElement('div');
+        chatItem.className = 'chat-history-item';
+        chatItem.innerHTML = `
+          <h4>Percakapan ${new Date(chat.id).toLocaleDateString()}</h4>
+          <p>${chat.preview}${chat.preview.length < 100 ? '' : '...'}</p>
+          <div class="time">${new Date(chat.timestamp).toLocaleTimeString()}</div>
+        `;
+        
+        chatItem.addEventListener('click', () => {
+          loadSelectedChat(chat.messages);
+          chatHistoryPanel.style.right = '-350px';
+          setTimeout(() => {
+            chatHistoryPanel.style.display = 'none';
+          }, 300);
+        });
+        
+        historyList.appendChild(chatItem);
+      });
+    }
+
+    // Dapatkan riwayat chat
+    function getChatHistory() {
+      const saved = localStorage.getItem(CHAT_HISTORY_KEY);
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    // Hapus semua riwayat chat
+    function clearAllChatHistory() {
+      if (confirm('Apakah Anda yakin ingin menghapus semua riwayat percakapan?')) {
+        localStorage.removeItem(CHAT_HISTORY_KEY);
+        loadChatHistory(); // Refresh panel
+      }
+    }
+
+    // Simpan riwayat chat
+    function saveChatToHistory() {
+      if (conversationHistory.length === 0) return;
+      
+      const chatData = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        messages: [...conversationHistory],
+        preview: conversationHistory[0].content.substring(0, 100)
+      };
+      
+      let history = getChatHistory();
+      
+      // Batasi jumlah riwayat
+      if (history.length >= MAX_HISTORY_ITEMS) {
+        history.shift(); // Hapus yang terlama
+      }
+      
+      history.push(chatData);
+      localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(history));
     }
 
     // Muat percakapan yang dipilih dari riwayat
@@ -1083,42 +1161,43 @@
       chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    // Format pesan dengan link
+    // Format pesan dengan link interaktif
     function formatMessageWithLinks(text) {
-      const fragment = document.createDocumentFragment();
+      const div = document.createElement('div');
+      
+      // Regex untuk mendeteksi URL
       const urlRegex = /(https?:\/\/[^\s]+)/g;
-      let lastIndex = 0;
       
-      const matches = [...text.matchAll(urlRegex)];
+      // Pisahkan teks menjadi bagian-bagian
+      const parts = text.split(urlRegex);
       
-      if (matches.length === 0) {
-        fragment.appendChild(document.createTextNode(text));
-        return fragment;
-      }
-      
-      matches.forEach((match, index) => {
-        const url = match[0];
-        const matchIndex = match.index;
-        
-        if (matchIndex > lastIndex) {
-          fragment.appendChild(document.createTextNode(text.substring(lastIndex, matchIndex)));
+      parts.forEach(part => {
+        if (urlRegex.test(part)) {
+          // Ini adalah URL
+          const link = document.createElement('a');
+          link.href = part;
+          link.textContent = part;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.style.color = '#007bff';
+          link.style.textDecoration = 'none';
+          link.style.fontWeight = 'bold';
+          link.style.cursor = 'pointer';
+          link.addEventListener('mouseover', () => {
+            link.style.textDecoration = 'underline';
+          });
+          link.addEventListener('mouseout', () => {
+            link.style.textDecoration = 'none';
+          });
+          div.appendChild(link);
+        } else {
+          // Ini adalah teks biasa
+          const textNode = document.createTextNode(part);
+          div.appendChild(textNode);
         }
-        
-        const link = document.createElement('a');
-        link.href = url;
-        link.textContent = url;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        fragment.appendChild(link);
-        
-        lastIndex = matchIndex + url.length;
       });
       
-      if (lastIndex < text.length) {
-        fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
-      }
-      
-      return fragment;
+      return div;
     }
 
     // Tampilkan indikator mengetik
@@ -1135,6 +1214,33 @@
     function getCurrentTime() {
       const now = new Date();
       return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Fungsi untuk mengenali typo
+    function recognizeTypo(word) {
+      // Daftar kata kunci dan variasi typo yang umum
+      const keywordMap = {
+        'produk': ['prodiuk', 'prodak', 'produck', 'produt', 'prooduk'],
+        'pembayaran': ['pembayran', 'pembayarn', 'pembayaran', 'pembayarran'],
+        'harga': ['hargga', 'harha', 'harg', 'harganya'],
+        'panel': ['panell', 'pannel', 'panal', 'penel'],
+        'unli': ['unli', 'unlimited', 'unlimeted', 'unl'],
+        'gb': ['gb', 'g', 'gigabyte', 'giga'],
+        'whatsapp': ['wa', 'whatsapp', 'watsapp', 'whatsap'],
+        'cs': ['cs', 'customer service', 'cust service', 'cust svc']
+      };
+      
+      // Normalisasi kata
+      const normalizedWord = word.toLowerCase().trim();
+      
+      // Cari kecocokan
+      for (const [correctWord, variations] of Object.entries(keywordMap)) {
+        if (variations.includes(normalizedWord) || normalizedWord.includes(correctWord)) {
+          return correctWord;
+        }
+      }
+      
+      return word;
     }
 
     // Kirim pesan
@@ -1188,7 +1294,9 @@
         
         // Tambahkan pertanyaan saran untuk percakapan baru
         if (conversationHistory.length <= 2) {
-          botMessage.innerHTML += addSuggestedQuestionsHTML();
+          const suggestedDiv = document.createElement('div');
+          suggestedDiv.innerHTML = addSuggestedQuestionsHTML();
+          botMessage.appendChild(suggestedDiv);
         }
         
         chatBody.appendChild(botMessage);
@@ -1198,56 +1306,62 @@
         
         // Scroll ke bawah
         chatBody.scrollTop = chatBody.scrollHeight;
+        
+        // Simpan ke riwayat chat
+        saveChatToHistory();
       }
     }
 
-    // Dapatkan respons AI
+    // Dapatkan respons AI dengan pengenalan typo
     async function getAIResponse(message) {
       // Simulasi penundaan API
       await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1500));
       
-      const lowerMessage = message.toLowerCase();
+      // Normalisasi pesan untuk mengenali typo
+      const words = message.toLowerCase().split(/\s+/);
+      const normalizedWords = words.map(word => recognizeTypo(word));
+      const normalizedMessage = normalizedWords.join(' ');
       
       // Respons informasi produk
-      if (lowerMessage.includes('produk') || lowerMessage.includes('panel') || lowerMessage.includes('gb')) {
-        if (lowerMessage.includes('1gb') || lowerMessage.includes('satu')) {
+      if (normalizedMessage.includes('produk') || normalizedMessage.includes('panel') || normalizedMessage.includes('gb')) {
+        if (normalizedMessage.includes('1gb') || normalizedMessage.includes('satu')) {
           return "Panel 1GB dijual dengan harga Rp 1.000. Produk ini cocok untuk penggunaan ringan dengan kuota 1GB.\n\nFitur:\n- Kecepatan tinggi\n- Masa aktif 30 hari\n- Support 24/7\n\nKunjungi https://buylink.id/Tiyanstore untuk informasi lebih lanjut.";
-        } else if (lowerMessage.includes('2gb') || lowerMessage.includes('dua')) {
+        } else if (normalizedMessage.includes('2gb') || normalizedMessage.includes('dua')) {
           return "Panel 2GB tersedia dengan harga Rp 2.000. Kuota 2GB ini cocok untuk penggunaan menengah.\n\nKeuntungan:\n- Bisa dibagi ke beberapa perangkat\n- Tanpa throttle kecepatan\n- Garansi pengisian ulang\n\nLihat detail di https://buylink.id/Tiyanstore";
-        } else if (lowerMessage.includes('unli') || lowerMessage.includes('unlimited')) {
+        } else if (normalizedMessage.includes('unli') || normalizedMessage.includes('unlimited')) {
           return "Panel Unlimited adalah paket premium kami dengan harga Rp 15.000. Anda mendapatkan:\n\n- Kuota tanpa batas\n- Kecepatan stabil 24/7\n- Prioritas jaringan\n- Masa aktif 30 hari\n\nPilihan terbaik untuk penggunaan berat! Info lengkap: https://buylink.id/Tiyanstore";
-        } else if (lowerMessage.includes('harga') || lowerMessage.includes('price') || lowerMessage.includes('berapa')) {
-          return "Berikut daftar harga produk kami:\n\n```\n1GB  : Rp 1.000\n2GB  : Rp 2.000\n3GB  : Rp 3.000\n4GB  : Rp 4.000\n5GB  : Rp 5.000\n...\n10GB : Rp 10.000\nUnli: Rp 15.000\n```\n\nHarga sudah termasuk PPN. Kunjungi https://buylink.id/Tiyanstore untuk melihat detail setiap produk.";
+        } else if (normalizedMessage.includes('harga') || normalizedMessage.includes('price') || normalizedMessage.includes('berapa')) {
+          return "Berikut daftar harga produk kami:\n\n1GB  : Rp 1.000\n2GB  : Rp 2.000\n3GB  : Rp 3.000\n4GB  : Rp 4.000\n5GB  : Rp 5.000\n...\n10GB : Rp 10.000\nUnli: Rp 15.000\n\nHarga sudah termasuk PPN. Kunjungi https://buylink.id/Tiyanstore untuk melihat detail setiap produk.";
         } else {
           return "Kami menyediakan berbagai panel dengan kuota mulai dari 1GB hingga Unlimited. Setiap produk memiliki keunggulan:\n\n- Panel Reguler (1GB-10GB): Harga ekonomis\n- Panel Unlimited: Tanpa batas kuota\n\nProduk kami mendukung semua operator utama dengan koneksi stabil. Kunjungi https://buylink.id/Tiyanstore untuk informasi lengkap. Ada yang bisa saya bantu lebih spesifik?";
         }
       }
       // Informasi pembayaran
-      else if (lowerMessage.includes('pembayaran') || lowerMessage.includes('bayar') || lowerMessage.includes('payment')) {
+      else if (normalizedMessage.includes('pembayaran') || normalizedMessage.includes('bayar') || normalizedMessage.includes('payment')) {
         return "Kami menerima berbagai metode pembayaran:\n\n1. Transfer Bank (BCA, BRI, Mandiri, BNI)\n2. E-Wallet (DANA, OVO, ShopeePay, Gopay)\n3. QRIS\n4. Alfamart/Indomaret\n\nSetelah pembayaran, produk akan dikirim secara instan ke email Anda. Untuk petunjuk lengkap, kunjungi https://tiyanpalestine.github.io/Website-payment/ atau klik tombol 'Lanjut ke Pembayaran' di bawah.";
       }
       // Informasi promo
-      else if (lowerMessage.includes('promo') || lowerMessage.includes('diskon') || lowerMessage.includes('voucher')) {
+      else if (normalizedMessage.includes('promo') || normalizedMessage.includes('diskon') || normalizedMessage.includes('voucher')) {
         return "Saat ini kami memiliki promo spesial:\n\n🔥 Paket Hemat 5GB + 5GB hanya Rp 7.500 (normal Rp 10.000)\n🎁 Beli 2 Panel Unli gratis 1 Panel 5GB\n\nPromo berlaku hingga akhir bulan. Gunakan kode 'HEMAT10' untuk diskon tambahan 10%! Info lengkap: https://buylink.id/Tiyanstore";
       }
       // Layanan pelanggan
-      else if (lowerMessage.includes('cs') || lowerMessage.includes('customer service') || lowerMessage.includes('bantuan')) {
+      else if (normalizedMessage.includes('cs') || normalizedMessage.includes('customer service') || normalizedMessage.includes('bantuan')) {
         return "Tim customer service kami siap membantu 24 jam melalui:\n\n📞 WhatsApp: https://wa.me/6285972533957\n📧 Email: support@tiyanstore.com\n\nAnda juga bisa bergabung dengan grup WhatsApp resmi kami untuk informasi lebih cepat: https://chat.whatsapp.com/EQkSNg1QgWG0pEaGWwdnuv";
       }
       // Status pesanan
-      else if (lowerMessage.includes('status') || lowerMessage.includes('pesanan') || lowerMessage.includes('order')) {
+      else if (normalizedMessage.includes('status') || normalizedMessage.includes('pesanan') || normalizedMessage.includes('order')) {
         return "Untuk mengecek status pesanan, Anda perlu:\n\n1. ID Transaksi (contoh: TY-20240620-123)\n2. Email yang digunakan saat pembelian\n\nSilakan kirim detail tersebut atau screenshot bukti transfer ke CS kami di https://wa.me/6285972533957 untuk bantuan lebih lanjut.";
       }
       // Grup WhatsApp
-      else if (lowerMessage.includes('grup whatsapp') || lowerMessage.includes('grup wa') || lowerMessage.includes('grup bot')) {
+      else if (normalizedMessage.includes('grup whatsapp') || normalizedMessage.includes('grup wa') || normalizedMessage.includes('grup bot')) {
         return "Anda bisa bergabung dengan Grup WhatsApp resmi kami untuk mendapatkan informasi terbaru dan berdiskusi dengan komunitas kami:\n\n📱 Klik di sini untuk bergabung: https://chat.whatsapp.com/EQkSNg1QgWG0pEaGWwdnuv\n\nDi grup ini, Anda bisa mendapatkan update promo, bertanya langsung ke admin, dan berbagi pengalaman dengan pengguna lain.";
       }
       // Salam umum
-      else if (lowerMessage.includes('halo') || lowerMessage.includes('hai') || lowerMessage.includes('hello')) {
+      else if (normalizedMessage.includes('halo') || normalizedMessage.includes('hai') || normalizedMessage.includes('hello')) {
         return "Halo juga! 😊 Senang bisa membantu Anda hari ini. Ada yang bisa saya bantu seputar produk panel kami?";
       }
       // Terima kasih
-      else if (lowerMessage.includes('terima kasih') || lowerMessage.includes('thanks') || lowerMessage.includes('makasih')) {
+      else if (normalizedMessage.includes('terima kasih') || normalizedMessage.includes('thanks') || normalizedMessage.includes('makasih')) {
         return "Sama-sama! 😊 Jika ada pertanyaan lain, jangan ragu untuk bertanya ya. Semoga harimu menyenangkan!";
       }
       // Respons default
