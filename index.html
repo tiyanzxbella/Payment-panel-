@@ -763,28 +763,15 @@
     </div>
     
     <div class="chat-body" id="chat-body">
-      <div class="chat-message bot-message">
-        <div class="message-header">
-          <strong>AI Assistant</strong>
-          <span class="message-time" style="font-size: 12px; color: #666;"></span>
-        </div>
-        Halo! Saya adalah AI Assistant yang siap membantu Anda dengan pertanyaan seputar produk dan pembelian.
-        <br><br>Anda bisa menanyakan tentang:
-        <br>- Detail produk dan spesifikasi
-        <br>- Harga dan promo terbaru
-        <br>- Metode pembayaran yang tersedia
-        <br>- Status pesanan
-        <br>- grup wa/grup bot
-        <br><br>Bagaimana saya bisa membantu Anda hari ini?
-      </div>
+      <!-- Pesan awal akan dimuat secara dinamis -->
     </div>
     <div class="chat-input">
       <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." autocomplete="off">
-      <button id="send-button" onclick="sendMessage()">Kirim</button>
+      <button id="send-button">Kirim</button>
     </div>
     <div class="chat-nav">
-      <button class="store-btn" onclick="goToStore()">Lanjut ke Web Store</button>
-      <button class="payment-btn" onclick="goToPaymentPage()">Lanjut ke Pembayaran</button>
+      <button class="store-btn" id="chat-go-to-store">Lanjut ke Web Store</button>
+      <button class="payment-btn" id="chat-go-to-payment">Lanjut ke Pembayaran</button>
     </div>
   </div>
 
@@ -795,17 +782,12 @@
     let isMusicPlaying = false;
     let musicAttemptedToPlay = false;
 
-    // Fungsi untuk memulai musik setelah interaksi pengguna
     function setupAudio() {
-      // Hapus event listener setelah pertama kali dipanggil
       document.removeEventListener('click', setupAudio);
       document.removeEventListener('touchstart', setupAudio);
-      
-      // Coba memutar musik
       playBackgroundMusic();
     }
 
-    // Fungsi untuk memutar musik dengan handle error
     function playBackgroundMusic() {
       if (musicAttemptedToPlay) return;
       
@@ -816,21 +798,16 @@
       
       if (playPromise !== undefined) {
         playPromise.then(() => {
-          // Musik berhasil diputar
           isMusicPlaying = true;
           musicControl.textContent = '❚❚';
-          musicControl.style.display = 'flex';
         }).catch(error => {
-          // Autoplay dicegah
           console.log('Autoplay prevented:', error);
           musicControl.textContent = '♪';
-          musicControl.style.display = 'flex';
           isMusicPlaying = false;
         });
       }
     }
 
-    // Fungsi untuk toggle musik
     function toggleMusic() {
       if (isMusicPlaying) {
         backgroundMusic.pause();
@@ -848,54 +825,11 @@
       isMusicPlaying = !isMusicPlaying;
     }
 
-    // Event listeners untuk musik
     musicControl.addEventListener('click', toggleMusic);
-
-    // Coba memutar musik otomatis setelah interaksi pertama
     document.addEventListener('click', setupAudio, { once: true });
     document.addEventListener('touchstart', setupAudio, { once: true });
 
-    // Coba memutar musik saat halaman dimuat (untuk kasus di mana autoplay diizinkan)
-    document.addEventListener('DOMContentLoaded', function() {
-      // Jika browser mengizinkan autoplay, musik akan langsung diputar
-      playBackgroundMusic();
-      
-      // Sembunyikan loading overlay
-      setTimeout(() => {
-        document.getElementById('loadingOverlay').style.display = 'none';
-      }, 1000);
-    });
-
     // ==================== KODE PRODUK DAN FUNGSIONALITAS UTAMA ====================
-    const popupWarning = document.getElementById('popup-warning');
-    const closePopupBtn = document.getElementById('close-popup');
-
-    document.addEventListener('DOMContentLoaded', function() {
-      startProductGlitchEffect();
-    });
-
-    function startProductGlitchEffect() {
-      const productItems = document.querySelectorAll('.produk-item');
-      function triggerGlitch(item) {
-        if (!item.querySelector('.produk-glitch')) {
-          const glitch = document.createElement('div');
-          glitch.className = 'produk-glitch';
-          glitch.style.backgroundImage = `url('${item.querySelector('img').src}')`;
-          item.appendChild(glitch);
-        }
-        const glitch = item.querySelector('.produk-glitch');
-        const intensity = Math.random() * 0.5;
-        glitch.style.opacity = intensity;
-        setTimeout(() => {
-          glitch.style.opacity = '0';
-          setTimeout(() => triggerGlitch(item), Math.random() * 5000 + 3000);
-        }, 200);
-      }
-      productItems.forEach(item => {
-        setTimeout(() => triggerGlitch(item), Math.random() * 3000);
-      });
-    }
-
     const produk = [
       { id: 1, nama: 'Panel 1GB', harga: 1000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
       { id: 2, nama: 'Panel 2GB', harga: 2000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
@@ -910,6 +844,7 @@
       { id: 11, nama: 'Panel Unli', harga: 15000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
     ];
 
+    // Render produk
     const produkContainer = document.getElementById('produk');
     for (let i = 0; i < produk.length; i += 3) {
       const row = document.createElement('div');
@@ -923,7 +858,7 @@
             <img src="${item.gambar}" alt="${item.nama}">
             <h2>${item.nama}</h2>
             <p>Rp ${item.harga.toLocaleString()}</p>
-            <button onclick="beli(${item.id}, event)">Beli</button>
+            <button onclick="beliProduk(${item.id}, event)">Beli</button>
           `;
           row.appendChild(itemDiv);
         }
@@ -931,23 +866,8 @@
       produkContainer.appendChild(row);
     }
 
-    document.getElementById('go-to-store').addEventListener('click', function() {
-      document.getElementById('loadingOverlay').style.display = 'flex';
-      document.getElementById('loading-text').textContent = 'Mengarahkan ke Web Store...';
-      setTimeout(() => {
-        window.location.href = 'https://buylink.id/Tiyanstore';
-      }, 1000);
-    });
-
-    document.getElementById('go-to-payment-page').addEventListener('click', function() {
-      document.getElementById('loadingOverlay').style.display = 'flex';
-      document.getElementById('loading-text').textContent = 'Mengarahkan ke halaman pembayaran...';
-      setTimeout(() => {
-        window.location.href = 'https://tiyanpalestine.github.io/Website-payment/';
-      }, 1000);
-    });
-
-    function beli(id, event) {
+    // Fungsi beli produk
+    function beliProduk(id, event) {
       const produkDipilih = produk.find((item) => item.id === id);
       if (produkDipilih) {
         createRipple(event);
@@ -970,6 +890,7 @@
       }
     }
 
+    // Fungsi ripple effect
     function createRipple(event) {
       const button = event.currentTarget;
       const circle = document.createElement("span");
@@ -981,6 +902,24 @@
       circle.style.top = `${event.offsetY - radius}px`;
       button.appendChild(circle);
     }
+
+    // Redirect ke store
+    document.getElementById('go-to-store').addEventListener('click', function() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loading-text').textContent = 'Mengarahkan ke Web Store...';
+      setTimeout(() => {
+        window.location.href = 'https://buylink.id/Tiyanstore';
+      }, 1000);
+    });
+
+    // Redirect ke payment
+    document.getElementById('go-to-payment-page').addEventListener('click', function() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loading-text').textContent = 'Mengarahkan ke halaman pembayaran...';
+      setTimeout(() => {
+        window.location.href = 'https://tiyanpalestine.github.io/Website-payment/';
+      }, 1000);
+    });
 
     // ==================== KODE UNTUK AI CHAT ====================
     const chatButton = document.getElementById('chat-button');
@@ -995,11 +934,8 @@
     const closeHistoryBtn = document.getElementById('close-history');
     const historyList = document.getElementById('history-list');
     
-    // Riwayat percakapan
-    let conversationHistory = [
-      { role: "assistant", content: "Halo! Saya adalah AI Assistant yang siap membantu Anda dengan pertanyaan seputar produk dan pembelian." }
-    ];
-    
+    let conversationHistory = [];
+
     // Pertanyaan saran
     const suggestedQuestions = [
       "Apa saja produk yang tersedia?",
@@ -1009,11 +945,66 @@
       "Bagaimana cara menghubungi customer service?",
       "Bagaimana cara bergabung ke Grup WhatsApp?"
     ];
-    
+
+    // Inisialisasi chat
+    function initChat() {
+      clearChat();
+      startProductGlitchEffect();
+    }
+
+    // Fungsi clear chat
+    function clearChat() {
+      chatBody.innerHTML = '';
+      conversationHistory = [];
+      addWelcomeMessage();
+    }
+
+    // Tambahkan pesan selamat datang
+    function addWelcomeMessage() {
+      const welcomeMessage = `
+        <div class="chat-message bot-message">
+          <div class="message-header">
+            <strong>AI Assistant</strong>
+            <span class="message-time">${getCurrentTime()}</span>
+          </div>
+          Halo! Saya adalah AI Assistant yang siap membantu Anda dengan pertanyaan seputar produk dan pembelian.
+          <br><br>Anda bisa menanyakan tentang:
+          <br>- Detail produk dan spesifikasi
+          <br>- Harga dan promo terbaru
+          <br>- Metode pembayaran yang tersedia
+          <br>- Status pesanan
+          <br>- grup wa/grup bot
+          <br><br>Bagaimana saya bisa membantu Anda hari ini?
+          ${addSuggestedQuestionsHTML()}
+        </div>
+      `;
+      
+      chatBody.innerHTML = welcomeMessage;
+      conversationHistory.push({ 
+        role: "assistant", 
+        content: "Halo! Saya adalah AI Assistant yang siap membantu Anda dengan pertanyaan seputar produk dan pembelian.\n\nAnda bisa menanyakan tentang:\n- Detail produk dan spesifikasi\n- Harga dan promo terbaru\n- Metode pembayaran yang tersedia\n- Status pesanan\n- grup wa/grup bot\n\nBagaimana saya bisa membantu Anda hari ini?" 
+      });
+    }
+
+    // Fungsi untuk pertanyaan saran
+    function addSuggestedQuestionsHTML() {
+      let html = '<div class="suggested-questions">';
+      suggestedQuestions.forEach(question => {
+        html += `<div class="suggested-question" onclick="setSuggestedQuestion('${question}')">${question}</div>`;
+      });
+      html += '</div>';
+      return html;
+    }
+
+    // Set pertanyaan saran ke input
+    function setSuggestedQuestion(question) {
+      chatInput.value = question;
+      chatInput.focus();
+    }
+
     // Toggle panel riwayat chat
     showHistoryBtn.addEventListener('click', function() {
       if (chatHistoryPanel.style.display === 'none' || !chatHistoryPanel.style.display) {
-        // Muat riwayat hanya ketika panel akan ditampilkan
         loadChatHistory();
         chatHistoryPanel.style.display = 'block';
         setTimeout(() => {
@@ -1026,21 +1017,19 @@
         }, 300);
       }
     });
-    
+
     closeHistoryBtn.addEventListener('click', function() {
       chatHistoryPanel.style.right = '-350px';
       setTimeout(() => {
         chatHistoryPanel.style.display = 'none';
       }, 300);
     });
-    
-    // Fungsi untuk memuat riwayat chat dari localStorage
+
+    // Muat riwayat chat dari localStorage
     function loadChatHistory() {
       const savedChats = localStorage.getItem('chatHistory');
       if (savedChats) {
         const chats = JSON.parse(savedChats);
-        
-        // Kosongkan daftar riwayat
         historyList.innerHTML = '';
         
         if (chats.length === 0) {
@@ -1048,7 +1037,6 @@
           return;
         }
         
-        // Tambahkan setiap riwayat chat ke panel
         chats.forEach((chat, index) => {
           const chatItem = document.createElement('div');
           chatItem.className = 'chat-history-item';
@@ -1058,7 +1046,6 @@
             <div class="time">${new Date(chat.timestamp).toLocaleString()}</div>
           `;
           
-          // Tambahkan event listener untuk memuat percakapan yang dipilih
           chatItem.addEventListener('click', () => {
             loadSelectedChat(chat.messages);
             chatHistoryPanel.style.right = '-350px';
@@ -1073,16 +1060,12 @@
         historyList.innerHTML = '<div class="no-history">Tidak ada riwayat percakapan</div>';
       }
     }
-    
-    // Fungsi untuk memuat percakapan yang dipilih dari riwayat
+
+    // Muat percakapan yang dipilih dari riwayat
     function loadSelectedChat(messages) {
-      // Kosongkan chat body
       chatBody.innerHTML = '';
-      
-      // Perbarui conversation history
       conversationHistory = [...messages];
       
-      // Tampilkan semua pesan dalam percakapan
       messages.forEach(msg => {
         const messageDiv = document.createElement('div');
         messageDiv.className = `chat-message ${msg.role === 'user' ? 'user-message' : 'bot-message'}`;
@@ -1092,82 +1075,35 @@
         header.innerHTML = `<strong>${msg.role === 'user' ? 'Anda' : 'AI Assistant'}</strong><span class="message-time">${getCurrentTime()}</span>`;
         
         messageDiv.appendChild(header);
-        
-        // Format konten pesan dengan link yang bisa diklik
-        const content = formatMessageWithLinks(msg.content);
-        messageDiv.appendChild(content);
+        messageDiv.appendChild(formatMessageWithLinks(msg.content));
         
         chatBody.appendChild(messageDiv);
       });
       
-      // Scroll ke bawah
       chatBody.scrollTop = chatBody.scrollHeight;
     }
-    
-    // Fungsi untuk menyimpan percakapan ke localStorage
-    function saveChatToHistory() {
-      // Hanya simpan jika ada lebih dari 1 pesan (selain pesan pembuka)
-      if (conversationHistory.length > 1) {
-        const savedChats = localStorage.getItem('chatHistory');
-        let chats = [];
-        
-        if (savedChats) {
-          chats = JSON.parse(savedChats);
-        }
-        
-        // Tambahkan percakapan baru
-        chats.push({
-          timestamp: new Date().getTime(),
-          messages: [...conversationHistory]
-        });
-        
-        // Simpan maksimal 10 riwayat
-        if (chats.length > 10) {
-          chats = chats.slice(chats.length - 10);
-        }
-        
-        localStorage.setItem('chatHistory', JSON.stringify(chats));
-      }
-    }
-    
-    chatButton.addEventListener('click', function() {
-      chatContainer.style.display = 'flex';
-      document.getElementById('loadingOverlay').style.display = 'none';
-      chatInput.focus();
-    });
-    
-    closeChatButton.addEventListener('click', function() {
-      // Simpan percakapan sebelum menutup
-      saveChatToHistory();
-      chatContainer.style.display = 'none';
-    });
-    
-    // Fungsi untuk membuat link bisa diklik dalam pesan
+
+    // Format pesan dengan link
     function formatMessageWithLinks(text) {
       const fragment = document.createDocumentFragment();
       const urlRegex = /(https?:\/\/[^\s]+)/g;
       let lastIndex = 0;
       
-      // Temukan semua URL dalam teks
       const matches = [...text.matchAll(urlRegex)];
       
       if (matches.length === 0) {
-        // Jika tidak ada URL, kembalikan teks biasa
         fragment.appendChild(document.createTextNode(text));
         return fragment;
       }
       
-      // Proses setiap URL
       matches.forEach((match, index) => {
         const url = match[0];
         const matchIndex = match.index;
         
-        // Tambahkan teks sebelum URL
         if (matchIndex > lastIndex) {
           fragment.appendChild(document.createTextNode(text.substring(lastIndex, matchIndex)));
         }
         
-        // Buat elemen link
         const link = document.createElement('a');
         link.href = url;
         link.textContent = url;
@@ -1178,50 +1114,30 @@
         lastIndex = matchIndex + url.length;
       });
       
-      // Tambahkan teks setelah URL terakhir
       if (lastIndex < text.length) {
         fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
       }
       
       return fragment;
     }
-    
+
+    // Tampilkan indikator mengetik
     function showTypingIndicator() {
       typingIndicator.style.display = 'block';
-      // Perbarui waktu pesan
-      const timeElements = document.querySelectorAll('.message-time');
-      if (timeElements.length > 0) {
-        timeElements[timeElements.length - 1].textContent = getCurrentTime();
-      }
     }
-    
+
+    // Sembunyikan indikator mengetik
     function hideTypingIndicator() {
       typingIndicator.style.display = 'none';
     }
-    
+
+    // Dapatkan waktu saat ini
     function getCurrentTime() {
       const now = new Date();
       return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
-    
-    function addSuggestedQuestions() {
-      const suggestedQuestionsContainer = document.createElement('div');
-      suggestedQuestionsContainer.className = 'suggested-questions';
-      
-      suggestedQuestions.forEach(question => {
-        const questionElement = document.createElement('div');
-        questionElement.className = 'suggested-question';
-        questionElement.textContent = question;
-        questionElement.addEventListener('click', () => {
-          chatInput.value = question;
-          chatInput.focus();
-        });
-        suggestedQuestionsContainer.appendChild(questionElement);
-      });
-      
-      return suggestedQuestionsContainer;
-    }
-    
+
+    // Kirim pesan
     async function sendMessage() {
       const message = chatInput.value.trim();
       if (message !== '') {
@@ -1249,10 +1165,10 @@
         // Tampilkan indikator mengetik
         showTypingIndicator();
         
-        // Nonaktifkan tombol kirim saat menunggu respons
+        // Nonaktifkan tombol kirim
         sendButton.disabled = true;
         
-        // Dapatkan respons AI (simulasi atau panggilan API nyata)
+        // Dapatkan respons AI
         const aiResponse = await getAIResponse(message);
         
         // Sembunyikan indikator mengetik
@@ -1268,14 +1184,11 @@
         botHeader.innerHTML = `<strong>AI Assistant</strong><span class="message-time">${getCurrentTime()}</span>`;
         
         botMessage.appendChild(botHeader);
-        
-        // Format respons dengan link yang bisa diklik
-        const formattedResponse = formatMessageWithLinks(aiResponse);
-        botMessage.appendChild(formattedResponse);
+        botMessage.appendChild(formatMessageWithLinks(aiResponse));
         
         // Tambahkan pertanyaan saran untuk percakapan baru
         if (conversationHistory.length <= 2) {
-          botMessage.appendChild(addSuggestedQuestions());
+          botMessage.innerHTML += addSuggestedQuestionsHTML();
         }
         
         chatBody.appendChild(botMessage);
@@ -1287,15 +1200,12 @@
         chatBody.scrollTop = chatBody.scrollHeight;
       }
     }
-    
+
+    // Dapatkan respons AI
     async function getAIResponse(message) {
-      // Dalam implementasi nyata, Anda akan memanggil API AI di sini
-      // Untuk contoh ini, kami akan mensimulasikan respons berdasarkan kata kunci
-      
       // Simulasi penundaan API
       await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1500));
       
-      // Ubah pesan ke huruf kecil untuk pencocokan yang lebih mudah
       const lowerMessage = message.toLowerCase();
       
       // Respons informasi produk
@@ -1340,7 +1250,7 @@
       else if (lowerMessage.includes('terima kasih') || lowerMessage.includes('thanks') || lowerMessage.includes('makasih')) {
         return "Sama-sama! 😊 Jika ada pertanyaan lain, jangan ragu untuk bertanya ya. Semoga harimu menyenangkan!";
       }
-      // Respons default untuk pertanyaan tidak dikenal
+      // Respons default
       else {
         const randomResponses = [
           "Saya bisa membantu dengan informasi produk dan pembelian. Bisakah Anda menjelaskan lebih detail pertanyaan Anda?",
@@ -1351,20 +1261,34 @@
         return randomResponses[Math.floor(Math.random() * randomResponses.length)];
       }
     }
-    
+
+    // Event listeners untuk chat
+    chatButton.addEventListener('click', function() {
+      chatContainer.style.display = 'flex';
+      document.getElementById('loadingOverlay').style.display = 'none';
+      chatInput.focus();
+    });
+
+    closeChatButton.addEventListener('click', function() {
+      chatContainer.style.display = 'none';
+    });
+
     chatInput.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         sendMessage();
       }
     });
-    
-    function goToStore() {
+
+    sendButton.addEventListener('click', sendMessage);
+
+    // Redirect dari chat
+    document.getElementById('chat-go-to-store').addEventListener('click', function() {
       window.location.href = 'https://buylink.id/Tiyanstore';
-    }
-    
-    function goToPaymentPage() {
+    });
+
+    document.getElementById('chat-go-to-payment').addEventListener('click', function() {
       window.location.href = 'https://tiyanpalestine.github.io/Website-payment/';
-    }
+    });
 
     // ==================== KODE SALJU DAN DETEKSI MOBILE ====================
     const canvas = document.getElementById('salju');
@@ -1420,20 +1344,56 @@
       return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0) || /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|rim)|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(navigator.userAgent||navigator.vendor||window.opera);
     }
 
+    // Inisialisasi
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
     createSnowflakes();
     animateSnow();
 
+    // Deteksi mobile dan tampilkan peringatan
     if (isMobileDevice()) {
-      popupWarning.style.display = 'flex';
+      document.getElementById('popup-warning').style.display = 'flex';
       document.querySelector('meta[name="viewport"]').content = "width=1200, initial-scale=0.5, maximum-scale=1.0, user-scalable=yes";
       window.scrollTo(300, 300);
     }
 
-    closePopupBtn.addEventListener('click', function() {
-        popupWarning.style.display = 'none';
+    document.getElementById('close-popup').addEventListener('click', function() {
+      document.getElementById('popup-warning').style.display = 'none';
     });
+
+    // Inisialisasi chat saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+      initChat();
+      playBackgroundMusic();
+      setTimeout(() => {
+        document.getElementById('loadingOverlay').style.display = 'none';
+      }, 1000);
+    });
+
+    // Fungsi efek glitch pada produk
+    function startProductGlitchEffect() {
+      const productItems = document.querySelectorAll('.produk-item');
+      
+      function triggerGlitch(item) {
+        if (!item.querySelector('.produk-glitch')) {
+          const glitch = document.createElement('div');
+          glitch.className = 'produk-glitch';
+          glitch.style.backgroundImage = `url('${item.querySelector('img').src}')`;
+          item.appendChild(glitch);
+        }
+        const glitch = item.querySelector('.produk-glitch');
+        const intensity = Math.random() * 0.5;
+        glitch.style.opacity = intensity;
+        setTimeout(() => {
+          glitch.style.opacity = '0';
+          setTimeout(() => triggerGlitch(item), Math.random() * 5000 + 3000);
+        }, 200);
+      }
+      
+      productItems.forEach(item => {
+        setTimeout(() => triggerGlitch(item), Math.random() * 3000);
+      });
+    }
   </script>
 </body>
 </html>
