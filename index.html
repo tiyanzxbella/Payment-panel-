@@ -367,23 +367,26 @@
       height: 80%;
       max-width: 800px;
       max-height: 700px;
-      background-color: white;
+      /* Mengubah background-color menjadi linear-gradient */
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 248, 248, 0.98));
       z-index: 2000;
       display: none;
       border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      box-shadow: 0 0 25px rgba(0,0,0,0.4); /* Meningkatkan shadow */
       flex-direction: column;
     }
 
     .chat-header {
       display: flex;
       padding: 20px;
-      background-color: #333;
+      /* Mengubah background-color menjadi linear-gradient */
+      background: linear-gradient(90deg, #7873f5, #1fd1f9);
       color: white;
       font-size: 20px;
       border-top-left-radius: 15px;
       border-top-right-radius: 15px;
       align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Menambahkan shadow */
     }
 
     .chat-header button {
@@ -400,7 +403,8 @@
       height: calc(100% - 180px);
       overflow-y: auto;
       font-size: 18px;
-      background-color: #f9f9f9;
+      /* Mengubah background-color */
+      background-color: #f5f8fb;
     }
 
     .chat-message {
@@ -411,23 +415,27 @@
       font-size: 18px;
       line-height: 1.5;
       word-wrap: break-word;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Menambahkan shadow ke pesan */
     }
 
     .user-message {
-      background-color: #d4e6f1;
+      /* Mengubah background-color */
+      background-color: #cbe6ff;
       margin-left: auto;
       border-bottom-right-radius: 5px;
     }
 
     .bot-message {
-      background-color: #e6e6e6;
+      /* Mengubah background-color */
+      background-color: #e9e9e9;
       margin-right: auto;
       border-bottom-left-radius: 5px;
     }
 
     .chat-input {
       padding: 15px;
-      background-color: white;
+      /* Mengubah background-color */
+      background-color: #eef2f7;
       border-top: 1px solid #ddd;
       display: flex;
       align-items: center;
@@ -438,7 +446,7 @@
     .chat-input input[type="text"] {
       width: calc(100% - 140px);
       padding: 15px;
-      border: 1px solid #ddd;
+      border: 1px solid #c0c0c0; /* Sedikit menggelapkan border input */
       border-radius: 8px;
       margin-right: 15px;
       font-size: 18px;
@@ -463,7 +471,8 @@
       display: flex;
       justify-content: space-around;
       padding: 15px;
-      background-color: #f5f5f5;
+      /* Mengubah background-color */
+      background-color: #eef2f7;
       border-top: 1px solid #ddd;
     }
 
@@ -543,7 +552,8 @@
     }
     
     .suggested-question {
-      background-color: #e6e6e6;
+      /* Mengubah background-color */
+      background-color: #d8e2ed;
       padding: 8px 12px;
       border-radius: 15px;
       font-size: 14px;
@@ -552,7 +562,7 @@
     }
     
     .suggested-question:hover {
-      background-color: #d4e6f1;
+      background-color: #cbe6ff; /* Mengubah hover color */
     }
     
     .chat-message pre {
@@ -609,7 +619,8 @@
       right: -350px;
       width: 350px;
       height: 100%;
-      background-color: white;
+      /* Mengubah background-color */
+      background-color: #f5f8fb;
       box-shadow: -5px 0 15px rgba(0,0,0,0.1);
       transition: right 0.3s ease;
       overflow-y: auto;
@@ -636,7 +647,8 @@
       padding: 10px;
       margin-bottom: 10px;
       border-radius: 5px;
-      background-color: #f5f5f5;
+      /* Mengubah background-color */
+      background-color: #eaf1f7;
       cursor: pointer;
       transition: background-color 0.3s;
       animation: fadeIn 0.3s ease-out;
@@ -648,7 +660,7 @@
     }
     
     .chat-history-item:hover {
-      background-color: #e6e6e6;
+      background-color: #d8e2ed; /* Mengubah hover color */
     }
     
     .chat-history-item h4 {
@@ -705,7 +717,8 @@
     
     /* Pemberitahuan AI */
     .ai-notification {
-      background-color: #f8f9fa;
+      /* Mengubah background-color */
+      background-color: #e6f2e6;
       border-left: 4px solid #4CAF50;
       padding: 10px;
       margin-top: 10px;
@@ -979,7 +992,7 @@
     const chatHistoryPanel = document.getElementById('chat-history-panel');
     const closeHistoryBtn = document.getElementById('close-history');
     const historyList = document.getElementById('history-list');
-    const clearHistoryBtn = document.getElementById('clear-history-btn'); // Tombol Hapus Riwayat
+    const clearHistoryBtn = document.getElementById('clear-history-btn'); // New button
 
     let conversationHistory = []; // Ini akan menyimpan pesan untuk sesi chat yang sedang aktif
     const CHAT_HISTORY_KEY = 'yolaAssistantChatHistory'; // Kunci untuk Local Storage
@@ -1081,16 +1094,14 @@
 
     // Fungsi untuk menyimpan percakapan sesi aktif ke riwayat
     function saveCurrentConversationToHistory() {
-      // Simpan jika ada pesan apapun dalam riwayat sesi aktif
-      if (conversationHistory.length > 0) { // <-- PERUBAHAN DI SINI
+      // Hanya simpan jika ada interaksi nyata (lebih dari pesan selamat datang AI saja)
+      if (conversationHistory.length > 1) {
         const chatData = {
           id: Date.now(), // ID unik untuk setiap sesi
           timestamp: Date.now(),
           messages: [...conversationHistory], // Salin seluruh riwayat sesi aktif
-          // Gunakan pesan pengguna pertama sebagai pratinjau, atau "Percakapan baru" jika hanya ada pesan AI
-          preview: conversationHistory.find(msg => msg.role === 'user')?.content.substring(0, 100) || 
-                   conversationHistory[0].content.substring(0, 100) + (conversationHistory[0].content.length > 100 ? '...' : '') || 
-                   "Percakapan baru"
+          // Gunakan pesan pengguna pertama sebagai pratinjau
+          preview: conversationHistory.find(msg => msg.role === 'user')?.content.substring(0, 100) || "Percakapan baru"
         };
 
         let history = getChatHistory();
