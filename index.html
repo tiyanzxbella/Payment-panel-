@@ -49,18 +49,6 @@
       border-radius: 10px;
     }
 
-    .produk-glitch::before {
-      left: 2px;
-      animation: glitch-anim-1 2s infinite linear alternate-reverse;
-      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-    }
-
-    .produk-glitch::after {
-      left: -2px;
-      animation: glitch-anim-2 2s infinite linear alternate-reverse;
-      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
-    }
-
     @keyframes glitch-anim-1 {
       0% { transform: translate(2px, 2px); }
       100% { transform: translate(-2px, -2px); }
@@ -369,7 +357,7 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.8);
-      display: flex;
+      display: none; /* <--- PERUBAHAN PENTING: Defaultnya disembunyikan */
       flex-direction: column;
       justify-content: center;
       align-items: center;
@@ -1070,7 +1058,7 @@
     }
 
     document.getElementById('go-to-store').addEventListener('click', function() {
-      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loadingOverlay').style.display = 'flex'; // Tampilkan overlay
       document.getElementById('loading-text').textContent = 'Mengarahkan ke Web Store...';
       setTimeout(() => {
         window.location.href = 'https://buylink.id/Tiyanstore';
@@ -1078,7 +1066,7 @@
     });
 
     document.getElementById('go-to-payment-page').addEventListener('click', function() {
-      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loadingOverlay').style.display = 'flex'; // Tampilkan overlay
       document.getElementById('loading-text').textContent = 'Mengarahkan ke halaman pembayaran...';
       setTimeout(() => {
         window.location.href = 'https://tiyanpalestine.github.io/Website-payment/';
@@ -1111,18 +1099,16 @@
     });
 
     socket.on('chatHistory', (history) => {
-        // Load initial chat history from server
         conversationHistory = history;
         renderChatMessages();
     });
 
     socket.on('receiveMessage', (message) => {
-        // Only add if not already present (to prevent duplicates if server broadcasts to sender)
         if (!conversationHistory.some(msg => msg.id === message.id)) {
             conversationHistory.push(message);
             appendMessageToChatBody(message);
         }
-        hideTypingIndicator(); // Hide typing indicator if a message is received
+        hideTypingIndicator();
         sendButton.disabled = false;
     });
 
@@ -1135,27 +1121,22 @@
     function initChat() {
       clearChatUI();
       addWelcomeMessage();
-      // No need to clear conversationHistory here as it's loaded from server or starts fresh
     }
 
     function clearChatUI() {
       chatBody.innerHTML = '';
-      // conversationHistory is managed by socket.on('chatHistory') now
     }
 
     function addWelcomeMessage() {
-        // This initial message can be replaced by server-side "welcome" message
-        // Or kept as a client-side initial greeting
         const welcomeMsg = { 
-            role: "bot", // Use 'bot' role for AI Assistant's initial message
+            role: "bot",
             content: "Halo! Saya adalah AI Assistant yang siap membantu Anda dengan pertanyaan seputar produk dan pembelian.\n\nAnda bisa menanyakan tentang:\n- Detail produk dan spesifikasi\n- Harga dan promo terbaru\n- Metode pembayaran yang tersedia\n- Status pesanan\n- grup wa/grup bot\n\nBagaimana saya bisa membantu Anda hari ini?",
             timestamp: getCurrentTime()
         };
-        // Only add if not already in history (e.g., if chatHistory from server is empty)
         if (!conversationHistory.some(msg => msg.content === welcomeMsg.content)) {
-            conversationHistory.unshift(welcomeMsg); // Add to beginning
+            conversationHistory.unshift(welcomeMsg);
         }
-        renderChatMessages(); // Render all messages including welcome
+        renderChatMessages();
     }
 
     function renderChatMessages() {
@@ -1174,13 +1155,13 @@
             messageClass = 'user-message';
         } else if (message.role === 'admin') {
             senderName = 'Admin';
-            messageClass = 'admin-message'; // New class for admin replies on user side
+            messageClass = 'admin-message';
         } else if (message.role === 'bot') {
             senderName = 'AI Assistant';
             messageClass = 'bot-message';
         } else {
-            senderName = 'Sistem'; // For system messages
-            messageClass = 'system-message'; // You might want to define this CSS
+            senderName = 'Sistem';
+            messageClass = 'system-message';
         }
         
         messageDiv.className = `chat-message ${messageClass}`;
@@ -1233,7 +1214,6 @@
 
     showHistoryBtn.addEventListener('click', function() {
       if (chatHistoryPanel.style.display === 'none' || !chatHistoryPanel.style.display) {
-        // Load history from localStorage (for previous client-side AI chats)
         loadChatHistory(); 
         chatHistoryPanel.style.display = 'block';
         setTimeout(() => {
@@ -1260,11 +1240,7 @@
     }
 
     function saveCurrentConversationToHistory() {
-      // This function is for saving AI chat history locally.
-      // For real-time chat, history is managed by the server.
-      // You might want to adjust this logic if you want to save the real-time chat locally too.
-      // For now, let's keep it for the AI part if it's still active.
-      if (conversationHistory.length > 1) { // Only save if there's actual conversation
+      if (conversationHistory.length > 1) {
         const chatData = {
           id: Date.now(),
           timestamp: Date.now(),
@@ -1334,8 +1310,8 @@
 
     function loadSelectedChat(messages) {
       chatBody.innerHTML = '';
-      conversationHistory = [...messages]; // Load historical messages
-      renderChatMessages(); // Render them
+      conversationHistory = [...messages];
+      renderChatMessages();
     }
 
     function formatMessageWithLinks(text) {
@@ -1424,57 +1400,22 @@
       return word;
     }
 
-    // --- Modified sendMessage to use Socket.IO ---
     async function sendMessage() {
       const messageContent = chatInput.value.trim();
       if (messageContent !== '') {
         const message = {
-            role: 'user', // This message is from the user
+            role: 'user',
             content: messageContent
         };
         
-        socket.emit('sendMessage', message); // Send message to server via Socket.IO
+        socket.emit('sendMessage', message);
         
         chatInput.value = '';
-        showTypingIndicator(); // Show typing indicator while waiting for response (from AI or Admin)
+        showTypingIndicator();
         sendButton.disabled = true;
-
-        // If you want AI to respond *before* admin, you'd put AI logic here
-        // and disable it if an admin is detected active in the chat.
-        // For simplicity, we assume messages go to admin for manual reply now.
-        // The AI logic below is for the old "auto-response" AI,
-        // which might conflict with real-time admin replies.
-        // You might want to remove or refactor the getAIResponse part
-        // if you strictly want human admin replies.
-        // For now, I'll keep it but note the potential conflict.
-        
-        // --- OLD AI LOGIC (Consider removing if strictly human chat) ---
-        // const aiResponse = await getAIResponse(messageContent);
-        // hideTypingIndicator();
-        // sendButton.disabled = false;
-        // const botMessageDiv = document.createElement('div');
-        // botMessageDiv.className = 'chat-message bot-message';
-        // const botHeader = document.createElement('div');
-        // botHeader.className = 'message-header';
-        // botHeader.innerHTML = `<strong>AI Assistant</strong><span class="message-time">${getCurrentTime()}</span>`;
-        // botMessageDiv.appendChild(botHeader);
-        // const contentDiv = formatMessageWithLinks(aiResponse);
-        // botMessageDiv.appendChild(contentDiv);
-        // if (conversationHistory.length <= 2) { // Show suggested questions only initially
-        //   const suggestedDiv = document.createElement('div');
-        //   suggestedDiv.innerHTML = addSuggestedQuestionsHTML();
-        //   botMessageDiv.appendChild(suggestedDiv);
-        // }
-        // chatBody.appendChild(botMessageDiv);
-        // conversationHistory.push({ role: "assistant", content: aiResponse });
-        // chatBody.scrollTop = chatBody.scrollHeight;
-        // --- END OLD AI LOGIC ---
       }
     }
 
-    // This AI response function is for the *initial* AI.
-    // If you want human admin to take over, this function
-    // should eventually be bypassed or disabled.
     async function getAIResponse(message) {
       await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1500));
       
@@ -1530,14 +1471,13 @@
 
     chatButton.addEventListener('click', function() {
       chatContainer.style.display = 'flex';
-      document.getElementById('loadingOverlay').style.display = 'none';
-      initChat(); // Re-initialize chat to load history from server
+      // Tidak perlu menyembunyikan loadingOverlay di sini karena sudah default none di CSS
+      initChat();
     });
 
     closeChatButton.addEventListener('click', function() {
-      // saveCurrentConversationToHistory(); // No longer needed if server handles history
       chatContainer.style.display = 'none';
-      clearChatUI(); // Clear UI, but server still holds history
+      clearChatUI();
     });
 
     chatInput.addEventListener('keypress', function(e) {
@@ -1637,7 +1577,8 @@
     });
 
     document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('loadingOverlay').style.display = 'none';
+      // Tidak perlu menyembunyikan loadingOverlay di sini karena sudah default none di CSS
+      // document.getElementById('loadingOverlay').style.display = 'none'; // BARIS INI DIHAPUS
       initChat();
       startProductGlitchEffect();
     });
