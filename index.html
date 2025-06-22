@@ -8,6 +8,11 @@
   <!-- Google Fonts: Poppins untuk tampilan modern -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
+    /* Menambahkan smooth scroll untuk seluruh halaman HTML */
+    html {
+      scroll-behavior: smooth;
+    }
+
     /* Universal Box-sizing untuk perhitungan layout yang lebih mudah dan akurat */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -599,7 +604,7 @@
       overflow-y: auto;
       font-size: 16px; /* Ukuran font lebih kecil untuk kerapian */
       background-color: #f8fbfd; /* Warna latar belakang body chat */
-      scroll-behavior: smooth;
+      scroll-behavior: smooth; /* Sudah ada */
       scrollbar-width: thin;
       scrollbar-color: #a8b9c9 #f1f1f1;
     }
@@ -1852,6 +1857,7 @@
     }
 
     async function getAIResponse(message) {
+      // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1500));
       
       const words = message.toLowerCase().split(/\s+/);
@@ -1905,55 +1911,80 @@
 
     async function sendMessage() {
       const message = chatInput.value.trim();
-      if (message !== '') {
-        const userMessageDiv = document.createElement('div');
-        userMessageDiv.className = 'chat-message user-message';
-        
-        const userHeader = document.createElement('div');
-        header.className = 'message-header';
-        header.innerHTML = `<strong>Anda</strong><span class="message-time">${getCurrentTime()}</span>`;
-        
-        userMessageDiv.appendChild(userHeader);
-        userMessageDiv.appendChild(document.createTextNode(message));
-        chatBody.appendChild(userMessageDiv);
-        
-        conversationHistory.push({ role: "user", content: message });
-        
-        chatInput.value = '';
-        
-        chatBody.scrollTop = chatBody.scrollHeight;
-        
-        showTypingIndicator();
-        sendButton.disabled = true;
-        
-        const aiResponse = await getAIResponse(message);
-        
-        hideTypingIndicator();
-        sendButton.disabled = false;
-        
-        const botMessageDiv = document.createElement('div');
-        botMessageDiv.className = 'chat-message bot-message';
-        
-        const botHeader = document.createElement('div');
-        botHeader.className = 'message-header';
-        botHeader.innerHTML = `<strong>AI Assistant</strong><span class="message-time">${getCurrentTime()}</span>`;
-        
-        botMessageDiv.appendChild(botHeader);
-        
-        const contentDiv = formatMessageWithLinks(aiResponse);
-        botMessageDiv.appendChild(contentDiv);
-        
-        if (conversationHistory.length <= 2) {
-          const suggestedDiv = document.createElement('div');
-          suggestedDiv.innerHTML = addSuggestedQuestionsHTML();
-          botMessageDiv.appendChild(suggestedDiv);
-        }
-        
-        chatBody.appendChild(botMessageDiv);
-        
-        conversationHistory.push({ role: "assistant", content: aiResponse });
-        
-        chatBody.scrollTop = chatBody.scrollHeight;
+      console.log("Attempting to send message:", message); // Debug log 1
+
+      if (message === '') {
+          console.log("Message is empty, not sending."); // Debug log 2
+          return; // Exit if message is empty
+      }
+
+      // Add user message to chat body
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.className = 'chat-message user-message';
+      const userHeader = document.createElement('div');
+      userHeader.className = 'message-header';
+      userHeader.innerHTML = `<strong>Anda</strong><span class="message-time">${getCurrentTime()}</span>`;
+      userMessageDiv.appendChild(userHeader);
+      userMessageDiv.appendChild(document.createTextNode(message)); // This adds the text
+      chatBody.appendChild(userMessageDiv);
+      console.log("User message displayed:", message); // Debug log 3
+
+      // Add user message to conversation history
+      conversationHistory.push({ role: "user", content: message });
+
+      // Clear input field immediately
+      chatInput.value = '';
+      
+      // Scroll to bottom
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Show typing indicator and disable input/button
+      showTypingIndicator();
+      sendButton.disabled = true;
+      chatInput.disabled = true; // Also disable input to prevent double sends
+      console.log("UI disabled, typing indicator shown."); // Debug log 4
+
+      try {
+          const aiResponse = await getAIResponse(message);
+          console.log("AI response generated:", aiResponse); // Debug log 5
+
+          // Add bot message to chat body
+          const botMessageDiv = document.createElement('div');
+          botMessageDiv.className = 'chat-message bot-message';
+          const botHeader = document.createElement('div');
+          botHeader.className = 'message-header';
+          botHeader.innerHTML = `<strong>AI Assistant</strong><span class="message-time">${getCurrentTime()}</span>`;
+          botMessageDiv.appendChild(botHeader);
+          const contentDiv = formatMessageWithLinks(aiResponse);
+          botMessageDiv.appendChild(contentDiv);
+          
+          // Add suggested questions if it's an initial response (conversation is short)
+          // This condition ensures suggested questions appear only after the very first bot response.
+          if (conversationHistory.length <= 2) { 
+            const suggestedDiv = document.createElement('div');
+            suggestedDiv.innerHTML = addSuggestedQuestionsHTML();
+            botMessageDiv.appendChild(suggestedDiv);
+          }
+          
+          chatBody.appendChild(botMessageDiv);
+          console.log("Bot message displayed."); // Debug log 6
+
+          // Add bot message to conversation history
+          conversationHistory.push({ role: "assistant", content: aiResponse });
+
+      } catch (error) {
+          console.error("Error during AI response generation:", error); // Debug log 7
+          const errorMessageDiv = document.createElement('div');
+          errorMessageDiv.className = 'chat-message bot-message';
+          errorMessageDiv.innerHTML = `<div class="message-header"><strong>AI Assistant</strong><span class="message-time">${getCurrentTime()}</span></div><p style="color: red;">Maaf, terjadi kesalahan saat memproses permintaan Anda. (${error.message || error}) Mohon coba lagi.</p>`;
+          chatBody.appendChild(errorMessageDiv);
+      } finally {
+          // Always re-enable UI elements
+          hideTypingIndicator();
+          sendButton.disabled = false;
+          chatInput.disabled = false;
+          chatBody.scrollTop = chatBody.scrollHeight; // Scroll again to show potential error message
+          console.log("UI re-enabled, scrolled to bottom."); // Debug log 8
       }
     }
 
