@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Yola Assistant</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://files.catbox.moe/ele9lp.jpg'); /* Your background image */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        /* Login Container */
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #7873f5;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus {
+            border-color: #7873f5;
+            box-shadow: 0 0 8px rgba(120, 115, 245, 0.3);
+            outline: none;
+        }
+
+        /* Submit Button */
+        button[type="submit"] {
+            background: linear-gradient(45deg, #7873f5, #1fd1f9);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            display: none; /* Hidden by default */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .form-group input {
+                font-size: 14px;
+            }
+            button[type="submit"] {
+                font-size: 16px;
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Admin Login</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <p id="errorMessage" class="error-message">Username atau password salah!</p>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // --- PENTING: INI HANYA UNTUK DEMONSTRASI. TIDAK AMAN UNTUK PRODUKSI ---
+        const VALID_USERNAME = 'adminyola';
+        const VALID_PASSWORD = 'passwordyola123';
+        // --- JANGAN PERNAH MENYIMPAN KREDENSIAL DI SISI KLIEN DALAM APLIKASI NYATA ---
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah form untuk submit secara default (reload halaman)
+
+            const enteredUsername = usernameInput.value;
+            const enteredPassword = passwordInput.value;
+
+            if (enteredUsername === VALID_USERNAME && enteredPassword === VALID_PASSWORD) {
+                // Login berhasil
+                errorMessage.style.display = 'none'; // Sembunyikan pesan error
+                alert('Login Berhasil! Mengarahkan ke Dashboard Admin...');
+                // Arahkan ke halaman dashboard admin
+                window.location.href = 'admin_dashboard.html'; 
+            } else {
+                // Login gagal
+                errorMessage.style.display = 'block'; // Tampilkan pesan error
+                errorMessage.textContent = 'Username atau password salah. Silakan coba lagi.';
+                passwordInput.value = ''; // Kosongkan kolom password
+                passwordInput.focus(); // Fokuskan kembali ke kolom password
+            }
+        });
+    </script>
+</body>
+</html>
