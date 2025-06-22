@@ -1497,17 +1497,28 @@
 
     // ==================== PRODUK DAN FUNGSIONALITAS UTAMA ====================
     const produk = [
-      { id: 1, nama: 'Panel 1GB', harga: 1000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
-      { id: 2, nama: 'Panel 2GB', harga: 2000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
-      { id: 3, nama: 'Panel 3GB', harga: 3000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
-      { id: 4, nama: 'Panel 4GB', harga: 4000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
-      { id: 5, nama: 'Panel 5GB', harga: 5000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
-      { id: 6, nama: 'Panel 6GB', harga: 6000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
-      { id: 7, nama: 'Panel 7GB', harga: 7000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
-      { id: 8, nama: 'Panel 8GB', harga: 8000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
-      { id: 9, nama: 'Panel 9GB', harga: 9000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
-      { id: 10, nama: 'Panel 10GB', harga: 10000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
-      { id: 11, nama: 'Panel Unli', harga: 15000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd' },
+      { id: 1, nama: 'Panel 1GB', harga: 1000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 1GB cocok untuk penggunaan ringan. Termasuk kuota 1GB, kecepatan tinggi, masa aktif 30 hari, dan support 24/7." },
+      { id: 2, nama: 'Panel 2GB', harga: 2000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 2GB untuk penggunaan menengah. Menawarkan kuota 2GB, bisa dibagi ke beberapa perangkat, tanpa throttle kecepatan, dan garansi pengisian ulang." },
+      { id: 3, nama: 'Panel 3GB', harga: 3000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 3GB ideal untuk kebutuhan harian. Dilengkapi kuota 3GB, stabil untuk browsing dan streaming, serta fitur keamanan standar." },
+      { id: 4, nama: 'Panel 4GB', harga: 4000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 4GB menawarkan keseimbangan. Dengan kuota 4GB, cocok untuk gamer kasual dan pekerja remote, dilengkapi akses cepat ke server." },
+      { id: 5, nama: 'Panel 5GB', harga: 5000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 5GB adalah pilihan populer. Menyediakan kuota 5GB, cocok untuk streaming HD dan video conference, serta dukungan multi-platform." },
+      { id: 6, nama: 'Panel 6GB', harga: 6000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 6GB untuk penggunaan intensif. Dengan kuota 6GB, koneksi sangat stabil untuk download besar dan aktivitas online berat." },
+      { id: 7, nama: 'Panel 7GB', harga: 7000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 7GB memberikan performa ekstra. Kuota 7GB dengan prioritas jaringan, cocok untuk bisnis kecil dan penggunaan keluarga." },
+      { id: 8, nama: 'Panel 8GB', harga: 8000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 8GB adalah solusi lengkap. Kuota 8GB, fitur VPN terintegrasi, dan perlindungan DDoS untuk keamanan lebih." },
+      { id: 9, nama: 'Panel 9GB', harga: 9000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 9GB untuk pengguna tingkat lanjut. Kuota 9GB, dengan opsi kustomisasi server dan performa maksimal untuk aplikasi berat." },
+      { id: 10, nama: 'Panel 10GB', harga: 10000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 10GB, paket tertinggi reguler. Kuota 10GB, sangat direkomendasikan untuk profesional dan penggunaan data tinggi." },
+      { id: 11, nama: 'Panel Unli', harga: 15000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel Unlimited adalah paket premium kami. Kuota tanpa batas, kecepatan stabil 24/7, prioritas jaringan, dan masa aktif 30 hari. Pilihan terbaik untuk penggunaan berat!" },
     ];
 
     const produkContainer = document.getElementById('produk');
@@ -1619,7 +1630,7 @@
           ${formatMessageWithLinks(conversationHistory[0].content).innerHTML}
           ${addSuggestedQuestionsHTML()}
           <div class="ai-notification">
-            <strong>Penting:</strong> AI ini dapat mengenali kata-kata dengan typo seperti "prodiukk", "pembayaran", "harga", dll.
+            <strong>Penting:</strong> AI ini dapat mengenali kata-words dengan typo seperti "prodiukk", "pembayaran", "harga", dll.
           </div>
         </div>
       `;
@@ -1833,22 +1844,36 @@
       return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
+    // Fungsi untuk mengenali typo dan mengembalikan kata kunci yang benar
     function recognizeTypo(word) {
       const keywordMap = {
-        'produk': ['prodiuk', 'prodak', 'produck', 'produt', 'prooduk', 'produkt'],
-        'pembayaran': ['pembayran', 'pembayarn', 'pembayran', 'pembayarran', 'bayar', 'payment'],
-        'harga': ['hargga', 'harha', 'harg', 'harganya', 'price', 'brp'],
-        'panel': ['panell', 'pannel', 'panal', 'penel'],
-        'unli': ['unli', 'unlimited', 'unlimeted', 'unl'],
+        'produk': ['prodiuk', 'prodak', 'produck', 'produt', 'prooduk', 'produkt', 'product', 'produck', 'item', 'barang'],
+        'pembayaran': ['pembayran', 'pembayarn', 'pembayran', 'pembayarran', 'bayar', 'payment', 'cara bayar', 'metode bayar'],
+        'harga': ['hargga', 'harha', 'harg', 'harganya', 'price', 'brp', 'berapa'],
+        'panel': ['panell', 'pannel', 'panal', 'penel', 'panil'],
+        'unli': ['unli', 'unlimited', 'unlimeted', 'unl', 'tanpa batas'],
         'gb': ['gb', 'g', 'gigabyte', 'giga'],
-        'whatsapp': ['wa', 'whatsapp', 'watsapp', 'whatsap', 'grup wa', 'grup bot'],
-        'cs': ['cs', 'customer service', 'cust service', 'cust svc', 'bantuan', 'kontak']
+        'whatsapp': ['wa', 'whatsapp', 'watsapp', 'whatsap', 'grup wa', 'grup bot', 'grup whatsapp'],
+        'cs': ['cs', 'customer service', 'cust service', 'cust svc', 'bantuan', 'kontak', 'hubungi'],
+        'promo': ['promosi', 'diskon', 'voucher', 'potongan harga', 'sale'],
+        'fitur': ['isi', 'keunggulan', 'spesifikasi', 'detail', 'deskripsi', 'apa saja'],
+        'status': ['pesanan', 'order', 'cek order', 'status order'],
+        'halo': ['hai', 'hello', 'assalamualaikum', 'salam'],
+        'terima kasih': ['thanks', 'makasih', 'thank you', 'mksh']
       };
       
       const normalizedWord = word.toLowerCase().trim();
       
+      // Prioritaskan pencarian kata kunci yang tepat atau variasi yang persis
       for (const [correctWord, variations] of Object.entries(keywordMap)) {
-        if (variations.includes(normalizedWord) || normalizedWord.includes(correctWord)) {
+        if (variations.includes(normalizedWord)) {
+          return correctWord;
+        }
+      }
+      
+      // Jika tidak ada variasi persis, cek apakah kata mengandung kata kunci yang benar
+      for (const correctWord of Object.keys(keywordMap)) {
+        if (normalizedWord.includes(correctWord)) {
           return correctWord;
         }
       }
@@ -1863,21 +1888,73 @@
       const words = message.toLowerCase().split(/\s+/);
       const normalizedWords = words.map(word => recognizeTypo(word));
       const normalizedMessage = normalizedWords.join(' ');
-      
-      if (normalizedMessage.includes('produk') || normalizedMessage.includes('panel') || normalizedMessage.includes('gb')) {
-        if (normalizedMessage.includes('1gb') || normalizedMessage.includes('satu')) {
-          return "Panel 1GB dijual dengan harga Rp 1.000. Produk ini cocok untuk penggunaan ringan dengan kuota 1GB.\n\nFitur:\n- Kecepatan tinggi\n- Masa aktif 30 hari\n- Support 24/7\n\nKunjungi https://buylink.id/Tiyanstore untuk informasi lebih lanjut.";
-        } else if (normalizedMessage.includes('2gb') || normalizedMessage.includes('dua')) {
-          return "Panel 2GB tersedia dengan harga Rp 2.000. Kuota 2GB ini cocok untuk penggunaan menengah.\n\nKeuntungan:\n- Bisa dibagi ke beberapa perangkat\n- Tanpa throttle kecepatan\n- Garansi pengisian ulang\n\nLihat detail di https://buylink.id/Tiyanstore";
-        } else if (normalizedMessage.includes('unli') || normalizedMessage.includes('unlimited')) {
-          return "Panel Unlimited adalah paket premium kami dengan harga Rp 15.000. Anda mendapatkan:\n\n- Kuota tanpa batas\n- Kecepatan stabil 24/7\n- Prioritas jaringan\n- Masa aktif 30 hari\n\nPilihan terbaik untuk penggunaan berat! Info lengkap: https://buylink.id/Tiyanstore";
-        } else if (normalizedMessage.includes('harga') || normalizedMessage.includes('price') || normalizedMessage.includes('berapa')) {
-          return "Berikut daftar harga produk kami:\n\n1GB  : Rp 1.000\n2GB  : Rp 2.000\n3GB  : Rp 3.000\n4GB  : Rp 4.000\n5GB  : Rp 5.000\n...\n10GB : Rp 10.000\nUnli: Rp 15.000\n\nHarga sudah termasuk PPN. Kunjungi https://buylink.id/Tiyanstore untuk melihat detail setiap produk.";
+
+      // --- Respon Sapaan ---
+      if (normalizedMessage.includes('halo') || normalizedMessage.includes('hai') || normalizedMessage.includes('assalamualaikum')) {
+        const greetings = [
+          "Halo juga! 😊 Senang bisa membantu Anda hari ini. Ada yang bisa saya bantu seputar produk panel kami?",
+          "Hai! 👋 Selamat datang. Silakan tanyakan apa pun tentang produk panel kami.",
+          "Salam! Saya Yola Assistant, siap membantu. Apa yang ingin Anda ketahui hari ini?",
+          "Halo! Apa kabar? Ada yang bisa Yola bantu? 😊"
+        ];
+        return greetings[Math.floor(Math.random() * greetings.length)];
+      }
+
+      // --- Pertanyaan Detail Produk / Fitur ---
+      let foundProduct = null;
+      let foundFeatureInquiry = false;
+      let foundPriceInquiry = false;
+
+      for (const item of produk) {
+        const itemLower = item.nama.toLowerCase();
+        // Cek apakah pesan mengandung nama produk (misal "panel 5gb" atau "5gb")
+        if (normalizedMessage.includes(itemLower) || normalizedMessage.includes(itemLower.replace('panel ', ''))) {
+          foundProduct = item;
+          // Cek apakah ada kata kunci fitur/isi
+          for (const fk of ['isi', 'fitur', 'keunggulan', 'spesifikasi', 'detail', 'deskripsi']) {
+            if (normalizedMessage.includes(fk)) {
+              foundFeatureInquiry = true;
+              break;
+            }
+          }
+          // Cek apakah ada kata kunci harga
+          for (const pk of ['harga', 'price', 'berapa', 'brp']) {
+            if (normalizedMessage.includes(pk)) {
+              foundPriceInquiry = true;
+              break;
+            }
+          }
+          break; // Produk ditemukan, keluar dari loop
+        }
+      }
+
+      if (foundProduct) {
+        if (foundFeatureInquiry) {
+          return `Tentu, ini detail untuk ${foundProduct.nama}:\n\n${foundProduct.deskripsi}\n\nUntuk informasi lebih lanjut atau pembelian, kunjungi: https://buylink.id/Tiyanstore`;
+        } else if (foundPriceInquiry) {
+          return `Harga ${foundProduct.nama} adalah Rp ${foundProduct.harga.toLocaleString()}. Ini sudah termasuk PPN. Anda bisa membelinya di: https://buylink.id/Tiyanstore`;
+        } else {
+          // Respon umum jika nama produk disebut tanpa keyword fitur/harga spesifik
+          return `Anda bertanya tentang ${foundProduct.nama}. Produk ini seharga Rp ${foundProduct.harga.toLocaleString()}. Apakah Anda ingin tahu lebih banyak tentang fitur-fiturnya atau cara membelinya?`;
+        }
+      }
+
+      // --- Pertanyaan Umum Produk/Panel ---
+      if (normalizedMessage.includes('produk') || normalizedMessage.includes('panel')) {
+        if (normalizedMessage.includes('apa saja') || normalizedMessage.includes('daftar')) {
+          let productList = "Tentu, kami menyediakan berbagai produk panel:\n";
+          produk.forEach(item => {
+            productList += `- ${item.nama}: Rp ${item.harga.toLocaleString()}\n`;
+          });
+          productList += "\nSetiap panel dilengkapi dengan fitur dan keunggulan masing-masing. Kunjungi https://buylink.id/Tiyanstore untuk detail lebih lanjut.";
+          return productList;
         } else {
           return "Kami menyediakan berbagai panel dengan kuota mulai dari 1GB hingga Unlimited. Setiap produk memiliki keunggulan:\n\n- Panel Reguler (1GB-10GB): Harga ekonomis\n- Panel Unlimited: Tanpa batas kuota\n\nProduk kami mendukung semua operator utama dengan koneksi stabil. Kunjungi https://buylink.id/Tiyanstore untuk informasi lengkap. Ada yang bisa saya bantu lebih spesifik?";
         }
       }
-      else if (normalizedMessage.includes('pembayaran') || normalizedMessage.includes('bayar') || normalizedMessage.includes('payment')) {
+      
+      // --- Respon Lain yang Sudah Ada ---
+      if (normalizedMessage.includes('pembayaran') || normalizedMessage.includes('bayar') || normalizedMessage.includes('payment')) {
         return "Kami menerima berbagai metode pembayaran:\n\n1. Transfer Bank (BCA, BRI, Mandiri, BNI)\n2. E-Wallet (DANA, OVO, ShopeePay, Gopay)\n3. QRIS\n4. Alfamart/Indomaret\n\nSetelah pembayaran, produk akan dikirim secara instan ke email Anda. Untuk petunjuk lengkap, kunjungi https://tiyanpalestine.github.io/Website-payment/ atau klik tombol 'Lanjut ke Pembayaran' di bawah.";
       }
       else if (normalizedMessage.includes('promo') || normalizedMessage.includes('diskon') || normalizedMessage.includes('voucher')) {
@@ -1892,13 +1969,11 @@
       else if (normalizedMessage.includes('grup whatsapp') || normalizedMessage.includes('grup wa') || normalizedMessage.includes('grup bot')) {
         return "Anda bisa bergabung dengan Grup WhatsApp resmi kami untuk mendapatkan informasi terbaru dan berdiskusi dengan komunitas kami:\n\n📱 Klik di sini untuk bergabung: https://chat.whatsapp.com/EQkSNg1QgWG0pEaGWwdnuv\n\nDi grup ini, Anda bisa mendapatkan update promo, bertanya langsung ke admin, dan berbagi pengalaman dengan pengguna lain.";
       }
-      else if (normalizedMessage.includes('halo') || normalizedMessage.includes('hai') || normalizedMessage.includes('hello')) {
-        return "Halo juga! 😊 Senang bisa membantu Anda hari ini. Ada yang bisa saya bantu seputar produk panel kami?";
-      }
-      else if (normalizedMessage.includes('terima kasih') || normalizedMessage.includes('thanks') || normalizedMessage.includes('makasih')) {
+      else if (normalizedMessage.includes('terima kasih')) {
         return "Sama-sama! 😊 Jika ada pertanyaan lain, jangan ragu untuk bertanya ya. Semoga harimu menyenangkan!";
       }
       else {
+        // Fallback response
         const randomResponses = [
           "Saya bisa membantu dengan informasi produk dan pembelian. Bisakah Anda menjelaskan lebih detail pertanyaan Anda?",
           "Maaf, saya belum sepenuhnya memahami pertanyaan Anda. Mungkin Anda bisa menanyakan tentang:\n- Daftar produk\n- Harga dan promo\n- Cara pembayaran\n- Status pesanan",
@@ -1960,6 +2035,7 @@
           
           // Add suggested questions if it's an initial response (conversation is short)
           // This condition ensures suggested questions appear only after the very first bot response.
+          // Adjust this condition if you want suggested questions to appear more often or less.
           if (conversationHistory.length <= 2) { 
             const suggestedDiv = document.createElement('div');
             suggestedDiv.innerHTML = addSuggestedQuestionsHTML();
