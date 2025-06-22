@@ -207,6 +207,13 @@
             margin-left: auto;
             border-bottom-right-radius: 5px;
         }
+        
+        /* New: For messages from AI Assistant (on admin's side) */
+        .bot-message {
+            background-color: #e9e9e9;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
 
         .message-time {
             font-size: 12px;
@@ -293,18 +300,7 @@
         </div>
         <div class="admin-chat-body" id="adminChatBody">
             <!-- Pesan customer dan balasan admin akan muncul di sini -->
-            <div class="chat-message customer-message">
-                Halo Admin, saya ingin bertanya tentang status pesanan saya. ID pesanan saya #XYZ789.
-                <span class="message-time">10:05</span>
-            </div>
-            <div class="chat-message customer-message">
-                Apakah Panel Unlimited masih tersedia?
-                <span class="message-time">10:10</span>
-            </div>
-            <div class="chat-message customer-message">
-                Saya tidak bisa login ke panel saya. Mohon bantuannya.
-                <span class="message-time">10:15</span>
-            </div>
+            <!-- Initial dummy messages removed, will be loaded from server -->
         </div>
         <div class="admin-chat-input">
             <input type="text" id="adminChatInput" placeholder="Ketik balasan Anda di sini..." autocomplete="off">
@@ -312,6 +308,8 @@
         </div>
     </div>
 
+    <!-- Socket.IO client library -->
+    <script src="/socket.io/socket.io.js"></script>
     <script>
         const loginContainer = document.getElementById('loginContainer');
         const loginForm = document.getElementById('loginForm');
@@ -326,36 +324,64 @@
         const adminLogoutBtn = document.getElementById('adminLogoutBtn');
 
         // --- PENTING: INI HANYA UNTUK DEMONSTRASI. TIDAK AMAN UNTUK PRODUKSI ---
-        // Username dan Password telah diubah sesuai permintaan Kak Tiyanz
-        const VALID_USERNAME = 'Tiyanzxbella'; // <--- PASTIKAN INI SAMA PERSIS
-        const VALID_PASSWORD = 'Tiyanzxbella12'; // <--- PASTIKAN INI SAMA PERSIS
+        const VALID_USERNAME = 'Tiyanzxbella'; 
+        const VALID_PASSWORD = 'Tiyanzxbella12'; 
         // --- JANGAN PERNAH MENYIMPAN KREDENSIAL DI SISI KLIEN DALAM APLIKASI NYATA ---
 
+        // --- Socket.IO Client Connection for Admin ---
+        const socket = io(); // Connect to the Socket.IO server
+
+        socket.on('connect', () => {
+            console.log('Admin terhubung ke server chat real-time.');
+            // Jika admin sudah login, bisa langsung tampilkan panel chat
+            if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
+                loginContainer.style.display = 'none';
+                adminChatPanel.style.display = 'flex';
+                adminChatInput.focus();
+            }
+        });
+
+        socket.on('chatHistory', (history) => {
+            // Load initial chat history from server when admin connects
+            adminChatBody.innerHTML = ''; // Clear existing dummy messages
+            history.forEach(message => appendMessageToAdminChatBody(message));
+            adminChatBody.scrollTop = adminChatBody.scrollHeight;
+        });
+
+        socket.on('receiveMessage', (message) => {
+            // Receive messages from any client (user or other admin)
+            appendMessageToAdminChatBody(message);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Admin terputus dari server chat real-time.');
+            // Optionally show a message to the admin
+            appendSystemMessageToAdminChat("Terputus dari layanan chat. Mohon refresh halaman.");
+        });
+
+        // --- Admin Chat UI & Logic ---
         loginForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Mencegah form untuk submit secara default (reload halaman)
+            event.preventDefault();
 
             const enteredUsername = usernameInput.value;
             const enteredPassword = passwordInput.value;
 
             if (enteredUsername === VALID_USERNAME && enteredPassword === VALID_PASSWORD) {
-                // Login berhasil
-                errorMessage.style.display = 'none'; // Sembunyikan pesan error
+                errorMessage.style.display = 'none';
                 alert('Login Berhasil! Selamat datang, Admin!');
                 
-                // Sembunyikan form login dan tampilkan panel chat admin
                 loginContainer.style.display = 'none';
-                adminChatPanel.style.display = 'flex'; // Tampilkan sebagai flex container
-                adminChatInput.focus(); // Fokuskan input chat
+                adminChatPanel.style.display = 'flex';
+                adminChatInput.focus();
 
-                // Simpan status login di sessionStorage (sementara, akan hilang saat tab ditutup)
                 sessionStorage.setItem('isAdminLoggedIn', 'true');
-
+                // Admin is now logged in, so re-render chat history from server
+                socket.emit('requestChatHistory'); // Request history explicitly if needed, or server sends on connect
             } else {
-                // Login gagal
-                errorMessage.style.display = 'block'; // Tampilkan pesan error
+                errorMessage.style.display = 'block';
                 errorMessage.textContent = 'Username atau password salah. Silakan coba lagi.';
-                passwordInput.value = ''; // Kosongkan kolom password
-                passwordInput.focus(); // Fokuskan kembali ke kolom password
+                passwordInput.value = '';
+                passwordInput.focus();
             }
         });
 
@@ -368,26 +394,60 @@
 
         adminLogoutBtn.addEventListener('click', function() {
             if (confirm('Apakah Anda yakin ingin logout?')) {
-                sessionStorage.removeItem('isAdminLoggedIn'); // Hapus status login
+                sessionStorage.removeItem('isAdminLoggedIn');
                 adminChatPanel.style.display = 'none';
-                loginContainer.style.display = 'flex'; // Tampilkan kembali form login
+                loginContainer.style.display = 'flex';
                 usernameInput.value = '';
                 passwordInput.value = '';
                 errorMessage.style.display = 'none';
+                adminChatBody.innerHTML = ''; // Clear chat history on logout
                 usernameInput.focus();
             }
         });
 
         function sendAdminMessage() {
-            const message = adminChatInput.value.trim();
-            if (message !== '') {
-                const messageDiv = document.createElement('div');
-                messageDiv.classList.add('chat-message', 'admin-reply-message');
-                messageDiv.innerHTML = `${message}<span class="message-time">${getCurrentTime()}</span>`;
-                adminChatBody.appendChild(messageDiv);
+            const messageContent = adminChatInput.value.trim();
+            if (messageContent !== '') {
+                const message = {
+                    role: 'admin', // This message is from the admin
+                    content: messageContent
+                };
+                socket.emit('sendMessage', message); // Send message to server via Socket.IO
                 adminChatInput.value = '';
-                adminChatBody.scrollTop = adminChatBody.scrollHeight; // Scroll ke bawah
             }
+        }
+
+        function appendMessageToAdminChatBody(message) {
+            const messageDiv = document.createElement('div');
+            let senderName = '';
+            let messageClass = '';
+
+            if (message.role === 'user') {
+                senderName = 'Pembeli';
+                messageClass = 'customer-message';
+            } else if (message.role === 'admin') {
+                senderName = 'Anda (Admin)';
+                messageClass = 'admin-reply-message';
+            } else if (message.role === 'bot') {
+                senderName = 'AI Assistant';
+                messageClass = 'bot-message';
+            } else {
+                senderName = 'Sistem';
+                messageClass = 'system-message'; // You might want to define this CSS
+            }
+            
+            messageDiv.className = `chat-message ${messageClass}`;
+            messageDiv.innerHTML = `<strong>${senderName}:</strong> ${message.content}<span class="message-time">${message.timestamp}</span>`;
+            adminChatBody.appendChild(messageDiv);
+            adminChatBody.scrollTop = adminChatBody.scrollHeight;
+        }
+
+        function appendSystemMessageToAdminChat(content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('chat-message', 'system-message');
+            messageDiv.innerHTML = `<strong>Sistem:</strong> ${content}<span class="message-time">${getCurrentTime()}</span>`;
+            adminChatBody.appendChild(messageDiv);
+            adminChatBody.scrollTop = adminChatBody.scrollHeight;
         }
 
         function getCurrentTime() {
@@ -395,7 +455,7 @@
             return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
 
-        // Cek status login saat halaman dimuat (untuk mencegah login berulang jika tab tidak ditutup)
+        // Cek status login saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
             if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
                 loginContainer.style.display = 'none';
