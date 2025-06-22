@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Yola Assistant</title>
+    <title>Admin Login & Chat - Yola Assistant</title>
     <style>
         /* General styling */
         body {
@@ -30,6 +30,10 @@
             max-width: 400px;
             box-sizing: border-box;
             animation: fadeIn 0.8s ease-out;
+            display: flex; /* Default to flex, will be toggled */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         @keyframes fadeIn {
@@ -48,6 +52,7 @@
         .form-group {
             margin-bottom: 20px;
             text-align: left;
+            width: 100%; /* Make form groups take full width */
         }
 
         .form-group label {
@@ -104,27 +109,168 @@
             display: none; /* Hidden by default */
         }
 
+        /* Admin Chat Panel Styles */
+        #adminChatPanel {
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px; /* Lebar maksimum panel chat admin */
+            height: 80vh; /* Tinggi relatif terhadap viewport */
+            max-height: 700px; /* Tinggi maksimum */
+            box-sizing: border-box;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .admin-chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #7873f5, #1fd1f9);
+            color: white;
+            padding: 15px 20px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin: -20px -20px 20px -20px; /* Negative margin to fit header to container */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .admin-chat-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .admin-chat-header .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .admin-chat-header .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .admin-chat-body {
+            flex-grow: 1; /* Allows it to take available space */
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f5f8fb;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            scrollbar-width: thin;
+            scrollbar-color: #a8b9c9 #f1f1f1;
+        }
+
+        .admin-chat-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .admin-chat-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .admin-chat-body::-webkit-scrollbar-thumb {
+            background-color: #b0c4de;
+            border-radius: 10px;
+            border: 2px solid #f5f8fb;
+        }
+
+        .admin-chat-body::-webkit-scrollbar-thumb:hover {
+            background-color: #90a8c0;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 85%;
+            word-wrap: break-word;
+            font-size: 16px;
+        }
+
+        .customer-message {
+            background-color: #e0f2f7; /* Light blue for customer */
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+
+        .admin-reply-message {
+            background-color: #d4edda; /* Light green for admin replies */
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+            display: block;
+            text-align: right;
+        }
+
+        .admin-chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .admin-chat-input input[type="text"] {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .admin-chat-input button {
+            background-color: #28a745; /* Green send button */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .admin-chat-input button:hover {
+            background-color: #218838;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 600px) {
-            .login-container {
-                padding: 30px 20px;
-                margin: 20px;
+            .login-container, #adminChatPanel {
+                padding: 20px;
+                margin: 10px;
+                width: calc(100% - 20px); /* Full width with some margin */
+                height: 90vh; /* Make it taller on mobile */
             }
-            h1 {
+            h1, .admin-chat-header h2 {
                 font-size: 24px;
             }
-            .form-group input {
+            .form-group input, .admin-chat-input input[type="text"] {
                 font-size: 14px;
+                padding: 10px 12px;
             }
-            button[type="submit"] {
-                font-size: 16px;
-                padding: 12px 25px;
+            button[type="submit"], .admin-chat-input button, .admin-chat-header .logout-btn {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+            .chat-message {
+                font-size: 14px;
+                padding: 8px 12px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="login-container" id="loginContainer">
         <h1>Admin Login</h1>
         <form id="loginForm">
             <div class="form-group">
@@ -140,16 +286,49 @@
         </form>
     </div>
 
+    <div id="adminChatPanel">
+        <div class="admin-chat-header">
+            <h2>Admin Chat - Yola Assistant</h2>
+            <button class="logout-btn" id="adminLogoutBtn">Logout</button>
+        </div>
+        <div class="admin-chat-body" id="adminChatBody">
+            <!-- Pesan customer dan balasan admin akan muncul di sini -->
+            <div class="chat-message customer-message">
+                Halo Admin, saya ingin bertanya tentang status pesanan saya. ID pesanan saya #XYZ789.
+                <span class="message-time">10:05</span>
+            </div>
+            <div class="chat-message customer-message">
+                Apakah Panel Unlimited masih tersedia?
+                <span class="message-time">10:10</span>
+            </div>
+            <div class="chat-message customer-message">
+                Saya tidak bisa login ke panel saya. Mohon bantuannya.
+                <span class="message-time">10:15</span>
+            </div>
+        </div>
+        <div class="admin-chat-input">
+            <input type="text" id="adminChatInput" placeholder="Ketik balasan Anda di sini..." autocomplete="off">
+            <button id="adminSendBtn">Kirim Balasan</button>
+        </div>
+    </div>
+
     <script>
+        const loginContainer = document.getElementById('loginContainer');
         const loginForm = document.getElementById('loginForm');
         const usernameInput = document.getElementById('username');
         const passwordInput = document.getElementById('password');
         const errorMessage = document.getElementById('errorMessage');
 
+        const adminChatPanel = document.getElementById('adminChatPanel');
+        const adminChatBody = document.getElementById('adminChatBody');
+        const adminChatInput = document.getElementById('adminChatInput');
+        const adminSendBtn = document.getElementById('adminSendBtn');
+        const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+
         // --- PENTING: INI HANYA UNTUK DEMONSTRASI. TIDAK AMAN UNTUK PRODUKSI ---
         // Username dan Password telah diubah sesuai permintaan Kak Tiyanz
-        const VALID_USERNAME = 'Tiyanzxbella'; // <--- USERNAME BARU
-        const VALID_PASSWORD = 'Tiyanzxbella12'; // <--- PASSWORD BARU
+        const VALID_USERNAME = 'Tiyanzxbella'; 
+        const VALID_PASSWORD = 'Tiyanzxbella12'; 
         // --- JANGAN PERNAH MENYIMPAN KREDENSIAL DI SISI KLIEN DALAM APLIKASI NYATA ---
 
         loginForm.addEventListener('submit', function(event) {
@@ -161,9 +340,16 @@
             if (enteredUsername === VALID_USERNAME && enteredPassword === VALID_PASSWORD) {
                 // Login berhasil
                 errorMessage.style.display = 'none'; // Sembunyikan pesan error
-                alert('Login Berhasil! Mengarahkan ke Dashboard Admin...');
-                // Arahkan ke halaman dashboard admin
-                window.location.href = 'admin_dashboard.html'; 
+                alert('Login Berhasil! Selamat datang, Admin!');
+                
+                // Sembunyikan form login dan tampilkan panel chat admin
+                loginContainer.style.display = 'none';
+                adminChatPanel.style.display = 'flex'; // Tampilkan sebagai flex container
+                adminChatInput.focus(); // Fokuskan input chat
+
+                // Simpan status login di sessionStorage (sementara, akan hilang saat tab ditutup)
+                sessionStorage.setItem('isAdminLoggedIn', 'true');
+
             } else {
                 // Login gagal
                 errorMessage.style.display = 'block'; // Tampilkan pesan error
@@ -172,6 +358,55 @@
                 passwordInput.focus(); // Fokuskan kembali ke kolom password
             }
         });
+
+        adminSendBtn.addEventListener('click', sendAdminMessage);
+        adminChatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendAdminMessage();
+            }
+        });
+
+        adminLogoutBtn.addEventListener('click', function() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                sessionStorage.removeItem('isAdminLoggedIn'); // Hapus status login
+                adminChatPanel.style.display = 'none';
+                loginContainer.style.display = 'flex'; // Tampilkan kembali form login
+                usernameInput.value = '';
+                passwordInput.value = '';
+                errorMessage.style.display = 'none';
+                usernameInput.focus();
+            }
+        });
+
+        function sendAdminMessage() {
+            const message = adminChatInput.value.trim();
+            if (message !== '') {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('chat-message', 'admin-reply-message');
+                messageDiv.innerHTML = `${message}<span class="message-time">${getCurrentTime()}</span>`;
+                adminChatBody.appendChild(messageDiv);
+                adminChatInput.value = '';
+                adminChatBody.scrollTop = adminChatBody.scrollHeight; // Scroll ke bawah
+            }
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Cek status login saat halaman dimuat (untuk mencegah login berulang jika tab tidak ditutup)
+        document.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
+                loginContainer.style.display = 'none';
+                adminChatPanel.style.display = 'flex';
+                adminChatInput.focus();
+            } else {
+                loginContainer.style.display = 'flex';
+                adminChatPanel.style.display = 'none';
+            }
+        });
+
     </script>
 </body>
 </html>
