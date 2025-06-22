@@ -21,7 +21,7 @@
       --accent-color: #ff6ec4;
       
       /* Tema terang */
-      --light-bg-image: url('https://files.catbox.moe/ele9lp.jpg');
+      --light-bg-image: url('https://files.catbox.moe/7uaeb0.jpg'); /* Background baru untuk mode terang */
       --light-bg-color: #f0f5ff;
       --light-card-bg: rgba(255, 255, 255, 0.9);
       --light-text-color: #333;
@@ -40,7 +40,7 @@
       --light-qr-border: #7873f5;
       
       /* Tema gelap */
-      --dark-bg-image: url('https://files.catbox.moe/1qy7vt.jpg');
+      --dark-bg-image: url('https://files.catbox.moe/7uaeb0.jpg'); /* Background baru untuk mode gelap (sama dengan terang) */
       --dark-bg-color: #121220;
       --dark-card-bg: rgba(30, 30, 40, 0.9);
       --dark-text-color: #e0e0e0;
@@ -64,7 +64,7 @@
       margin: 0;
       position: relative;
       overflow-x: hidden;
-      background-image: var(--light-bg-image);
+      background-image: var(--light-bg-image); /* Menggunakan variabel untuk gambar */
       background-size: cover;
       background-position: center;
       min-width: unset;
@@ -75,7 +75,7 @@
     }
 
     body.dark-mode {
-      background-image: var(--dark-bg-image);
+      background-image: var(--dark-bg-image); /* Menggunakan variabel untuk gambar */
       background-color: var(--dark-bg-color);
       color: var(--dark-text-color);
     }
@@ -259,7 +259,7 @@
       gap: 20px;
       margin-top: 30px;
       flex-wrap: wrap;
-      `width: 100%;` /* **PERBAIKAN DI SINI** */
+      width: 100%; /* Pastikan lebar 100% untuk pemusatan */
     }
 
     /* Tombol dengan Gradien */
@@ -880,7 +880,7 @@
       font-size: 14px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s ease;
-      width: calc(50% - 10px);
+      width: calc(50% - 10px); /* Ini akan berlaku untuk semua ukuran layar sekarang */
       text-align: center;
       flex-shrink: 0;
       color: #333; /* Warna teks lebih gelap */
@@ -1276,11 +1276,8 @@
         padding: 12px 20px;
         font-size: 15px;
       }
-      .suggested-question {
-        width: calc(100% - 10px); /* Satu kolom di mobile */
-        padding: 10px;
-        font-size: 13px;
-      }
+      /* Tidak ada lagi override untuk .suggested-question di sini,
+         sehingga aturan desktop (50% lebar) akan berlaku */
       .chat-history-panel {
         width: 100%;
         right: -100%;
@@ -1319,6 +1316,7 @@
     <!-- Tombol Mode Gelap/Terang -->
     <button id="theme-toggle">
       <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+        <!-- Ikon matahari default (mode terang) -->
         <path d="M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18zM12,8c-2.2,0-4,1.8-4,4c0,2.2,1.8,4,4,4c2.2,0,4-1.8,4-4C16,9.8,14.2,8,12,8z"/>
         <path d="M12,4c-0.6,0-1-0.4-1-1V1c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,3.6,12.6,4,12,4z"/>
         <path d="M12,24c-0.6,0-1-0.4-1-1v-2c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,23.6,12.6,24,12,24z"/>
@@ -1412,31 +1410,38 @@
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = themeToggle.querySelector('.theme-icon');
     
-    // Cek preferensi tema dari localStorage
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.body.classList.add('dark-mode');
-      // Update ikon tema menjadi bulan
-      themeIcon.innerHTML = '<path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>';
-    } else {
-      // Default ke mode terang jika tidak ada atau 'light'
-      document.body.classList.remove('dark-mode');
-      themeIcon.innerHTML = '<path d="M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18zM12,8c-2.2,0-4,1.8-4,4c0,2.2,1.8,4,4,4c2.2,0,4-1.8,4-4C16,9.8,14.2,8,12,8z"/><path d="M12,4c-0.6,0-1-0.4-1-1V1c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,3.6,12.6,4,12,4z"/><path d="M12,24c-0.6,0-1-0.4-1-1v-2c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,23.6,12.6,24,12,24z"/><path d="M5.6,6.6c-0.3,0-0.5-0.1-0.7-0.3L3.5,4.9c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C6.1,6.5,5.9,6.6,5.6,6.6z"/><path d="M19.8,20.8c-0.3,0-0.5-0.1-0.7-0.3l-1.4-1.4c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C20.3,20.7,20.1,20.8,19.8,20.8z"/><path d="M3,13H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S3.6,13,3,13z"/><path d="M23,13h-2c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S23.6,13,23,13z"/><path d="M4.2,20.8c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C4.7,20.7,4.5,20.8,4.2,20.8z"/><path d="M18.4,6.6c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C18.9,6.5,18.7,6.6,18.4,6.6z"/>';
+    // Fungsi untuk mengatur tema dan ikon
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.body.classList.add('dark-mode');
+        // Ikon bulan (dark mode)
+        themeIcon.innerHTML = '<path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>';
+      } else {
+        document.body.classList.remove('dark-mode');
+        // Ikon matahari (light mode)
+        themeIcon.innerHTML = '<path d="M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18zM12,8c-2.2,0-4,1.8-4,4c0,2.2,1.8,4,4,4c2.2,0,4-1.8,4-4C16,9.8,14.2,8,12,8z"/><path d="M12,4c-0.6,0-1-0.4-1-1V1c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,3.6,12.6,4,12,4z"/><path d="M12,24c-0.6,0-1-0.4-1-1v-2c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,23.6,12.6,24,12,24z"/><path d="M5.6,6.6c-0.3,0-0.5-0.1-0.7-0.3L3.5,4.9c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C6.1,6.5,5.9,6.6,5.6,6.6z"/><path d="M19.8,20.8c-0.3,0-0.5-0.1-0.7-0.3l-1.4-1.4c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C20.3,20.7,20.1,20.8,19.8,20.8z"/><path d="M3,13H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S3.6,13,3,13z"/><path d="M23,13h-2c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S23.6,13,23,13z"/><path d="M4.2,20.8c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C4.7,20.7,4.5,20.8,4.2,20.8z"/><path d="M18.4,6.6c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C18.9,6.5,18.7,6.6,18.4,6.6z"/>';
+      }
     }
+
+    // Cek preferensi tema dari localStorage saat DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        applyTheme(savedTheme); // Terapkan tema yang tersimpan
+      } else {
+        applyTheme('light'); // Default ke mode terang jika tidak ada preferensi
+        localStorage.setItem('theme', 'light'); // Simpan preferensi awal sebagai 'light'
+      }
+    });
     
     // Event listener untuk toggle tema
     themeToggle.addEventListener('click', function() {
-      document.body.classList.toggle('dark-mode');
-      
-      // Simpan preferensi tema
       if (document.body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark');
-        // Update ikon menjadi bulan
-        themeIcon.innerHTML = '<path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>';
-      } else {
+        applyTheme('light');
         localStorage.setItem('theme', 'light');
-        // Update ikon menjadi matahari
-        themeIcon.innerHTML = '<path d="M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18zM12,8c-2.2,0-4,1.8-4,4c0,2.2,1.8,4,4,4c2.2,0,4-1.8,4-4C16,9.8,14.2,8,12,8z"/><path d="M12,4c-0.6,0-1-0.4-1-1V1c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,3.6,12.6,4,12,4z"/><path d="M12,24c-0.6,0-1-0.4-1-1v-2c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,23.6,12.6,24,12,24z"/><path d="M5.6,6.6c-0.3,0-0.5-0.1-0.7-0.3L3.5,4.9c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C6.1,6.5,5.9,6.6,5.6,6.6z"/><path d="M19.8,20.8c-0.3,0-0.5-0.1-0.7-0.3l-1.4-1.4c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C20.3,20.7,20.1,20.8,19.8,20.8z"/><path d="M3,13H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S3.6,13,3,13z"/><path d="M23,13h-2c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S23.6,13,23,13z"/><path d="M4.2,20.8c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C4.7,20.7,4.5,20.8,4.2,20.8z"/><path d="M18.4,6.6c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C18.9,6.5,18.7,6.6,18.4,6.6z"/>';
+      } else {
+        applyTheme('dark');
+        localStorage.setItem('theme', 'dark');
       }
     });
 
@@ -1659,8 +1664,8 @@
     closeHistoryBtn.addEventListener('click', function() {
       chatHistoryPanel.style.right = '-380px';
       setTimeout(() => {
-        chatHistoryPanel.style.display = 'none';
-      }, 300);
+          chatHistoryPanel.style.display = 'none';
+        }, 300);
     });
 
     function getChatHistory() {
@@ -1905,8 +1910,8 @@
         userMessageDiv.className = 'chat-message user-message';
         
         const userHeader = document.createElement('div');
-        userHeader.className = 'message-header';
-        userHeader.innerHTML = `<strong>Anda</strong><span class="message-time">${getCurrentTime()}</span>`;
+        header.className = 'message-header';
+        header.innerHTML = `<strong>Anda</strong><span class="message-time">${getCurrentTime()}</span>`;
         
         userMessageDiv.appendChild(userHeader);
         userMessageDiv.appendChild(document.createTextNode(message));
