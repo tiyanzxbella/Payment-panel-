@@ -1155,7 +1155,8 @@
 
     function setSuggestedQuestion(question) {
       chatInput.value = question;
-      chatInput.focus();
+      // PENTING: Panggil sendMessage() di sini agar pesan langsung terkirim
+      sendMessage(); 
     }
 
     showHistoryBtn.addEventListener('click', function() {
@@ -1472,7 +1473,7 @@
     chatButton.addEventListener('click', function() {
       chatContainer.style.display = 'flex';
       document.getElementById('loadingOverlay').style.display = 'none';
-      chatInput.focus();
+      // chatInput.focus(); // BARIS INI DIHAPUS SESUAI PERMINTAAN KAK TIYANZ SEBELUMNYA
     });
 
     closeChatButton.addEventListener('click', function() {
