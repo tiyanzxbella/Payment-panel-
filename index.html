@@ -206,6 +206,7 @@
       margin-left: 250px;
       padding: 20px;
       transition: margin-left 0.3s ease;
+      display: none; /* Awalnya disembunyikan */
     }
 
     .content-section {
@@ -1107,82 +1108,6 @@
       padding: 14px 25px;
     }
 
-    /* Tombol AI Assistant */
-    #chat-button {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: linear-gradient(45deg, #00c6ff, #0072ff, #a166cc);
-      background-size: 200% 200%;
-      animation: gradientBtn 4s ease infinite;
-      color: #fff;
-      font-weight: 600;
-      border-radius: 15px;
-      padding: 10px 18px;
-      cursor: pointer;
-      text-align: center;
-      z-index: 1000;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      border: none;
-    }
-
-    #chat-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    }
-
-    #chat-button p {
-      margin: 0;
-    }
-
-    .chat-icon {
-      width: 20px;
-      height: 20px;
-    }
-
-    /* Tombol Mode Gelap/Terang */
-    #theme-toggle {
-      position: fixed;
-      bottom: 80px;
-      left: 20px;
-      background: linear-gradient(45deg, #ff9a00, #ff5500);
-      background-size: 200% 200%;
-      animation: gradientBtn 4s ease infinite;
-      color: #fff;
-      font-weight: 600;
-      border-radius: 15px;
-      padding: 10px 18px;
-      cursor: pointer;
-      text-align: center;
-      z-index: 1000;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      border: none;
-    }
-
-    #theme-toggle:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    }
-
-    #theme-toggle p {
-      margin: 0;
-    }
-
-    .theme-icon {
-      width: 20px;
-      height: 20px;
-    }
-
     /* STYLE TAMBAHAN UNTUK AI CHAT */
     .message-header {
       display: flex;
@@ -1653,6 +1578,49 @@
       background-color: var(--secondary-color);
     }
 
+    /* Tombol Mode dan AI di Sidebar */
+    .sidebar-footer {
+      padding: 15px;
+      margin-top: 20px;
+      border-top: 1px solid var(--light-border-color);
+    }
+
+    body.dark-mode .sidebar-footer {
+      border-top: 1px solid var(--dark-border-color);
+    }
+
+    .sidebar-button {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    body.dark-mode .sidebar-button {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar-button:hover {
+      background-color: var(--light-sidebar-hover);
+    }
+
+    body.dark-mode .sidebar-button:hover {
+      background-color: var(--dark-sidebar-hover);
+    }
+
+    .sidebar-button i {
+      margin-right: 10px;
+      font-size: 1.2em;
+      width: 24px;
+      text-align: center;
+    }
+
     /* ==================== MEDIA QUERIES UNTUK LAYAR KECIL (MOBILE) ==================== */
     @media (max-width: 768px) {
       .sidebar {
@@ -1729,27 +1697,6 @@
         padding: 15px;
         font-size: 14px;
         border-radius: 8px;
-      }
-      
-      #chat-button {
-        bottom: 20px;
-        left: 20px;
-        padding: 8px 12px;
-        font-size: 12px;
-        border-radius: 10px;
-      }
-      
-      #theme-toggle {
-        bottom: 80px;
-        left: 20px;
-        padding: 8px 12px;
-        font-size: 12px;
-        border-radius: 10px;
-      }
-      
-      .chat-icon, .theme-icon {
-        width: 16px;
-        height: 16px;
       }
 
       .popup-content {
@@ -1841,8 +1788,18 @@
       <li><a href="#" data-section="qr-section"><i class="fas fa-qrcode"></i> QRIS</a></li>
       <li><a href="#" data-section="contact-section"><i class="fas fa-address-book"></i> Kontak</a></li>
       <li><a href="#" data-section="web-links-section"><i class="fas fa-link"></i> Web Links</a></li>
-      <li><a href="#" id="sidebar-chat-button"><i class="fas fa-robot"></i> AI Assistant</a></li>
     </ul>
+    
+    <div class="sidebar-footer">
+      <div class="sidebar-button" id="sidebar-chat-button">
+        <i class="fas fa-robot"></i>
+        <span>AI Assistant</span>
+      </div>
+      <div class="sidebar-button" id="sidebar-theme-toggle">
+        <i class="fas fa-moon"></i>
+        <span>Mode Gelap</span>
+      </div>
+    </div>
   </div>
 
   <button class="sidebar-toggle" id="sidebarToggle">
@@ -1941,31 +1898,6 @@
 
     <div id="music-control" title="Play/Pause Music">♪</div>
 
-    <!-- Tombol AI Assistant -->
-    <div id="chat-button">
-      <svg class="chat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-        <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
-      </svg>
-      <p>AI Assistant</p>
-    </div>
-
-    <!-- Tombol Mode Gelap/Terang -->
-    <button id="theme-toggle">
-      <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-        <!-- Ikon matahari default (mode terang) -->
-        <path d="M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18zM12,8c-2.2,0-4,1.8-4,4c0,2.2,1.8,4,4,4c2.2,0,4-1.8,4-4C16,9.8,14.2,8,12,8z"/>
-        <path d="M12,4c-0.6,0-1-0.4-1-1V1c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,3.6,12.6,4,12,4z"/>
-        <path d="M12,24c-0.6,0-1-0.4-1-1v-2c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,23.6,12.6,24,12,24z"/>
-        <path d="M5.6,6.6c-0.3,0-0.5-0.1-0.7-0.3L3.5,4.9c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C6.1,6.5,5.9,6.6,5.6,6.6z"/>
-        <path d="M19.8,20.8c-0.3,0-0.5-0.1-0.7-0.3l-1.4-1.4c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C20.3,20.7,20.1,20.8,19.8,20.8z"/>
-        <path d="M3,13H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S3.6,13,3,13z"/>
-        <path d="M23,13h-2c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S23.6,13,23,13z"/>
-        <path d="M4.2,20.8c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C4.7,20.7,4.5,20.8,4.2,20.8z"/>
-        <path d="M18.4,6.6c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C18.9,6.5,18.7,6.6,18.4,6.6z"/>
-      </svg>
-      <p>Mode</p>
-    </button>
-    
     <!-- Tombol Login -->
     <button id="login-button" style="position: fixed; top: 20px; right: 20px;">
       <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
@@ -2158,6 +2090,7 @@
     const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
     const contentSections = document.querySelectorAll('.content-section');
     const sidebarChatButton = document.getElementById('sidebar-chat-button');
+    const sidebarThemeToggle = document.getElementById('sidebar-theme-toggle');
 
     // Toggle sidebar on mobile
     sidebarToggle.addEventListener('click', function() {
@@ -2193,7 +2126,6 @@
 
     // Open chat from sidebar button
     sidebarChatButton.addEventListener('click', function(e) {
-      e.preventDefault();
       document.getElementById('chat-container').style.display = 'flex';
       
       // Close sidebar on mobile after selection
@@ -2203,19 +2135,21 @@
     });
 
     // ==================== TOGGLE TEMA ====================
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = themeToggle.querySelector('.theme-icon');
+    const themeIcon = sidebarThemeToggle.querySelector('i');
+    const themeText = sidebarThemeToggle.querySelector('span');
     
     // Fungsi untuk mengatur tema dan ikon
     function applyTheme(theme) {
       if (theme === 'dark') {
         document.body.classList.add('dark-mode');
-        // Ikon bulan (dark mode)
-        themeIcon.innerHTML = '<path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>';
+        // Update ikon dan teks
+        themeIcon.className = 'fas fa-sun';
+        themeText.textContent = 'Mode Terang';
       } else {
         document.body.classList.remove('dark-mode');
-        // Ikon matahari (light mode)
-        themeIcon.innerHTML = '<path d="M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18zM12,8c-2.2,0-4,1.8-4,4c0,2.2,1.8,4,4,4c2.2,0,4-1.8,4-4C16,9.8,14.2,8,12,8z"/><path d="M12,4c-0.6,0-1-0.4-1-1V1c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,3.6,12.6,4,12,4z"/><path d="M12,24c-0.6,0-1-0.4-1-1v-2c0-0.6,0.4-1,1-1s1,0.4,1,1v2C13,23.6,12.6,24,12,24z"/><path d="M5.6,6.6c-0.3,0-0.5-0.1-0.7-0.3L3.5,4.9c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C6.1,6.5,5.9,6.6,5.6,6.6z"/><path d="M19.8,20.8c-0.3,0-0.5-0.1-0.7-0.3l-1.4-1.4c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l1.4,1.4c0.4,0.4,0.4,1,0,1.4C20.3,20.7,20.1,20.8,19.8,20.8z"/><path d="M3,13H1c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S3.6,13,3,13z"/><path d="M23,13h-2c-0.6,0-1-0.4-1-1s0.4-1,1-1h2c0.6,0,1,0.4,1,1S23.6,13,23,13z"/><path d="M4.2,20.8c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C4.7,20.7,4.5,20.8,4.2,20.8z"/><path d="M18.4,6.6c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4l-1.4,1.4C18.9,6.5,18.7,6.6,18.4,6.6z"/>';
+        // Update ikon dan teks
+        themeIcon.className = 'fas fa-moon';
+        themeText.textContent = 'Mode Gelap';
       }
     }
 
@@ -2231,7 +2165,7 @@
     });
     
     // Event listener untuk toggle tema
-    themeToggle.addEventListener('click', function() {
+    sidebarThemeToggle.addEventListener('click', function() {
       if (document.body.classList.contains('dark-mode')) {
         applyTheme('light');
         localStorage.setItem('theme', 'light');
@@ -2284,7 +2218,7 @@
     function updateLoginUI(isLoggedIn) {
       const loginButton = document.getElementById('login-button');
       if (isLoggedIn) {
-        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        const user = JSON.parse(localStorage.getItem('currentUser'));
         loginButton.innerHTML = `
           <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
             <path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,5c1.66,0,3,1.34,3,3s-1.34,3-3,3s-3-1.34,3-3S10.34,5,12,5z M12,19.2c-2.5,0-4.71-1.28-6-3.22c0.03-1.99,4-3.08,6-3.08c1.99,0,5.97,1.09,6,3.08C16.71,17.92,14.5,19.2,12,19.2z"/>
@@ -2310,25 +2244,28 @@
 
     // Cek apakah user sudah login saat halaman dimuat
     document.addEventListener('DOMContentLoaded', function() {
-      const loggedInUser = localStorage.getItem('loggedInUser');
-      if (loggedInUser) {
-        showMainContent();
-        updateLoginUI(true);
-      } else {
-        // Tampilkan form login
-        loginContainer.style.display = 'flex';
-        loginContent.style.display = 'flex';
-        signupContent.style.display = 'none';
-        forgotPasswordContent.style.display = 'none';
-        resetPasswordContent.style.display = 'none';
+      // Selalu tampilkan form login saat halaman dimuat
+      loginContainer.style.display = 'flex';
+      loginContent.style.display = 'flex';
+      signupContent.style.display = 'none';
+      forgotPasswordContent.style.display = 'none';
+      resetPasswordContent.style.display = 'none';
+      
+      // Inisialisasi chat dan efek glitch
+      initChat();
+      startProductGlitchEffect();
+      
+      // Deteksi mobile dan efek salju
+      if (isMobileDevice()) {
+        popupWarning.style.display = 'flex';
       }
     });
 
     // Tutup form login
     closeLogin.addEventListener('click', function() {
       // Jangan biarkan user menutup form login kecuali sudah login
-      const loggedInUser = localStorage.getItem('loggedInUser');
-      if (!loggedInUser) {
+      const currentUser = localStorage.getItem('currentUser');
+      if (!currentUser) {
         alert('Anda harus login terlebih dahulu untuk mengakses halaman ini');
       }
     });
@@ -2391,12 +2328,16 @@
       
       if (user) {
         alert('Login berhasil!');
-        // Simpan status login
-        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        // Simpan data user di localStorage
+        localStorage.setItem('currentUser', JSON.stringify(user));
         // Update UI untuk user yang login
         updateLoginUI(true);
         // Tampilkan konten utama
         showMainContent();
+        
+        // Reset form
+        document.getElementById('loginUsername').value = '';
+        document.getElementById('loginPassword').value = '';
       } else {
         alert('Username atau password salah');
       }
@@ -2708,7 +2649,6 @@
     });
 
     // ==================== AI CHAT ====================
-    const chatButton = document.getElementById('chat-button');
     const chatContainer = document.getElementById('chat-container');
     const closeChatButton = document.getElementById('close-chat');
     const chatBody = document.getElementById('chat-body');
@@ -3184,11 +3124,6 @@
       }
     }
 
-    chatButton.addEventListener('click', function() {
-      chatContainer.style.display = 'flex';
-      document.getElementById('loadingOverlay').style.display = 'none';
-    });
-
     closeChatButton.addEventListener('click', function() {
       saveCurrentConversationToHistory();
       chatContainer.style.display = 'none';
@@ -3291,21 +3226,6 @@
         }
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-      initChat();
-      startProductGlitchEffect();
-      
-      // Cek apakah user sudah login, jika belum, tampilkan form login
-      const loggedInUser = localStorage.getItem('loggedInUser');
-      if (!loggedInUser) {
-        loginContainer.style.display = 'flex';
-        loginContent.style.display = 'flex';
-        signupContent.style.display = 'none';
-        forgotPasswordContent.style.display = 'none';
-        resetPasswordContent.style.display = 'none';
-      }
-    });
-
     function startProductGlitchEffect() {
       const productItems = document.querySelectorAll('.produk-item');
       
@@ -3329,6 +3249,29 @@
         setTimeout(() => triggerGlitch(item), Math.random() * 3000);
       });
     }
+
+    // Fungsi logout
+    function logoutUser() {
+      localStorage.removeItem('currentUser');
+      updateLoginUI(false);
+      loginContainer.style.display = 'flex';
+      mainContent.style.display = 'none';
+      backgroundMusic.pause();
+      isMusicPlaying = false;
+      musicControl.textContent = '♪';
+    }
+
+    // Event listener untuk tombol login/logout
+    document.getElementById('login-button').addEventListener('click', function() {
+      const currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        if (confirm('Apakah Anda ingin logout?')) {
+          logoutUser();
+        }
+      } else {
+        loginContainer.style.display = 'flex';
+      }
+    });
   </script>
 </body>
 </html>
