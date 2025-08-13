@@ -1788,6 +1788,11 @@
       <li><a href="#" data-section="qr-section"><i class="fas fa-qrcode"></i> QRIS</a></li>
       <li><a href="#" data-section="contact-section"><i class="fas fa-address-book"></i> Kontak</a></li>
       <li><a href="#" data-section="web-links-section"><i class="fas fa-link"></i> Web Links</a></li>
+      <!-- New menu items -->
+      <li><a href="https://myportofoliotiyan.vercel.app/" target="_blank"><i class="fas fa-user-tie"></i> Portofolio</a></li>
+      <li><a href="https://buylink.id/Tiyanstore" target="_blank"><i class="fas fa-shopping-cart"></i> Topup & PPOB</a></li>
+      <li><a href="https://app.bukaolshop.com/toko/tiyanzstore" target="_blank"><i class="fas fa-mobile-alt"></i> Download App</a></li>
+      <li><a href="https://lynk.id/tiyanzbot" target="_blank"><i class="fas fa-code"></i> Beli Script</a></li>
     </ul>
     
     <div class="sidebar-footer">
@@ -2087,7 +2092,7 @@
     // ==================== SIDEBAR FUNCTIONALITY ====================
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+    const sidebarLinks = document.querySelectorAll('.sidebar-menu a[data-section]');
     const contentSections = document.querySelectorAll('.content-section');
     const sidebarChatButton = document.getElementById('sidebar-chat-button');
     const sidebarThemeToggle = document.getElementById('sidebar-theme-toggle');
@@ -2097,13 +2102,13 @@
       sidebar.classList.toggle('active');
     });
 
-    // Switch between content sections
+    // Switch between content sections (only for links with data-section attribute)
     sidebarLinks.forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
         
         // Remove active class from all links
-        sidebarLinks.forEach(l => l.classList.remove('active'));
+        document.querySelectorAll('.sidebar-menu a[data-section]').forEach(l => l.classList.remove('active'));
         
         // Add active class to clicked link
         this.classList.add('active');
@@ -2115,7 +2120,9 @@
         
         // Show the selected content section
         const sectionId = this.getAttribute('data-section');
-        document.getElementById(sectionId).classList.add('active');
+        if (sectionId) {
+          document.getElementById(sectionId).classList.add('active');
+        }
         
         // Close sidebar on mobile after selection
         if (window.innerWidth <= 768) {
