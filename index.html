@@ -24,55 +24,55 @@
     /* ==================== VARIABEL TEMA ==================== */
     :root {
       /* Warna dasar */
-      --primary-color: #7873f5;
-      --secondary-color: #1fd1f9;
-      --accent-color: #ff6ec4;
+      --primary-color: #8A2BE2; /* Ungu */
+      --secondary-color: #4CAF50; /* Hijau */
+      --accent-color: #9C27B0; /* Ungu tua */
       
       /* Tema terang */
       --light-bg-image: url('https://files.catbox.moe/7uaeb0.jpg');
-      --light-bg-color: #f0f5ff;
-      --light-card-bg: rgba(255, 255, 255, 0.9);
-      --light-text-color: #333;
-      --light-header-bg: rgba(0, 0, 0, 0.5);
-      --light-footer-bg: rgba(0, 0, 0, 0.5);
-      --light-footer-text: white;
-      --light-border-color: #ddd;
-      --light-chat-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 248, 248, 0.98));
-      --light-chat-header-bg: linear-gradient(90deg, #7873f5, #1fd1f9);
-      --light-chat-input-bg: #eef2f7;
-      --light-chat-message-user: #cbe6ff;
-      --light-chat-message-bot: #e9e9e9;
-      --light-button-gradient: linear-gradient(45deg, #ff6ec4, #7873f5, #1fd1f9);
-      --light-button-store-gradient: linear-gradient(45deg, #00c6ff, #0072ff, #a166cc);
-      --light-glitch-text-shadow: 1px 1px 0 #ff00ff, -1px -1px 0 #00ffff;
-      --light-qr-border: #7873f5;
-      --light-sidebar-bg: rgba(255, 255, 255, 0.9);
-      --light-sidebar-text: #333;
-      --light-sidebar-active: #7873f5;
-      --light-sidebar-hover: #f0f0f0;
+      --light-bg-color: #121212; /* Hitam */
+      --light-card-bg: rgba(25, 25, 35, 0.9); /* Hitam kebiruan */
+      --light-text-color: #E0E0E0; /* Abu-abu muda */
+      --light-header-bg: rgba(0, 0, 0, 0.8);
+      --light-footer-bg: rgba(0, 0, 0, 0.8);
+      --light-footer-text: #D1C4E9; /* Ungu muda */
+      --light-border-color: #333;
+      --light-chat-bg: linear-gradient(135deg, rgba(30, 30, 40, 0.98), rgba(20, 20, 30, 0.98));
+      --light-chat-header-bg: linear-gradient(90deg, #8A2BE2, #4CAF50); /* Ungu ke hijau */
+      --light-chat-input-bg: #1e1e2e;
+      --light-chat-message-user: #2a3a50;
+      --light-chat-message-bot: #2d2d3d;
+      --light-button-gradient: linear-gradient(45deg, #9C27B0, #8A2BE2, #4CAF50); /* Ungu tua ke ungu ke hijau */
+      --light-button-store-gradient: linear-gradient(45deg, #673AB7, #8A2BE2, #4CAF50); /* Ungu tua ke ungu ke hijau */
+      --light-glitch-text-shadow: 1px 1px 0 #BA68C8, -1px -1px 0 #4CAF50; /* Ungu dan hijau */
+      --light-qr-border: #8A2BE2;
+      --light-sidebar-bg: rgba(25, 25, 35, 0.9); /* Hitam kebiruan */
+      --light-sidebar-text: #D1C4E9; /* Ungu muda */
+      --light-sidebar-active: #8A2BE2;
+      --light-sidebar-hover: #2a2a3a;
       
       /* Tema gelap */
       --dark-bg-image: url('https://files.catbox.moe/7uaeb0.jpg');
-      --dark-bg-color: #121220;
-      --dark-card-bg: rgba(30, 30, 40, 0.9);
-      --dark-text-color: #e0e0e0;
-      --dark-header-bg: rgba(20, 20, 30, 0.8);
-      --dark-footer-bg: rgba(20, 20, 30, 0.8);
-      --dark-footer-text: #e0e0e0;
+      --dark-bg-color: #0A0A0A; /* Hitam pekat */
+      --dark-card-bg: rgba(20, 20, 30, 0.9);
+      --dark-text-color: #E0E0E0;
+      --dark-header-bg: rgba(0, 0, 0, 0.9);
+      --dark-footer-bg: rgba(0, 0, 0, 0.9);
+      --dark-footer-text: #D1C4E9;
       --dark-border-color: #444;
-      --dark-chat-bg: linear-gradient(135deg, rgba(30, 30, 40, 0.98), rgba(20, 20, 30, 0.98));
-      --dark-chat-header-bg: linear-gradient(90deg, #5a56c4, #1a8da8);
-      --dark-chat-input-bg: #1e1e2e;
-      --dark-chat-message-user: #2a3a50;
-      --dark-chat-message-bot: #2d2d3d;
-      --dark-button-gradient: linear-gradient(45deg, #c55aa3, #5a56c4, #1a8da8);
-      --dark-button-store-gradient: linear-gradient(45deg, #0099cc, #0055aa, #7a4ca0);
-      --dark-glitch-text-shadow: 1px 1px 0 #cc00cc, -1px -1px 0 #00cccc;
-      --dark-qr-border: #5a56c4;
-      --dark-sidebar-bg: rgba(30, 30, 40, 0.9);
-      --dark-sidebar-text: #e0e0e0;
-      --dark-sidebar-active: #5a56c4;
-      --dark-sidebar-hover: #2a2a3a;
+      --dark-chat-bg: linear-gradient(135deg, rgba(15, 15, 25, 0.98), rgba(10, 10, 20, 0.98));
+      --dark-chat-header-bg: linear-gradient(90deg, #6A1B9A, #2E7D32); /* Ungu tua ke hijau tua */
+      --dark-chat-input-bg: #1a1a2a;
+      --dark-chat-message-user: #1a2a40;
+      --dark-chat-message-bot: #252535;
+      --dark-button-gradient: linear-gradient(45deg, #7B1FA2, #6A1B9A, #2E7D32); /* Ungu tua ke ungu tua ke hijau tua */
+      --dark-button-store-gradient: linear-gradient(45deg, #5E35B1, #6A1B9A, #2E7D32);
+      --dark-glitch-text-shadow: 1px 1px 0 #AB47BC, -1px -1px 0 #388E3C; /* Ungu dan hijau */
+      --dark-qr-border: #6A1B9A;
+      --dark-sidebar-bg: rgba(20, 20, 30, 0.9);
+      --dark-sidebar-text: #D1C4E9;
+      --dark-sidebar-active: #6A1B9A;
+      --dark-sidebar-hover: #1a1a2a;
     }
 
     body {
@@ -176,6 +176,7 @@
       font-size: 1.2em;
       width: 24px;
       text-align: center;
+      color: var(--secondary-color);
     }
 
     .sidebar-toggle {
@@ -199,6 +200,7 @@
 
     .sidebar-toggle:hover {
       transform: scale(1.1);
+      background-color: var(--accent-color);
     }
 
     /* ==================== MAIN CONTENT AREA ==================== */
@@ -239,7 +241,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.9);
       z-index: 10000;
     }
 
@@ -249,11 +251,11 @@
       height: 200px;
       background: repeating-conic-gradient(
         from var(--a),
-        #ff2770 0%,
-        #ff2770 5%,
+        #9C27B0 0%, /* Ungu tua */
+        #9C27B0 5%,
         transparent 5%,
         transparent 40%,
-        #ff2770 50%
+        #9C27B0 50%
       );
       filter: drop-shadow(0 15px 50px #000);
       animation: rotating 4s linear infinite;
@@ -285,11 +287,11 @@
       height: 100%;
       background: repeating-conic-gradient(
         from var(--a),
-        #45f3ff 0%,
-        #45f3ff 5%,
+        #4CAF50 0%, /* Hijau */
+        #4CAF50 5%,
         transparent 5%,
         transparent 40%,
-        #45f3ff 50%
+        #4CAF50 50%
       );
       filter: drop-shadow(0 15px 50px #000);
       border-radius: 20px;
@@ -301,9 +303,9 @@
       content: "";
       position: absolute;
       inset: 4px;
-      background: #2d2d39;
+      background: #1d1d2a;
       border-radius: 15px;
-      border: 8px solid #25252b;
+      border: 8px solid #151520;
     }
 
     .login-form {
@@ -314,10 +316,10 @@
       align-items: center;
       border-radius: 10px;
       flex-direction: column;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.4);
       z-index: 1000;
       box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.5);
-      border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
       transition: 0.5s;
       color: #fff;
       overflow: hidden;
@@ -350,8 +352,8 @@
     }
 
     .login-content h2 i {
-      color: #ff2770;
-      text-shadow: 0 0 5px #ff2770, 0 0 30px #ff2770;
+      color: #9C27B0;
+      text-shadow: 0 0 5px #9C27B0, 0 0 30px #9C27B0;
     }
 
     .login-content input {
@@ -360,26 +362,33 @@
       outline: none;
       font-size: 1em;
       color: #fff;
-      background: rgba(0, 0, 0, 0.1);
-      border: 2px solid #fff;
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
       border-radius: 30px;
+      transition: all 0.3s ease;
     }
-
+    .login-content input:focus {
+      border-color: #8A2BE2;
+      box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+    }
     .login-content input::placeholder {
-      color: #999;
+      color: #aaa;
     }
 
     .login-content input[type="submit"] {
-      background: #45f3ff;
+      background: #4CAF50;
       border: none;
       font-weight: 500;
-      color: #111;
+      color: #fff;
       cursor: pointer;
-      transition: 0.5s;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
     }
 
     .login-content input[type="submit"]:hover {
-      box-shadow: 0 0 10px #45f3ff, 0 0 60px #45f3ff;
+      background: #388E3C;
+      box-shadow: 0 0 20px #4CAF50, 0 0 60px #4CAF50;
+      transform: translateY(-2px);
     }
 
     .login-links {
@@ -392,10 +401,15 @@
       color: #fff;
       text-decoration: none;
       font-size: 0.9em;
+      transition: all 0.3s ease;
+    }
+
+    .login-links a:hover {
+      color: #9C27B0;
     }
 
     .login-links a:nth-child(2) {
-      color: #ff2770;
+      color: #4CAF50;
       font-weight: 600;
     }
 
@@ -407,6 +421,10 @@
       font-size: 24px;
       cursor: pointer;
       z-index: 1001;
+      transition: all 0.3s ease;
+    }
+    .close-login:hover {
+      color: #9C27B0;
     }
 
     /* Style untuk form signup */
@@ -494,12 +512,12 @@
     .glitch-text {
       position: relative;
       text-shadow: var(--light-glitch-text-shadow);
-      color: #f0f0f0;
+      color: #f0f0f0; /* Tetap putih untuk teks "Pembelian Produk Panel" */
     }
 
     body.dark-mode .glitch-text {
       text-shadow: var(--dark-glitch-text-shadow);
-      color: var(--dark-text-color);
+      color: #f0f0f0; /* Tetap putih untuk teks "Pembelian Produk Panel" */
     }
 
     #barcode-container {
@@ -519,11 +537,12 @@
       transition: transform 0.3s ease;
       cursor: pointer;
       border: 3px solid var(--light-qr-border);
-      box-shadow: 0 0 20px rgba(0,0,0,0.4), 0 0 40px rgba(120, 115, 245, 0.3);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4), 0 0 40px rgba(138, 43, 226, 0.3);
     }
 
     body.dark-mode #barcode-container img {
       border: 3px solid var(--dark-qr-border);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4), 0 0 40px rgba(106, 27, 154, 0.3);
     }
 
     .produk-wrapper {
@@ -538,12 +557,12 @@
     }
 
     .produk-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(138, 43, 226, 0.2);
       padding: 20px;
       width: calc(50% - 10px);
       max-width: 200px;
       text-align: center;
-      background-color: rgba(255, 255, 255, 0.08);
+      background-color: rgba(25, 25, 35, 0.8);
       border-radius: 15px;
       transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
       position: relative;
@@ -551,23 +570,24 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
-      color: #f0f0f0;
+      color: #E0E0E0;
     }
 
     body.dark-mode .produk-item {
-      border: 1px solid var(--dark-border-color);
+      border: 1px solid rgba(106, 27, 154, 0.3);
       background-color: var(--dark-card-bg);
       color: var(--dark-text-color);
     }
 
     .produk-item:hover {
       transform: translateY(-8px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.3), 0 0 30px rgba(120, 115, 245, 0.2);
-      background-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.3), 0 0 30px rgba(138, 43, 226, 0.3);
+      background-color: rgba(35, 35, 45, 0.9);
     }
 
     body.dark-mode .produk-item:hover {
       background-color: rgba(30, 30, 40, 0.95);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.3), 0 0 30px rgba(106, 27, 154, 0.3);
     }
 
     .produk-item img {
@@ -576,18 +596,36 @@
       object-fit: cover;
       margin-bottom: 15px;
       border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(138, 43, 226, 0.2);
     }
 
     .produk-item h2 {
       font-size: 1.2em;
       margin-bottom: 8px;
-      color: inherit;
+      color: #D1C4E9;
     }
 
     .produk-item p {
       font-size: 0.9em;
-      color: #c0c0c0;
+      color: #B0BEC5;
+    }
+
+    .produk-item button {
+      background: linear-gradient(45deg, #8A2BE2, #4CAF50);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+
+    .produk-item button:hover {
+      background: linear-gradient(45deg, #9C27B0, #388E3C);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
     body.dark-mode .produk-item p {
@@ -657,7 +695,7 @@
 
     .payment-btn:hover, .store-btn:hover {
       transform: scale(1.05) translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 30px rgba(120, 115, 245, 0.4);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 30px rgba(138, 43, 226, 0.4);
     }
 
     @keyframes gradientBtn {
@@ -716,7 +754,7 @@
 
     footer a:hover {
       transform: scale(1.1);
-      color: var(--primary-color);
+      color: var(--secondary-color);
     }
 
     .social-icon {
@@ -735,7 +773,7 @@
 
     h1 {
       text-align: center;
-      color: white;
+      color: white; /* Tetap putih untuk teks "Pembelian Produk Panel" */
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
       background-color: var(--light-header-bg);
       padding: 15px;
@@ -754,7 +792,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
+        background-color: rgba(0, 0, 0, 0.9);
         display: none;
         justify-content: center;
         align-items: center;
@@ -762,67 +800,52 @@
     }
 
     .popup-content {
-        background-color: white;
+        background-color: #1d1d2a;
         padding: 30px 40px;
         border-radius: 15px;
         text-align: center;
         width: 85%;
         max-width: 500px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        color: #333;
+        color: #e0e0e0;
         font-size: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(138, 43, 226, 0.2);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
     }
 
     body.dark-mode .popup-content {
-      background-color: #2a2a4a;
-      color: #e0e0e0;
+      background-color: #151520;
     }
 
     .popup-content h2 {
         margin-top: 0;
-        color: #e63946;
+        color: #9C27B0;
         font-size: 28px;
         margin-bottom: 20px;
-    }
-
-    body.dark-mode .popup-content h2 {
-      color: #ff6b6b;
     }
 
     .popup-content p {
         margin-bottom: 30px;
         line-height: 1.7;
-        color: #c0c0c0;
-    }
-
-    body.dark-mode .popup-content p {
-      color: #aaa;
+        color: #B0BEC5;
     }
 
     .popup-content button {
-        background: linear-gradient(45deg, #00c6ff, #0072ff);
+        background: linear-gradient(45deg, #8A2BE2, #4CAF50);
         color: #fff;
         padding: 14px 30px;
         border-radius: 10px;
         font-size: 16px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    body.dark-mode .popup-content button {
-      background: linear-gradient(45deg, #4a86e8, #3a76d8);
+        border: none;
+        font-weight: 600;
     }
 
     .popup-content button:hover {
-        background: linear-gradient(45deg, #0072ff, #00c6ff);
+        background: linear-gradient(45deg, #9C27B0, #388E3C);
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-
-    body.dark-mode .popup-content button:hover {
-      background: linear-gradient(45deg, #3a76d8, #4a86e8);
     }
 
     .desktop-container {
@@ -832,8 +855,8 @@
       padding: 30px;
       box-sizing: border-box;
       position: relative;
-      background-color: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: rgba(25, 25, 35, 0.7);
+      border: 1px solid rgba(138, 43, 226, 0.2);
       border-radius: 20px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       backdrop-filter: blur(4px);
@@ -846,7 +869,7 @@
       bottom: 20px;
       right: 20px;
       z-index: 1000;
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(138, 43, 226, 0.7);
       padding: 10px;
       border-radius: 50%;
       cursor: pointer;
@@ -862,7 +885,7 @@
     }
 
     #music-control:hover {
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(156, 39, 176, 0.9);
       transform: scale(1.1);
       box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
@@ -873,7 +896,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(0, 0, 0, 0.95);
       display: none;
       flex-direction: column;
       justify-content: center;
@@ -886,9 +909,9 @@
     .spinner {
       width: 60px;
       height: 60px;
-      border: 6px solid rgba(255, 255, 255, 0.3);
+      border: 6px solid rgba(138, 43, 226, 0.3);
+      border-top-color: #8A2BE2;
       border-radius: 50%;
-      border-top-color: white;
       animation: spin 1s ease-in-out infinite;
       margin-bottom: 25px;
     }
@@ -947,6 +970,7 @@
     }
     .chat-header button:hover {
       transform: scale(1.1);
+      color: #D1C4E9;
     }
 
     .chat-title {
@@ -961,15 +985,15 @@
       height: calc(100% - 180px);
       overflow-y: auto;
       font-size: 16px;
-      background-color: #f8fbfd;
+      background-color: #1a1a2a;
       scroll-behavior: smooth;
       scrollbar-width: thin;
-      scrollbar-color: #a8b9c9 #f1f1f1;
+      scrollbar-color: #8A2BE2 #1a1a2a;
     }
 
     body.dark-mode .chat-body {
-      background-color: #1a1a2a;
-      scrollbar-color: #4a4a6a #1a1a2a;
+      background-color: #121220;
+      scrollbar-color: #6A1B9A #121220;
     }
 
     .chat-body::-webkit-scrollbar {
@@ -977,31 +1001,31 @@
     }
 
     .chat-body::-webkit-scrollbar-track {
-      background: #f1f1f1;
+      background: #1a1a2a;
       border-radius: 10px;
     }
 
     body.dark-mode .chat-body::-webkit-scrollbar-track {
-      background: #1a1a2a;
+      background: #121220;
     }
 
     .chat-body::-webkit-scrollbar-thumb {
-      background-color: #b0c4de;
+      background-color: #8A2BE2;
       border-radius: 10px;
-      border: 2px solid #f8fbfd;
-    }
-
-    body.dark-mode .chat-body::-webkit-scrollbar-thumb {
-      background-color: #4a4a6a;
       border: 2px solid #1a1a2a;
     }
 
+    body.dark-mode .chat-body::-webkit-scrollbar-thumb {
+      background-color: #6A1B9A;
+      border: 2px solid #121220;
+    }
+
     .chat-body::-webkit-scrollbar-thumb:hover {
-      background-color: #90a8c0;
+      background-color: #9C27B0;
     }
 
     body.dark-mode .chat-body::-webkit-scrollbar-thumb:hover {
-      background-color: #6a6a8a;
+      background-color: #7B1FA2;
     }
 
     .chat-message {
@@ -1016,23 +1040,27 @@
     }
 
     .user-message {
-      background-color: var(--light-chat-message-user);
+      background-color: rgba(138, 43, 226, 0.2);
       margin-left: auto;
       border-bottom-right-radius: 8px;
+      border-left: 3px solid #8A2BE2;
     }
 
     body.dark-mode .user-message {
-      background-color: var(--dark-chat-message-user);
+      background-color: rgba(106, 27, 154, 0.2);
+      border-left: 3px solid #6A1B9A;
     }
 
     .bot-message {
-      background-color: var(--light-chat-message-bot);
+      background-color: rgba(76, 175, 80, 0.2);
       margin-right: auto;
       border-bottom-left-radius: 8px;
+      border-right: 3px solid #4CAF50;
     }
 
     body.dark-mode .bot-message {
-      background-color: var(--dark-chat-message-bot);
+      background-color: rgba(46, 125, 50, 0.2);
+      border-right: 3px solid #2E7D32;
     }
 
     .chat-input {
@@ -1053,26 +1081,22 @@
     .chat-input input[type="text"] {
       width: calc(100% - 130px);
       padding: 14px;
-      border: 1px solid #c0c0c0;
+      border: 1px solid rgba(138, 43, 226, 0.3);
       border-radius: 10px;
       margin-right: 15px;
       font-size: 16px;
       outline: none;
+      background-color: #1e1e2e;
+      color: #e0e0e0;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
     .chat-input input[type="text"]:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(120, 115, 245, 0.2);
-    }
-
-    body.dark-mode .chat-input input[type="text"] {
-      background-color: #2a2a3a;
-      color: #e0e0e0;
-      border-color: #555;
+      border-color: #8A2BE2;
+      box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
     }
 
     .chat-input button {
-      background-color: #333;
+      background-color: #8A2BE2;
       color: white;
       border: none;
       padding: 14px 22px;
@@ -1083,8 +1107,9 @@
     }
 
     .chat-input button:hover {
-      background-color: #555;
+      background-color: #9C27B0;
       transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     .chat-nav {
@@ -1115,23 +1140,14 @@
       margin-bottom: 5px;
       align-items: center;
       font-size: 0.9em;
-      color: #666;
-    }
-    body.dark-mode .message-header {
-      color: #aaa;
+      color: #8A2BE2;
     }
     .message-header strong {
-      color: #333;
-    }
-    body.dark-mode .message-header strong {
-      color: #e0e0e0;
+      color: #D1C4E9;
     }
     .message-time {
       font-size: 0.8em;
-      color: #999;
-    }
-    body.dark-mode .message-time {
-      color: #777;
+      color: #4CAF50;
     }
     
     .typing-dots {
@@ -1161,7 +1177,7 @@
     }
     
     .suggested-question {
-      background-color: #e0eaf6;
+      background-color: rgba(138, 43, 226, 0.2);
       padding: 10px 15px;
       border-radius: 20px;
       font-size: 14px;
@@ -1170,25 +1186,17 @@
       width: calc(50% - 10px);
       text-align: center;
       flex-shrink: 0;
-      color: #333;
-    }
-
-    body.dark-mode .suggested-question {
-      background-color: #3a3a4a;
-      color: #e0e0e0;
+      color: #D1C4E9;
+      border: 1px solid rgba(138, 43, 226, 0.3);
     }
     
     .suggested-question:hover {
-      background-color: #cce0f2;
+      background-color: rgba(138, 43, 226, 0.3);
       transform: translateY(-2px);
-    }
-
-    body.dark-mode .suggested-question:hover {
-      background-color: #4a4a5a;
     }
     
     .chat-message pre {
-      background-color: #f0f0f0;
+      background-color: rgba(25, 25, 35, 0.8);
       padding: 12px;
       border-radius: 8px;
       overflow-x: auto;
@@ -1196,45 +1204,28 @@
       word-wrap: break-word;
       font-size: 0.9em;
       line-height: 1.4;
-      border: 1px solid #e0e0e0;
-    }
-
-    body.dark-mode .chat-message pre {
-      background-color: #2a2a3a;
-      border-color: #444;
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      color: #E0E0E0;
     }
     
     .chat-message code {
       font-family: 'Fira Code', monospace;
-      background-color: #f0f0f0;
+      background-color: rgba(25, 25, 35, 0.8);
       padding: 2px 4px;
       border-radius: 4px;
-      color: #c7254e;
-    }
-
-    body.dark-mode .chat-message code {
-      background-color: #2a2a3a;
-      color: #ff9999;
+      color: #BA68C8;
     }
     
     .chat-message a {
-      color: #007bff;
+      color: #4CAF50;
       text-decoration: none;
       font-weight: bold;
       transition: all 0.2s;
     }
-
-    body.dark-mode .chat-message a {
-      color: #4a86e8;
-    }
     
     .chat-message a:hover {
       text-decoration: underline;
-      color: #0056b3;
-    }
-
-    body.dark-mode .chat-message a:hover {
-      color: #3a76d8;
+      color: #388E3C;
     }
     
     .chat-history-btn {
@@ -1250,6 +1241,7 @@
     }
     .chat-history-btn:hover {
       transform: scale(1.05);
+      color: #D1C4E9;
     }
     
     .history-icon {
@@ -1263,7 +1255,7 @@
       right: -380px;
       width: 380px;
       height: 100%;
-      background-color: #f5f8fb;
+      background-color: #1d1d2a;
       box-shadow: -8px 0 20px rgba(0,0,0,0.2);
       transition: right 0.3s ease;
       overflow-y: auto;
@@ -1275,7 +1267,7 @@
     }
 
     body.dark-mode .chat-history-panel {
-      background-color: #1a1a2a;
+      background-color: #151520;
     }
     
     .chat-history-panel.active {
@@ -1289,33 +1281,24 @@
       align-items: center;
       margin-bottom: 25px;
       padding-bottom: 15px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-    body.dark-mode .chat-history-header {
-      border-bottom: 1px solid #444;
+      border-bottom: 1px solid rgba(138, 43, 226, 0.2);
     }
     .chat-history-header h3 {
       font-size: 1.4em;
-      color: #333;
+      color: #D1C4E9;
       margin: 0;
-    }
-    body.dark-mode .chat-history-header h3 {
-      color: #e0e0e0;
     }
     
     .chat-history-item {
       padding: 15px;
       margin-bottom: 12px;
       border-radius: 10px;
-      background-color: #eaf1f7;
+      background-color: rgba(138, 43, 226, 0.1);
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s ease;
       animation: fadeIn 0.3s ease-out;
       box-shadow: 0 1px 5px rgba(0,0,0,0.08);
-    }
-
-    body.dark-mode .chat-history-item {
-      background-color: #2a2a3a;
+      border: 1px solid rgba(138, 43, 226, 0.2);
     }
     
     @keyframes fadeIn {
@@ -1324,56 +1307,36 @@
     }
     
     .chat-history-item:hover {
-      background-color: #d8e2ed;
+      background-color: rgba(138, 43, 226, 0.2);
       transform: translateY(-2px);
-    }
-
-    body.dark-mode .chat-history-item:hover {
-      background-color: #3a3a4a;
     }
     
     .chat-history-item h4 {
       margin: 0 0 8px 0;
-      color: #333;
+      color: #D1C4E9;
       font-size: 1.1em;
-    }
-
-    body.dark-mode .chat-history-item h4 {
-      color: #e0e0e0;
     }
     
     .chat-history-item p {
       margin: 0;
-      color: #666;
+      color: #B0BEC5;
       font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-    body.dark-mode .chat-history-item p {
-      color: #aaa;
-    }
     
     .chat-history-item .time {
       font-size: 12px;
-      color: #999;
+      color: #4CAF50;
       text-align: right;
       margin-top: 5px;
     }
-
-    body.dark-mode .chat-history-item .time {
-      color: #888;
-    }
     
     .no-history {
-      color: #999;
+      color: #B0BEC5;
       text-align: center;
       margin-top: 50px;
-    }
-
-    body.dark-mode .no-history {
-      color: #777;
     }
     
     .close-history {
@@ -1381,23 +1344,17 @@
       border: none;
       font-size: 22px;
       cursor: pointer;
-      color: #666;
+      color: #B0BEC5;
       transition: transform 0.2s ease;
-    }
-    body.dark-mode .close-history {
-      color: #aaa;
     }
     .close-history:hover {
       transform: scale(1.1);
-      color: #333;
-    }
-    body.dark-mode .close-history:hover {
-      color: #e0e0e0;
+      color: #D1C4E9;
     }
     
     /* Tombol Hapus Riwayat */
     .clear-history-btn {
-      background-color: #e74c3c;
+      background: linear-gradient(45deg, #8A2BE2, #4CAF50);
       color: white;
       border: none;
       padding: 12px 18px;
@@ -1410,26 +1367,20 @@
     }
     
     .clear-history-btn:hover {
-      background-color: #c0392b;
+      background: linear-gradient(45deg, #9C27B0, #388E3C);
       transform: translateY(-2px);
     }
     
     /* Pemberitahuan AI */
     .ai-notification {
-      background-color: #e6f2e6;
+      background-color: rgba(76, 175, 80, 0.1);
       border-left: 5px solid #4CAF50;
       padding: 12px;
       margin-top: 20px;
       font-size: 14px;
       border-radius: 0 8px 8px 0;
-      color: #333;
+      color: #E0E0E0;
       box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    }
-
-    body.dark-mode .ai-notification {
-      background-color: #2e3a2e;
-      border-left: 5px solid #4CAF50;
-      color: #e0e0e0;
     }
 
     /* ==================== CONTENT SECTIONS ==================== */
@@ -1446,6 +1397,7 @@
     .qr-section p {
       margin-bottom: 20px;
       line-height: 1.6;
+      color: #B0BEC5;
     }
 
     .contact-section {
@@ -1469,6 +1421,7 @@
       background-color: var(--light-card-bg);
       border-radius: 10px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(138, 43, 226, 0.2);
     }
 
     body.dark-mode .contact-list li {
@@ -1499,15 +1452,12 @@
 
     .contact-info h3 {
       margin-bottom: 5px;
+      color: #D1C4E9;
     }
 
     .contact-info p {
-      color: #666;
+      color: #B0BEC5;
       font-size: 0.9em;
-    }
-
-    body.dark-mode .contact-info p {
-      color: #aaa;
     }
 
     .web-links-section {
@@ -1533,6 +1483,7 @@
       padding: 20px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       text-align: center;
+      border: 1px solid rgba(138, 43, 226, 0.2);
     }
 
     body.dark-mode .web-link-card {
@@ -1552,22 +1503,19 @@
 
     .web-link-card h3 {
       margin-bottom: 10px;
+      color: #D1C4E9;
     }
 
     .web-link-card p {
-      color: #666;
+      color: #B0BEC5;
       font-size: 0.9em;
       margin-bottom: 15px;
-    }
-
-    body.dark-mode .web-link-card p {
-      color: #aaa;
     }
 
     .web-link-card a {
       display: inline-block;
       padding: 8px 15px;
-      background-color: var(--primary-color);
+      background: linear-gradient(45deg, #8A2BE2, #4CAF50);
       color: white;
       border-radius: 5px;
       text-decoration: none;
@@ -1575,7 +1523,7 @@
     }
 
     .web-link-card a:hover {
-      background-color: var(--secondary-color);
+      background: linear-gradient(45deg, #9C27B0, #388E3C);
     }
 
     /* Tombol Mode dan AI di Sidebar */
@@ -1599,19 +1547,12 @@
       border-radius: 8px;
       margin-bottom: 10px;
       cursor: pointer;
-      background-color: rgba(0, 0, 0, 0.05);
-    }
-
-    body.dark-mode .sidebar-button {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: rgba(138, 43, 226, 0.1);
+      border: 1px solid rgba(138, 43, 226, 0.2);
     }
 
     .sidebar-button:hover {
-      background-color: var(--light-sidebar-hover);
-    }
-
-    body.dark-mode .sidebar-button:hover {
-      background-color: var(--dark-sidebar-hover);
+      background-color: rgba(138, 43, 226, 0.2);
     }
 
     .sidebar-button i {
@@ -1906,7 +1847,7 @@
     <!-- Tombol Login -->
     <button id="login-button" style="position: fixed; top: 20px; right: 20px;">
       <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+        <path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,5c1.66,0,3,1.34,3,3s-1.34,3-3,3s-3-1.34,3-3S10.34,5,12,5z M12,19.2c-2.5,0-4.71-1.28-6-3.22c0.03-1.99,4-3.08,6-3.08c1.99,0,5.97,1.09,6,3.08C16.71,17.92,14.5,19.2,12,19.2z"/>
       </svg>
       <p>Login</p>
     </button>
@@ -2873,7 +2814,7 @@
           link.textContent = url;
           link.target = '_blank';
           link.rel = 'noopener noreferrer';
-          link.style.color = '#007bff';
+          link.style.color = '#4CAF50';
           link.style.textDecoration = 'none';
           link.style.fontWeight = 'bold';
           link.style.cursor = 'pointer';
