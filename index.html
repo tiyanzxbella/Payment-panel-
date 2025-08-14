@@ -50,6 +50,7 @@
       --sidebar-text: #D1C4E9;
       --sidebar-active: #6A1B9A;
       --sidebar-hover: #1a1a2a;
+      --danger-color: #f44336;
     }
 
     body {
@@ -434,6 +435,30 @@
     }
     .close-login:hover {
       color: #9C27B0;
+    }
+
+    /* Password wrapper */
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-wrapper input {
+      padding-right: 40px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #aaa;
+      transition: color 0.3s ease;
+    }
+
+    .toggle-password:hover {
+      color: #8A2BE2;
     }
 
     /* Style untuk form signup */
@@ -1463,6 +1488,97 @@
       text-align: center;
     }
 
+    /* ==================== HAPUS AKUN SECTION ==================== */
+    .delete-account-section {
+      padding: 30px;
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: rgba(20, 20, 30, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .delete-account-section h2 {
+      margin-bottom: 25px;
+      color: var(--danger-color);
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .warning-box {
+      background-color: rgba(244, 67, 54, 0.1);
+      border: 1px solid var(--danger-color);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    .warning-box h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--danger-color);
+      margin-bottom: 15px;
+    }
+
+    .delete-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .delete-form input {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    .delete-form input:focus {
+      border-color: var(--danger-color);
+      outline: none;
+    }
+
+    .delete-form button {
+      background: linear-gradient(45deg, #f44336, #d32f2f);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .delete-form button:hover {
+      background: linear-gradient(45deg, #d32f2f, #b71c1c);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(244, 67, 54, 0.3);
+    }
+
+    .back-to-safety {
+      display: inline-block;
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .back-to-safety:hover {
+      color: #388E3C;
+      text-decoration: underline;
+    }
+
     /* ==================== MEDIA QUERIES UNTUK LAYAR KECIL (MOBILE) ==================== */
     @media (max-width: 768px) {
       .sidebar {
@@ -1625,6 +1741,14 @@
       .real-time-clock {
         font-size: 1em;
       }
+      
+      .delete-account-section {
+        padding: 20px;
+      }
+      
+      .delete-account-section h2 {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
@@ -1649,6 +1773,7 @@
       <li><a href="https://buylink.id/Tiyanstore" target="_blank"><i class="fas fa-shopping-cart"></i> Topup & PPOB</a></li>
       <li><a href="https://app.bukaolshop.com/toko/tiyanzstore" target="_blank"><i class="fas fa-mobile-alt"></i> Download App</a></li>
       <li><a href="https://lynk.id/tiyanzbot" target="_blank"><i class="fas fa-code"></i> Beli Script</a></li>
+      <li><a href="#" data-section="delete-account-section"><i class="fas fa-trash-alt"></i> Hapus Akun</a></li>
     </ul>
     
     <div class="sidebar-footer">
@@ -1680,7 +1805,12 @@
             <i class="fa-solid fa-heart"></i>
           </h2>
           <input type="text" placeholder="Username" id="loginUsername">
-          <input type="password" placeholder="Password" id="loginPassword">
+          
+          <div class="password-wrapper">
+            <input type="password" placeholder="Password" id="loginPassword">
+            <i class="fas fa-eye toggle-password" id="toggleLoginPassword"></i>
+          </div>
+          
           <input type="submit" value="Sign in" id="loginSubmit" />
           <div class="login-links">
             <a href="#" id="switchToForgotPassword">Lupa Password?</a>
@@ -1697,8 +1827,17 @@
           </h2>
           <input type="text" placeholder="Username" id="signupUsername">
           <input type="email" placeholder="Email" id="signupEmail">
-          <input type="password" placeholder="Password" id="signupPassword">
-          <input type="password" placeholder="Confirm Password" id="signupConfirmPassword">
+          
+          <div class="password-wrapper">
+            <input type="password" placeholder="Password" id="signupPassword">
+            <i class="fas fa-eye toggle-password" id="toggleSignupPassword"></i>
+          </div>
+          
+          <div class="password-wrapper">
+            <input type="password" placeholder="Confirm Password" id="signupConfirmPassword">
+            <i class="fas fa-eye toggle-password" id="toggleSignupConfirmPassword"></i>
+          </div>
+          
           <input type="submit" value="Create Account" id="signupSubmit" />
           <div class="login-links">
             <a href="#" id="switchToLogin">Sudah punya akun? Login</a>
@@ -1726,8 +1865,17 @@
               Reset Password
             <i class="fa-solid fa-heart"></i>
           </h2>
-          <input type="password" placeholder="Password Baru" id="resetNewPassword">
-          <input type="password" placeholder="Konfirmasi Password" id="resetConfirmPassword">
+          
+          <div class="password-wrapper">
+            <input type="password" placeholder="Password Baru" id="resetNewPassword">
+            <i class="fas fa-eye toggle-password" id="toggleResetNewPassword"></i>
+          </div>
+          
+          <div class="password-wrapper">
+            <input type="password" placeholder="Konfirmasi Password" id="resetConfirmPassword">
+            <i class="fas fa-eye toggle-password" id="toggleResetConfirmPassword"></i>
+          </div>
+          
           <input type="submit" value="Reset Password" id="resetPasswordSubmit" />
           <div class="login-links">
             <a href="#" id="backToLoginFromReset">Kembali ke Login</a>
@@ -1902,6 +2050,29 @@
           </div>
         </div>
       </div>
+      
+      <!-- Hapus Akun Section -->
+      <div id="delete-account-section" class="content-section">
+        <div class="delete-account-section">
+          <h2><i class="fas fa-exclamation-triangle"></i> Hapus Akun</h2>
+          
+          <div class="warning-box">
+            <h3><i class="fas fa-exclamation-circle"></i> PERHATIAN!</h3>
+            <p>Menghapus akun adalah tindakan permanen. Semua data terkait akun Anda akan dihapus secara permanen dan tidak dapat dipulihkan. Pastikan Anda telah mencadangkan semua informasi penting sebelum melanjutkan.</p>
+          </div>
+          
+          <div class="delete-form">
+            <input type="text" id="deleteUsername" placeholder="Username Anda" required>
+            <div class="password-wrapper">
+              <input type="password" id="deletePassword" placeholder="Password Anda" required>
+              <i class="fas fa-eye toggle-password" id="toggleDeletePassword"></i>
+            </div>
+            <button id="deleteAccountBtn">Hapus Akun Secara Permanen</button>
+          </div>
+          
+          <a href="#" class="back-to-safety" id="backToSafety">Kembali ke Halaman Utama</a>
+        </div>
+      </div>
     </div>
 
     <!-- AI Chat Container -->
@@ -2033,6 +2204,55 @@
     const resetPasswordContent = document.getElementById('resetPasswordContent');
     const mainContent = document.getElementById('mainContent');
 
+    // Fungsi toggle password visibility
+    function setupPasswordToggles() {
+      // Login form
+      document.getElementById('toggleLoginPassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('loginPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+      
+      // Signup form
+      document.getElementById('toggleSignupPassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('signupPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+      
+      document.getElementById('toggleSignupConfirmPassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('signupConfirmPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+      
+      // Reset password form
+      document.getElementById('toggleResetNewPassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('resetNewPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+      
+      document.getElementById('toggleResetConfirmPassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('resetConfirmPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+      
+      // Delete account form
+      document.getElementById('toggleDeletePassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('deletePassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+    }
+
     // Fungsi validasi email
     function isValidEmail(email) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -2062,6 +2282,9 @@
     document.addEventListener('DOMContentLoaded', function() {
       // Mulai jam real-time
       updateRealTimeClock();
+      
+      // Setup password toggles
+      setupPasswordToggles();
       
       // Selalu tampilkan form login saat halaman dimuat
       loginContainer.style.display = 'flex';
@@ -2465,6 +2688,63 @@
       setTimeout(() => {
         window.location.href = 'https://tiyanzxbella.github.io/Website-payment/';
       }, 1000);
+    });
+
+    // ==================== FITUR HAPUS AKUN ====================
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    const backToSafety = document.getElementById('backToSafety');
+    
+    // Kembali ke halaman utama
+    backToSafety.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelector('.sidebar-menu a[data-section="produk-section"]').click();
+    });
+    
+    // Proses hapus akun
+    deleteAccountBtn.addEventListener('click', function() {
+      const username = document.getElementById('deleteUsername').value.trim();
+      const password = document.getElementById('deletePassword').value.trim();
+      
+      if (!username || !password) {
+        alert('Silakan isi username dan password');
+        return;
+      }
+      
+      // Dapatkan user yang login
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      
+      // Verifikasi user
+      if (!currentUser) {
+        alert('Anda belum login');
+        return;
+      }
+      
+      if (currentUser.username !== username) {
+        alert('Username tidak sesuai dengan akun yang sedang login');
+        return;
+      }
+      
+      // Verifikasi password
+      const userIndex = users.findIndex(u => u.username === username && u.password === password);
+      
+      if (userIndex === -1) {
+        alert('Password salah');
+        return;
+      }
+      
+      // Konfirmasi penghapusan
+      if (!confirm('Apakah Anda yakin ingin menghapus akun Anda secara permanen? Tindakan ini tidak dapat dibatalkan.')) {
+        return;
+      }
+      
+      // Hapus akun dari database
+      users.splice(userIndex, 1);
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      // Logout user
+      logoutUser();
+      
+      alert('Akun Anda telah berhasil dihapus');
     });
 
     // ==================== AI CHAT ====================
