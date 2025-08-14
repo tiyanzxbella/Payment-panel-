@@ -28,51 +28,28 @@
       --secondary-color: #4CAF50; /* Hijau */
       --accent-color: #9C27B0; /* Ungu tua */
       
-      /* Tema terang */
-      --light-bg-image: url('https://files.catbox.moe/7uaeb0.jpg');
-      --light-bg-color: #121212; /* Hitam */
-      --light-card-bg: rgba(25, 25, 35, 0.9); /* Hitam kebiruan */
-      --light-text-color: #E0E0E0; /* Abu-abu muda */
-      --light-header-bg: rgba(0, 0, 0, 0.8);
-      --light-footer-bg: rgba(0, 0, 0, 0.8);
-      --light-footer-text: #D1C4E9; /* Ungu muda */
-      --light-border-color: #333;
-      --light-chat-bg: linear-gradient(135deg, rgba(30, 30, 40, 0.98), rgba(20, 20, 30, 0.98));
-      --light-chat-header-bg: linear-gradient(90deg, #8A2BE2, #4CAF50); /* Ungu ke hijau */
-      --light-chat-input-bg: #1e1e2e;
-      --light-chat-message-user: #2a3a50;
-      --light-chat-message-bot: #2d2d3d;
-      --light-button-gradient: linear-gradient(45deg, #9C27B0, #8A2BE2, #4CAF50); /* Ungu tua ke ungu ke hijau */
-      --light-button-store-gradient: linear-gradient(45deg, #673AB7, #8A2BE2, #4CAF50); /* Ungu tua ke ungu ke hijau */
-      --light-glitch-text-shadow: 1px 1px 0 #BA68C8, -1px -1px 0 #4CAF50; /* Ungu dan hijau */
-      --light-qr-border: #8A2BE2;
-      --light-sidebar-bg: rgba(25, 25, 35, 0.9); /* Hitam kebiruan */
-      --light-sidebar-text: #D1C4E9; /* Ungu muda */
-      --light-sidebar-active: #8A2BE2;
-      --light-sidebar-hover: #2a2a3a;
-      
       /* Tema gelap */
-      --dark-bg-image: url('https://files.catbox.moe/7uaeb0.jpg');
-      --dark-bg-color: #0A0A0A; /* Hitam pekat */
-      --dark-card-bg: rgba(20, 20, 30, 0.9);
-      --dark-text-color: #E0E0E0;
-      --dark-header-bg: rgba(0, 0, 0, 0.9);
-      --dark-footer-bg: rgba(0, 0, 0, 0.9);
-      --dark-footer-text: #D1C4E9;
-      --dark-border-color: #444;
-      --dark-chat-bg: linear-gradient(135deg, rgba(15, 15, 25, 0.98), rgba(10, 10, 20, 0.98));
-      --dark-chat-header-bg: linear-gradient(90deg, #6A1B9A, #2E7D32); /* Ungu tua ke hijau tua */
-      --dark-chat-input-bg: #1a1a2a;
-      --dark-chat-message-user: #1a2a40;
-      --dark-chat-message-bot: #252535;
-      --dark-button-gradient: linear-gradient(45deg, #7B1FA2, #6A1B9A, #2E7D32); /* Ungu tua ke ungu tua ke hijau tua */
-      --dark-button-store-gradient: linear-gradient(45deg, #5E35B1, #6A1B9A, #2E7D32);
-      --dark-glitch-text-shadow: 1px 1px 0 #AB47BC, -1px -1px 0 #388E3C; /* Ungu dan hijau */
-      --dark-qr-border: #6A1B9A;
-      --dark-sidebar-bg: rgba(20, 20, 30, 0.9);
-      --dark-sidebar-text: #D1C4E9;
-      --dark-sidebar-active: #6A1B9A;
-      --dark-sidebar-hover: #1a1a2a;
+      --bg-image: url('https://files.catbox.moe/7uaeb0.jpg');
+      --bg-color: #0A0A0A; /* Hitam pekat */
+      --card-bg: rgba(20, 20, 30, 0.9);
+      --text-color: #E0E0E0;
+      --header-bg: rgba(0, 0, 0, 0.9);
+      --footer-bg: rgba(0, 0, 0, 0.9);
+      --footer-text: #D1C4E9;
+      --border-color: #444;
+      --chat-bg: linear-gradient(135deg, rgba(15, 15, 25, 0.98), rgba(10, 10, 20, 0.98));
+      --chat-header-bg: linear-gradient(90deg, #6A1B9A, #2E7D32); /* Ungu tua ke hijau tua */
+      --chat-input-bg: #1a1a2a;
+      --chat-message-user: #1a2a40;
+      --chat-message-bot: #252535;
+      --button-gradient: linear-gradient(45deg, #7B1FA2, #6A1B9A, #2E7D32); /* Ungu tua ke ungu tua ke hijau tua */
+      --button-store-gradient: linear-gradient(45deg, #5E35B1, #6A1B9A, #2E7D32);
+      --glitch-text-shadow: 1px 1px 0 #AB47BC, -1px -1px 0 #388E3C; /* Ungu dan hijau */
+      --qr-border: #6A1B9A;
+      --sidebar-bg: rgba(20, 20, 30, 0.9);
+      --sidebar-text: #D1C4E9;
+      --sidebar-active: #6A1B9A;
+      --sidebar-hover: #1a1a2a;
     }
 
     body {
@@ -80,20 +57,52 @@
       margin: 0;
       position: relative;
       overflow-x: hidden;
-      background-image: var(--light-bg-image);
+      background-image: var(--bg-image);
       background-size: cover;
       background-position: center;
       min-width: unset;
       background-attachment: fixed;
-      background-color: var(--light-bg-color);
-      color: var(--light-text-color);
+      background-color: var(--bg-color);
+      color: var(--text-color);
       transition: background-image 0.5s ease, background-color 0.5s ease, color 0.3s ease;
     }
 
-    body.dark-mode {
-      background-image: var(--dark-bg-image);
-      background-color: var(--dark-bg-color);
-      color: var(--dark-text-color);
+    /* ==================== TOP BAR ==================== */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: var(--header-bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    /* Perubahan di sini - posisi nama Tiyan */
+    .top-bar-center {
+      flex-grow: 1;
+      text-align: center;
+    }
+    
+    .profile-name {
+      font-size: 1.5em;
+      font-weight: 700;
+      background: linear-gradient(45deg, #FF416C, #8A2BE2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+    }
+    
+    .real-time-clock {
+      font-size: 1.2em;
+      font-weight: 600;
+      letter-spacing: 1px;
+      background: linear-gradient(45deg, #4CAF50, #388E3C);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     /* ==================== SIDEBAR MENU ==================== */
@@ -103,8 +112,8 @@
       left: 0;
       width: 250px;
       height: 100vh;
-      background-color: var(--light-sidebar-bg);
-      color: var(--light-sidebar-text);
+      background-color: var(--sidebar-bg);
+      color: var(--sidebar-text);
       padding: 20px 0;
       z-index: 1000;
       transition: transform 0.3s ease, background-color 0.3s ease;
@@ -112,20 +121,29 @@
       overflow-y: auto;
     }
 
-    body.dark-mode .sidebar {
-      background-color: var(--dark-sidebar-bg);
-      color: var(--dark-sidebar-text);
-    }
-
     .sidebar-header {
       text-align: center;
       padding: 0 20px 20px;
-      border-bottom: 1px solid var(--light-border-color);
+      border-bottom: 1px solid var(--border-color);
       margin-bottom: 20px;
     }
 
-    body.dark-mode .sidebar-header {
-      border-bottom: 1px solid var(--dark-border-color);
+    .profile-picture {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      background: linear-gradient(45deg, #FF416C, #8A2BE2);
+      padding: 5px;
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+    }
+    
+    .profile-picture img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #151520;
     }
 
     .sidebar-header h2 {
@@ -153,22 +171,13 @@
     }
 
     .sidebar-menu a:hover {
-      background-color: var(--light-sidebar-hover);
-    }
-
-    body.dark-mode .sidebar-menu a:hover {
-      background-color: var(--dark-sidebar-hover);
+      background-color: var(--sidebar-hover);
     }
 
     .sidebar-menu a.active {
-      background-color: var(--light-sidebar-hover);
-      border-left: 4px solid var(--primary-color);
+      background-color: var(--sidebar-hover);
+      border-left: 4px solid var(--sidebar-active);
       font-weight: 600;
-    }
-
-    body.dark-mode .sidebar-menu a.active {
-      background-color: var(--dark-sidebar-hover);
-      border-left: 4px solid var(--dark-sidebar-active);
     }
 
     .sidebar-menu i {
@@ -511,13 +520,8 @@
 
     .glitch-text {
       position: relative;
-      text-shadow: var(--light-glitch-text-shadow);
-      color: #f0f0f0; /* Tetap putih untuk teks "Pembelian Produk Panel" */
-    }
-
-    body.dark-mode .glitch-text {
-      text-shadow: var(--dark-glitch-text-shadow);
-      color: #f0f0f0; /* Tetap putih untuk teks "Pembelian Produk Panel" */
+      text-shadow: var(--glitch-text-shadow);
+      color: #f0f0f0;
     }
 
     #barcode-container {
@@ -536,12 +540,7 @@
       display: block;
       transition: transform 0.3s ease;
       cursor: pointer;
-      border: 3px solid var(--light-qr-border);
-      box-shadow: 0 0 20px rgba(0,0,0,0.4), 0 0 40px rgba(138, 43, 226, 0.3);
-    }
-
-    body.dark-mode #barcode-container img {
-      border: 3px solid var(--dark-qr-border);
+      border: 3px solid var(--qr-border);
       box-shadow: 0 0 20px rgba(0,0,0,0.4), 0 0 40px rgba(106, 27, 154, 0.3);
     }
 
@@ -557,12 +556,12 @@
     }
 
     .produk-item {
-      border: 1px solid rgba(138, 43, 226, 0.2);
+      border: 1px solid rgba(106, 27, 154, 0.3);
       padding: 20px;
       width: calc(50% - 10px);
       max-width: 200px;
       text-align: center;
-      background-color: rgba(25, 25, 35, 0.8);
+      background-color: var(--card-bg);
       border-radius: 15px;
       transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
       position: relative;
@@ -570,24 +569,13 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
-      color: #E0E0E0;
-    }
-
-    body.dark-mode .produk-item {
-      border: 1px solid rgba(106, 27, 154, 0.3);
-      background-color: var(--dark-card-bg);
-      color: var(--dark-text-color);
+      color: var(--text-color);
     }
 
     .produk-item:hover {
       transform: translateY(-8px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.3), 0 0 30px rgba(138, 43, 226, 0.3);
-      background-color: rgba(35, 35, 45, 0.9);
-    }
-
-    body.dark-mode .produk-item:hover {
-      background-color: rgba(30, 30, 40, 0.95);
       box-shadow: 0 12px 25px rgba(0,0,0,0.3), 0 0 30px rgba(106, 27, 154, 0.3);
+      background-color: rgba(30, 30, 40, 0.95);
     }
 
     .produk-item img {
@@ -607,7 +595,7 @@
 
     .produk-item p {
       font-size: 0.9em;
-      color: #B0BEC5;
+      color: #aaa;
     }
 
     .produk-item button {
@@ -626,10 +614,6 @@
       background: linear-gradient(45deg, #9C27B0, #388E3C);
       transform: translateY(-2px);
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-
-    body.dark-mode .produk-item p {
-      color: #aaa;
     }
 
     /* Tombol Umum */
@@ -678,19 +662,11 @@
     }
 
     .payment-btn {
-      background: var(--light-button-gradient);
-    }
-
-    body.dark-mode .payment-btn {
-      background: var(--dark-button-gradient);
+      background: var(--button-gradient);
     }
 
     .store-btn {
-      background: var(--light-button-store-gradient);
-    }
-
-    body.dark-mode .store-btn {
-      background: var(--dark-button-store-gradient);
+      background: var(--button-store-gradient);
     }
 
     .payment-btn:hover, .store-btn:hover {
@@ -725,8 +701,8 @@
       text-align: center;
       margin: 40px 0 20px;
       font-size: 16px;
-      color: var(--light-footer-text);
-      background-color: var(--light-footer-bg);
+      color: var(--footer-text);
+      background-color: var(--footer-bg);
       padding: 20px;
       border-radius: 10px;
       display: flex;
@@ -735,11 +711,6 @@
       gap: 30px;
       flex-wrap: wrap;
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-
-    body.dark-mode footer {
-      color: var(--dark-footer-text);
-      background-color: var(--dark-footer-bg);
     }
 
     footer a {
@@ -773,17 +744,13 @@
 
     h1 {
       text-align: center;
-      color: white; /* Tetap putih untuk teks "Pembelian Produk Panel" */
+      color: white;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      background-color: var(--light-header-bg);
+      background-color: var(--header-bg);
       padding: 15px;
-      margin: 0 0 20px 0;
+      margin: 20px 0;
       border-radius: 5px;
       font-size: 2.5em;
-    }
-
-    body.dark-mode h1 {
-      background-color: var(--dark-header-bg);
     }
 
     .popup-overlay {
@@ -800,7 +767,7 @@
     }
 
     .popup-content {
-        background-color: #1d1d2a;
+        background-color: #151520;
         padding: 30px 40px;
         border-radius: 15px;
         text-align: center;
@@ -812,10 +779,6 @@
         border: 1px solid rgba(138, 43, 226, 0.2);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
-    }
-
-    body.dark-mode .popup-content {
-      background-color: #151520;
     }
 
     .popup-content h2 {
@@ -930,7 +893,7 @@
       height: 85%;
       max-width: 900px;
       max-height: 750px;
-      background: var(--light-chat-bg);
+      background: var(--chat-bg);
       z-index: 2000;
       display: none;
       border-radius: 20px;
@@ -939,24 +902,16 @@
       overflow: hidden;
     }
 
-    body.dark-mode .chat-container {
-      background: var(--dark-chat-bg);
-    }
-
     .chat-header {
       display: flex;
       padding: 20px;
-      background: var(--light-chat-header-bg);
+      background: var(--chat-header-bg);
       color: white;
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
       align-items: center;
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
       justify-content: space-between;
-    }
-
-    body.dark-mode .chat-header {
-      background: var(--dark-chat-header-bg);
     }
 
     .chat-header button {
@@ -985,14 +940,9 @@
       height: calc(100% - 180px);
       overflow-y: auto;
       font-size: 16px;
-      background-color: #1a1a2a;
+      background-color: #121220;
       scroll-behavior: smooth;
       scrollbar-width: thin;
-      scrollbar-color: #8A2BE2 #1a1a2a;
-    }
-
-    body.dark-mode .chat-body {
-      background-color: #121220;
       scrollbar-color: #6A1B9A #121220;
     }
 
@@ -1001,30 +951,17 @@
     }
 
     .chat-body::-webkit-scrollbar-track {
-      background: #1a1a2a;
-      border-radius: 10px;
-    }
-
-    body.dark-mode .chat-body::-webkit-scrollbar-track {
       background: #121220;
+      border-radius: 10px;
     }
 
     .chat-body::-webkit-scrollbar-thumb {
-      background-color: #8A2BE2;
-      border-radius: 10px;
-      border: 2px solid #1a1a2a;
-    }
-
-    body.dark-mode .chat-body::-webkit-scrollbar-thumb {
       background-color: #6A1B9A;
+      border-radius: 10px;
       border: 2px solid #121220;
     }
 
     .chat-body::-webkit-scrollbar-thumb:hover {
-      background-color: #9C27B0;
-    }
-
-    body.dark-mode .chat-body::-webkit-scrollbar-thumb:hover {
       background-color: #7B1FA2;
     }
 
@@ -1040,42 +977,27 @@
     }
 
     .user-message {
-      background-color: rgba(138, 43, 226, 0.2);
+      background-color: rgba(106, 27, 154, 0.2);
       margin-left: auto;
       border-bottom-right-radius: 8px;
-      border-left: 3px solid #8A2BE2;
-    }
-
-    body.dark-mode .user-message {
-      background-color: rgba(106, 27, 154, 0.2);
       border-left: 3px solid #6A1B9A;
     }
 
     .bot-message {
-      background-color: rgba(76, 175, 80, 0.2);
+      background-color: rgba(46, 125, 50, 0.2);
       margin-right: auto;
       border-bottom-left-radius: 8px;
-      border-right: 3px solid #4CAF50;
-    }
-
-    body.dark-mode .bot-message {
-      background-color: rgba(46, 125, 50, 0.2);
       border-right: 3px solid #2E7D32;
     }
 
     .chat-input {
       padding: 15px;
-      background-color: var(--light-chat-input-bg);
-      border-top: 1px solid var(--light-border-color);
+      background-color: var(--chat-input-bg);
+      border-top: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
-    }
-
-    body.dark-mode .chat-input {
-      background-color: var(--dark-chat-input-bg);
-      border-top: 1px solid var(--dark-border-color);
     }
 
     .chat-input input[type="text"] {
@@ -1116,13 +1038,8 @@
       display: flex;
       justify-content: space-around;
       padding: 15px;
-      background-color: var(--light-chat-input-bg);
-      border-top: 1px solid var(--light-border-color);
-    }
-
-    body.dark-mode .chat-nav {
-      background-color: var(--dark-chat-input-bg);
-      border-top: 1px solid var(--dark-border-color);
+      background-color: var(--chat-input-bg);
+      border-top: 1px solid var(--border-color);
     }
 
     .chat-nav button {
@@ -1255,7 +1172,7 @@
       right: -380px;
       width: 380px;
       height: 100%;
-      background-color: #1d1d2a;
+      background-color: #151520;
       box-shadow: -8px 0 20px rgba(0,0,0,0.2);
       transition: right 0.3s ease;
       overflow-y: auto;
@@ -1264,10 +1181,6 @@
       display: none;
       border-top-right-radius: 20px;
       border-bottom-right-radius: 20px;
-    }
-
-    body.dark-mode .chat-history-panel {
-      background-color: #151520;
     }
     
     .chat-history-panel.active {
@@ -1418,14 +1331,10 @@
     .contact-list li {
       margin-bottom: 15px;
       padding: 15px;
-      background-color: var(--light-card-bg);
+      background-color: var(--card-bg);
       border-radius: 10px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       border: 1px solid rgba(138, 43, 226, 0.2);
-    }
-
-    body.dark-mode .contact-list li {
-      background-color: var(--dark-card-bg);
     }
 
     .contact-list li:hover {
@@ -1478,16 +1387,12 @@
     }
 
     .web-link-card {
-      background-color: var(--light-card-bg);
+      background-color: var(--card-bg);
       border-radius: 10px;
       padding: 20px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       text-align: center;
       border: 1px solid rgba(138, 43, 226, 0.2);
-    }
-
-    body.dark-mode .web-link-card {
-      background-color: var(--dark-card-bg);
     }
 
     .web-link-card:hover {
@@ -1526,15 +1431,11 @@
       background: linear-gradient(45deg, #9C27B0, #388E3C);
     }
 
-    /* Tombol Mode dan AI di Sidebar */
+    /* Tombol AI di Sidebar */
     .sidebar-footer {
       padding: 15px;
       margin-top: 20px;
-      border-top: 1px solid var(--light-border-color);
-    }
-
-    body.dark-mode .sidebar-footer {
-      border-top: 1px solid var(--dark-border-color);
+      border-top: 1px solid var(--border-color);
     }
 
     .sidebar-button {
@@ -1712,6 +1613,18 @@
       .login-content {
         width: 85%;
       }
+      
+      .top-bar {
+        padding: 12px 15px;
+      }
+      
+      .profile-name {
+        font-size: 1.2em;
+      }
+      
+      .real-time-clock {
+        font-size: 1em;
+      }
     }
   </style>
 </head>
@@ -1721,7 +1634,10 @@
   <!-- Sidebar Menu -->
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <h2>Menu Panel</h2>
+      <div class="profile-picture">
+        <img src="https://files.catbox.moe/yi6lsr.jpg" alt="Profile Tiyan">
+      </div>
+      <h2>Panel Tiyan</h2>
       <p>Selamat datang di Panel Store</p>
     </div>
     <ul class="sidebar-menu">
@@ -1729,7 +1645,6 @@
       <li><a href="#" data-section="qr-section"><i class="fas fa-qrcode"></i> QRIS</a></li>
       <li><a href="#" data-section="contact-section"><i class="fas fa-address-book"></i> Kontak</a></li>
       <li><a href="#" data-section="web-links-section"><i class="fas fa-link"></i> Web Links</a></li>
-      <!-- New menu items -->
       <li><a href="https://myportofoliotiyan.vercel.app/" target="_blank"><i class="fas fa-user-tie"></i> Portofolio</a></li>
       <li><a href="https://buylink.id/Tiyanstore" target="_blank"><i class="fas fa-shopping-cart"></i> Topup & PPOB</a></li>
       <li><a href="https://app.bukaolshop.com/toko/tiyanzstore" target="_blank"><i class="fas fa-mobile-alt"></i> Download App</a></li>
@@ -1741,9 +1656,9 @@
         <i class="fas fa-robot"></i>
         <span>AI Assistant</span>
       </div>
-      <div class="sidebar-button" id="sidebar-theme-toggle">
-        <i class="fas fa-moon"></i>
-        <span>Mode Gelap</span>
+      <div class="sidebar-button" id="logout-link">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
       </div>
     </div>
   </div>
@@ -1843,14 +1758,15 @@
     </audio>
 
     <div id="music-control" title="Play/Pause Music">♪</div>
-
-    <!-- Tombol Login -->
-    <button id="login-button" style="position: fixed; top: 20px; right: 20px;">
-      <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-        <path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,5c1.66,0,3,1.34,3,3s-1.34,3-3,3s-3-1.34,3-3S10.34,5,12,5z M12,19.2c-2.5,0-4.71-1.28-6-3.22c0.03-1.99,4-3.08,6-3.08c1.99,0,5.97,1.09,6,3.08C16.71,17.92,14.5,19.2,12,19.2z"/>
-      </svg>
-      <p>Login</p>
-    </button>
+    
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <!-- Perubahan di sini - posisi nama Tiyan -->
+      <div class="top-bar-center">
+        <div class="profile-name">Tiyan</div>
+      </div>
+      <div class="real-time-clock" id="realTimeClock"></div>
+    </div>
 
     <!-- Content Sections -->
     <div class="desktop-container">
@@ -2030,13 +1946,21 @@
   </div>
 
   <script>
+    // ==================== FUNGSI JAM REAL-TIME ====================
+    function updateRealTimeClock() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      document.getElementById('realTimeClock').textContent = timeString;
+      setTimeout(updateRealTimeClock, 1000);
+    }
+    
     // ==================== SIDEBAR FUNCTIONALITY ====================
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebarLinks = document.querySelectorAll('.sidebar-menu a[data-section]');
     const contentSections = document.querySelectorAll('.content-section');
     const sidebarChatButton = document.getElementById('sidebar-chat-button');
-    const sidebarThemeToggle = document.getElementById('sidebar-theme-toggle');
+    const logoutLink = document.getElementById('logout-link');
 
     // Toggle sidebar on mobile
     sidebarToggle.addEventListener('click', function() {
@@ -2082,47 +2006,6 @@
       }
     });
 
-    // ==================== TOGGLE TEMA ====================
-    const themeIcon = sidebarThemeToggle.querySelector('i');
-    const themeText = sidebarThemeToggle.querySelector('span');
-    
-    // Fungsi untuk mengatur tema dan ikon
-    function applyTheme(theme) {
-      if (theme === 'dark') {
-        document.body.classList.add('dark-mode');
-        // Update ikon dan teks
-        themeIcon.className = 'fas fa-sun';
-        themeText.textContent = 'Mode Terang';
-      } else {
-        document.body.classList.remove('dark-mode');
-        // Update ikon dan teks
-        themeIcon.className = 'fas fa-moon';
-        themeText.textContent = 'Mode Gelap';
-      }
-    }
-
-    // Cek preferensi tema dari localStorage saat DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', function() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        applyTheme(savedTheme);
-      } else {
-        applyTheme('light');
-        localStorage.setItem('theme', 'light');
-      }
-    });
-    
-    // Event listener untuk toggle tema
-    sidebarThemeToggle.addEventListener('click', function() {
-      if (document.body.classList.contains('dark-mode')) {
-        applyTheme('light');
-        localStorage.setItem('theme', 'light');
-      } else {
-        applyTheme('dark');
-        localStorage.setItem('theme', 'dark');
-      }
-    });
-
     // ==================== LOGIN & SIGNUP SYSTEM ====================
     // Variabel untuk menyimpan data user (simulasi database)
     let users = JSON.parse(localStorage.getItem('users')) || [
@@ -2133,7 +2016,6 @@
     let resetTokens = JSON.parse(localStorage.getItem('resetTokens')) || {};
 
     // Elemen DOM
-    const loginButton = document.getElementById('login-button');
     const loginContainer = document.getElementById('loginContainer');
     const closeLogin = document.getElementById('closeLogin');
     const loginSubmit = document.getElementById('loginSubmit');
@@ -2164,22 +2046,8 @@
 
     // Fungsi untuk update UI setelah login
     function updateLoginUI(isLoggedIn) {
-      const loginButton = document.getElementById('login-button');
       if (isLoggedIn) {
         const user = JSON.parse(localStorage.getItem('currentUser'));
-        loginButton.innerHTML = `
-          <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-            <path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,5c1.66,0,3,1.34,3,3s-1.34,3-3,3s-3-1.34,3-3S10.34,5,12,5z M12,19.2c-2.5,0-4.71-1.28-6-3.22c0.03-1.99,4-3.08,6-3.08c1.99,0,5.97,1.09,6,3.08C16.71,17.92,14.5,19.2,12,19.2z"/>
-          </svg>
-          <p>${user.username}</p>
-        `;
-      } else {
-        loginButton.innerHTML = `
-          <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-            <path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,5c1.66,0,3,1.34,3,3s-1.34,3-3,3s-3-1.34,3-3S10.34,5,12,5z M12,19.2c-2.5,0-4.71-1.28-6-3.22c0.03-1.99,4-3.08,6-3.08c1.99,0,5.97,1.09,6,3.08C16.71,17.92,14.5,19.2,12,19.2z"/>
-          </svg>
-          <p>Login</p>
-        `;
       }
     }
 
@@ -2192,6 +2060,9 @@
 
     // Cek apakah user sudah login saat halaman dimuat
     document.addEventListener('DOMContentLoaded', function() {
+      // Mulai jam real-time
+      updateRealTimeClock();
+      
       // Selalu tampilkan form login saat halaman dimuat
       loginContainer.style.display = 'flex';
       loginContent.style.display = 'flex';
@@ -3209,16 +3080,10 @@
       musicControl.textContent = '♪';
     }
 
-    // Event listener untuk tombol login/logout
-    document.getElementById('login-button').addEventListener('click', function() {
-      const currentUser = localStorage.getItem('currentUser');
-      if (currentUser) {
-        if (confirm('Apakah Anda ingin logout?')) {
-          logoutUser();
-        }
-      } else {
-        loginContainer.style.display = 'flex';
-      }
+    // Event listener untuk tombol logout di sidebar
+    logoutLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      logoutUser();
     });
   </script>
 </body>
