@@ -1,1 +1,3981 @@
-# Payment-panel-
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <meta name="HandheldFriendly" content="false">
+  <title>Pembelian Produk Panel</title>
+  <!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://panel-tiyan-store.vercel.app/">
+<meta property="og:title" content="Panel Tiyan Store - Pembelian Produk Panel">
+<meta property="og:description" content="Tempat terbaik untuk membeli panel dengan berbagai pilihan paket dari 1GB hingga Unlimited. Harga terjangkau dan berkualitas.">
+<meta property="og:image" content="https://files.catbox.moe/a02yyl.jpg">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://panel-tiyan-store.vercel.app/">
+<meta property="twitter:title" content="Panel Tiyan Store - Pembelian Produk Panel">
+<meta property="twitter:description" content="Tempat terbaik untuk membeli panel dengan berbagai pilihan paket dari 1GB hingga Unlimited. Harga terjangkau dan berkualitas.">
+<meta property="twitter:image" content="https://files.catbox.moe/a02yyl.jpg">
+  <!-- Google Fonts: Poppins untuk tampilan modern -->
+  <!-- Fav Icon -->
+    <link rel="shortcut icon" href="https://files.catbox.moe/a02yyl.jpg" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    /* Menambahkan smooth scroll untuk seluruh halaman HTML */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Universal Box-sizing untuk perhitungan layout yang lebih mudah dan akurat */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ==================== VARIABEL TEMA ==================== */
+    :root {
+      /* Warna dasar */
+      --primary-color: #8A2BE2; /* Ungu */
+      --secondary-color: #4CAF50; /* Hijau */
+      --accent-color: #9C27B0; /* Ungu tua */
+      
+      /* Tema gelap */
+      --bg-image: url('https://files.catbox.moe/7uaeb0.jpg');
+      --bg-color: #0A0A0A; /* Hitam pekat */
+      --card-bg: rgba(20, 20, 30, 0.9);
+      --text-color: #E0E0E0;
+      --header-bg: rgba(0, 0, 0, 0.9);
+      --footer-bg: rgba(0, 0, 0, 0.9);
+      --footer-text: #D1C4E9;
+      --border-color: #444;
+      --chat-bg: linear-gradient(135deg, rgba(15, 15, 25, 0.98), rgba(10, 10, 20, 0.98));
+      --chat-header-bg: linear-gradient(90deg, #6A1B9A, #2E7D32); /* Ungu tua ke hijau tua */
+      --chat-input-bg: #1a1a2a;
+      --chat-message-user: #1a2a40;
+      --chat-message-bot: #252535;
+      --button-gradient: linear-gradient(45deg, #7B1FA2, #6A1B9A, #2E7D32); /* Ungu tua ke ungu tua ke hijau tua */
+      --button-store-gradient: linear-gradient(45deg, #5E35B1, #6A1B9A, #2E7D32);
+      --glitch-text-shadow: 1px 1px 0 #AB47BC, -1px -1px 0 #388E3C; /* Ungu dan hijau */
+      --qr-border: #6A1B9A;
+      --sidebar-bg: rgba(20, 20, 30, 0.9);
+      --sidebar-text: #D1C4E9;
+      --sidebar-active: #6A1B9A;
+      --sidebar-hover: #1a1a2a;
+      --danger-color: #f44336;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+      background-image: var(--bg-image);
+      background-size: cover;
+      background-position: center;
+      min-width: unset;
+      background-attachment: fixed;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-image 0.5s ease, background-color 0.5s ease, color 0.3s ease;
+    }
+
+    /* ==================== TOP BAR ==================== */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: var(--header-bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    /* Perubahan di sini - posisi nama Tiyan */
+    .top-bar-center {
+      flex-grow: 1;
+      text-align: center;
+    }
+    
+    .profile-name {
+      font-size: 1.5em;
+      font-weight: 700;
+      background: linear-gradient(45deg, #FF416C, #8A2BE2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+    }
+    
+    .real-time-clock {
+      font-size: 1.2em;
+      font-weight: 600;
+      letter-spacing: 1px;
+      background: linear-gradient(45deg, #4CAF50, #388E3C);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ==================== SIDEBAR MENU ==================== */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100vh;
+      background-color: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      padding: 20px 0;
+      z-index: 1000;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      text-align: center;
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+
+    .profile-picture {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      background: linear-gradient(45deg, #FF416C, #8A2BE2);
+      padding: 5px;
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+    }
+    
+    .profile-picture img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #151520;
+    }
+
+    .sidebar-header h2 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+
+    .sidebar-menu {
+      list-style: none;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .sidebar-menu a:hover {
+      background-color: var(--sidebar-hover);
+    }
+
+    .sidebar-menu a.active {
+      background-color: var(--sidebar-hover);
+      border-left: 4px solid var(--sidebar-active);
+      font-weight: 600;
+    }
+
+    .sidebar-menu i {
+      margin-right: 10px;
+      font-size: 1.2em;
+      width: 24px;
+      text-align: center;
+      color: var(--secondary-color);
+    }
+
+    .sidebar-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1100;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar-toggle:hover {
+      transform: scale(1.1);
+      background-color: var(--accent-color);
+    }
+
+    /* ==================== MAIN CONTENT AREA ==================== */
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+      transition: margin-left 0.3s ease;
+      display: none; /* Awalnya disembunyikan */
+    }
+
+    .content-section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ==================== GLOWING LOGIN FORM ==================== */
+    @property --a {
+      syntax: "<angle>";
+      inherits: false;
+      initial-value: 0deg;
+    }
+
+    .login-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 10000;
+    }
+
+    .login-box {
+      position: relative;
+      width: 400px;
+      height: 200px;
+      background: repeating-conic-gradient(
+        from var(--a),
+        #9C27B0 0%, /* Ungu tua */
+        #9C27B0 5%,
+        transparent 5%,
+        transparent 40%,
+        #9C27B0 50%
+      );
+      filter: drop-shadow(0 15px 50px #000);
+      animation: rotating 4s linear infinite;
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.5s;
+    }
+
+    .login-box:hover {
+      width: 450px;
+      height: 500px;
+    }
+
+    @keyframes rotating {
+      0% {
+        --a: 0deg;
+      }
+      100% {
+        --a: 360deg;
+      }
+    }
+
+    .login-box::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: repeating-conic-gradient(
+        from var(--a),
+        #4CAF50 0%, /* Hijau */
+        #4CAF50 5%,
+        transparent 5%,
+        transparent 40%,
+        #4CAF50 50%
+      );
+      filter: drop-shadow(0 15px 50px #000);
+      border-radius: 20px;
+      animation: rotating 4s linear infinite;
+      animation-delay: -1s;
+    }
+
+    .login-box::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      background: #1d1d2a;
+      border-radius: 15px;
+      border: 8px solid #151520;
+    }
+
+    .login-form {
+      position: absolute;
+      inset: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.5);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      transition: 0.5s;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .login-box:hover .login-form {
+      inset: 40px;
+    }
+
+    .login-content {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      transform: translateY(126px);
+      gap: 20px;
+      width: 70%;
+      transition: 0.5s;
+    }
+
+    .login-box:hover .login-content {
+      transform: translateY(0px);
+    }
+
+    .login-content h2 {
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+    }
+
+    .login-content h2 i {
+      color: #9C27B0;
+      text-shadow: 0 0 5px #9C27B0, 0 0 30px #9C27B0;
+    }
+
+    .login-content input {
+      width: 100%;
+      padding: 10px 20px;
+      outline: none;
+      font-size: 1em;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      transition: all 0.3s ease;
+    }
+    .login-content input:focus {
+      border-color: #8A2BE2;
+      box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+    }
+    .login-content input::placeholder {
+      color: #aaa;
+    }
+
+    .login-content input[type="submit"] {
+      background: #4CAF50;
+      border: none;
+      font-weight: 500;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+    }
+
+    .login-content input[type="submit"]:hover {
+      background: #388E3C;
+      box-shadow: 0 0 20px #4CAF50, 0 0 60px #4CAF50;
+      transform: translateY(-2px);
+    }
+
+    .login-links {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .login-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: all 0.3s ease;
+    }
+
+    .login-links a:hover {
+      color: #9C27B0;
+    }
+
+    .login-links a:nth-child(2) {
+      color: #4CAF50;
+      font-weight: 600;
+    }
+
+    .close-login {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1001;
+      transition: all 0.3s ease;
+    }
+    .close-login:hover {
+      color: #9C27B0;
+    }
+
+    /* Password wrapper */
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-wrapper input {
+      padding-right: 40px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #aaa;
+      transition: color 0.3s ease;
+    }
+
+    .toggle-password:hover {
+      color: #8A2BE2;
+    }
+
+    /* Style untuk form signup */
+    #signupContent {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .login-box:hover #signupContent {
+      transform: translateY(0px);
+    }
+
+    /* Style untuk form lupa password */
+    #forgotPasswordContent {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .login-box:hover #forgotPasswordContent {
+      transform: translateY(0px);
+    }
+
+    /* Style untuk form reset password */
+    #resetPasswordContent {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .login-box:hover #resetPasswordContent {
+      transform: translateY(0px);
+    }
+
+    /* ==================== STYLE UTAMA ==================== */
+    .produk-glitch {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      background-size: cover;
+      mix-blend-mode: difference;
+      border-radius: 15px;
+    }
+
+    .produk-glitch::before, .produk-glitch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      opacity: 0.5;
+      border-radius: 15px;
+    }
+
+    .produk-glitch::before {
+      left: 2px;
+      animation: glitch-anim-1 2s infinite linear alternate-reverse;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    }
+
+    .produk-glitch::after {
+      left: -2px;
+      animation: glitch-anim-2 2s infinite linear alternate-reverse;
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+    }
+
+    @keyframes glitch-anim-1 {
+      0% { transform: translate(2px, 2px); }
+      100% { transform: translate(-2px, -2px); }
+    }
+
+    @keyframes glitch-anim-2 {
+      0% { transform: translate(-2px, 2px); }
+      100% { transform: translate(2px, -2px); }
+    }
+
+    .glitch-text {
+      position: relative;
+      text-shadow: var(--glitch-text-shadow);
+      color: #f0f0f0;
+    }
+
+    #barcode-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #barcode-container img {
+      width: 180px;
+      height: 180px;
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 18px;
+      margin: 20px auto;
+      display: block;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      border: 3px solid var(--qr-border);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4), 0 0 40px rgba(106, 27, 154, 0.3);
+    }
+
+    .produk-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      max-width: 460px;
+      margin: 20px auto;
+      padding: 0 10px;
+    }
+
+    .produk-item {
+      border: 1px solid rgba(106, 27, 154, 0.3);
+      padding: 20px;
+      width: calc(50% - 10px);
+      max-width: 200px;
+      text-align: center;
+      background-color: var(--card-bg);
+      border-radius: 15px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      color: var(--text-color);
+    }
+
+    .produk-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.3), 0 0 30px rgba(106, 27, 154, 0.3);
+      background-color: rgba(30, 30, 40, 0.95);
+    }
+
+    .produk-item img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(138, 43, 226, 0.2);
+    }
+
+    .produk-item h2 {
+      font-size: 1.2em;
+      margin-bottom: 8px;
+      color: #D1C4E9;
+    }
+
+    .produk-item p {
+      font-size: 0.9em;
+      color: #aaa;
+    }
+
+    .produk-item button {
+      background: linear-gradient(45deg, #8A2BE2, #4CAF50);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+
+    .produk-item button:hover {
+      background: linear-gradient(45deg, #9C27B0, #388E3C);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    /* Tombol Umum */
+    button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background-color: #555;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    /* Tombol dengan Gradien */
+    .payment-btn, .store-btn {
+      background-size: 200% 200%;
+      animation: gradientBtn 4s ease infinite;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 15px;
+      text-decoration: none;
+      transition: 0.3s;
+      padding: 16px 28px;
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .payment-btn {
+      background: var(--button-gradient);
+    }
+
+    .store-btn {
+      background: var(--button-store-gradient);
+    }
+
+    .payment-btn:hover, .store-btn:hover {
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 30px rgba(138, 43, 226, 0.4);
+    }
+
+    @keyframes gradientBtn {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple-animation 0.6s linear;
+      background-color: rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    @keyframes ripple-animation {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    footer {
+      text-align: center;
+      margin: 40px 0 20px;
+      font-size: 16px;
+      color: var(--footer-text);
+      background-color: var(--footer-bg);
+      padding: 20px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    footer a {
+      color: inherit;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    footer a:hover {
+      transform: scale(1.1);
+      color: var(--secondary-color);
+    }
+
+    .social-icon {
+      width: 28px;
+      height: 28px;
+      vertical-align: middle;
+    }
+
+    canvas#salju {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    h1 {
+      text-align: center;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      background-color: var(--header-bg);
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+      font-size: 2.5em;
+    }
+
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10001;
+    }
+
+    .popup-content {
+        background-color: #151520;
+        padding: 30px 40px;
+        border-radius: 15px;
+        text-align: center;
+        width: 85%;
+        max-width: 500px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        color: #e0e0e0;
+        font-size: 18px;
+        border: 1px solid rgba(138, 43, 226, 0.2);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .popup-content h2 {
+        margin-top: 0;
+        color: #9C27B0;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .popup-content p {
+        margin-bottom: 30px;
+        line-height: 1.7;
+        color: #B0BEC5;
+    }
+
+    .popup-content button {
+        background: linear-gradient(45deg, #8A2BE2, #4CAF50);
+        color: #fff;
+        padding: 14px 30px;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        font-weight: 600;
+    }
+
+    .popup-content button:hover {
+        background: linear-gradient(45deg, #9C27B0, #388E3C);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .desktop-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px;
+      box-sizing: border-box;
+      position: relative;
+      background-color: rgba(25, 25, 35, 0.7);
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 2;
+    }
+
+    #music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background-color: rgba(138, 43, 226, 0.7);
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      color: white;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 1.5em;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    #music-control:hover {
+      background-color: rgba(156, 39, 176, 0.9);
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      color: white;
+      font-size: 24px;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid rgba(138, 43, 226, 0.3);
+      border-top-color: #8A2BE2;
+      border-radius: 50%;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 25px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* STYLE CHAT AI */
+    .chat-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 95%;
+      height: 85%;
+      max-width: 900px;
+      max-height: 750px;
+      background: var(--chat-bg);
+      z-index: 2000;
+      display: none;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      display: flex;
+      padding: 20px;
+      background: var(--chat-header-bg);
+      color: white;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      justify-content: space-between;
+    }
+
+    .chat-header button {
+      background-color: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 22px;
+      padding: 5px;
+      transition: transform 0.2s ease;
+    }
+    .chat-header button:hover {
+      transform: scale(1.1);
+      color: #D1C4E9;
+    }
+
+    .chat-title {
+      flex-grow: 1;
+      text-align: center;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .chat-body {
+      padding: 20px;
+      height: calc(100% - 180px);
+      overflow-y: auto;
+      font-size: 16px;
+      background-color: #121220;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: #6A1B9A #121220;
+    }
+
+    .chat-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-body::-webkit-scrollbar-track {
+      background: #121220;
+      border-radius: 10px;
+    }
+
+    .chat-body::-webkit-scrollbar-thumb {
+      background-color: #6A1B9A;
+      border-radius: 10px;
+      border: 2px solid #121220;
+    }
+
+    .chat-body::-webkit-scrollbar-thumb:hover {
+      background-color: #7B1FA2;
+    }
+
+    .chat-message {
+      margin-bottom: 15px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      max-width: 85%;
+      font-size: 16px;
+      line-height: 1.6;
+      word-wrap: break-word;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .user-message {
+      background-color: rgba(106, 27, 154, 0.2);
+      margin-left: auto;
+      border-bottom-right-radius: 8px;
+      border-left: 3px solid #6A1B9A;
+    }
+
+    .bot-message {
+      background-color: rgba(46, 125, 50, 0.2);
+      margin-right: auto;
+      border-bottom-left-radius: 8px;
+      border-right: 3px solid #2E7D32;
+    }
+
+    .chat-input {
+      padding: 15px;
+      background-color: var(--chat-input-bg);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+
+    .chat-input input[type="text"] {
+      width: calc(100% - 130px);
+      padding: 14px;
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 10px;
+      margin-right: 15px;
+      font-size: 16px;
+      outline: none;
+      background-color: #1e1e2e;
+      color: #e0e0e0;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .chat-input input[type="text"]:focus {
+      border-color: #8A2BE2;
+      box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+    }
+
+    .chat-input button {
+      background-color: #8A2BE2;
+      color: white;
+      border: none;
+      padding: 14px 22px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+
+    .chat-input button:hover {
+      background-color: #9C27B0;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .chat-nav {
+      display: flex;
+      justify-content: space-around;
+      padding: 15px;
+      background-color: var(--chat-input-bg);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .chat-nav button {
+      margin: 0 8px;
+      flex-grow: 1;
+      max-width: 300px;
+      font-size: 16px;
+      padding: 14px 25px;
+    }
+
+    /* STYLE TAMBAHAN UNTUK AI CHAT */
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      align-items: center;
+      font-size: 0.9em;
+      color: #8A2BE2;
+    }
+    .message-header strong {
+      color: #D1C4E9;
+    }
+    .message-time {
+      font-size: 0.8em;
+      color: #4CAF50;
+    }
+    
+    .typing-dots {
+      display: inline-block;
+      position: relative;
+    }
+    
+    .typing-dots::after {
+      content: "...";
+      animation: typing 1.5s infinite;
+      position: absolute;
+      left: 0;
+    }
+    
+    @keyframes typing {
+      0% { content: "."; }
+      33% { content: ".."; }
+      66% { content: "..."; }
+    }
+    
+    .suggested-questions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .suggested-question {
+      background-color: rgba(138, 43, 226, 0.2);
+      padding: 10px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s ease;
+      width: calc(50% - 10px);
+      text-align: center;
+      flex-shrink: 0;
+      color: #D1C4E9;
+      border: 1px solid rgba(138, 43, 226, 0.3);
+    }
+    
+    .suggested-question:hover {
+      background-color: rgba(138, 43, 226, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .chat-message pre {
+      background-color: rgba(25, 25, 35, 0.8);
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 0.9em;
+      line-height: 1.4;
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      color: #E0E0E0;
+    }
+    
+    .chat-message code {
+      font-family: 'Fira Code', monospace;
+      background-color: rgba(25, 25, 35, 0.8);
+      padding: 2px 4px;
+      border-radius: 4px;
+      color: #BA68C8;
+    }
+    
+    .chat-message a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    
+    .chat-message a:hover {
+      text-decoration: underline;
+      color: #388E3C;
+    }
+    
+    .chat-history-btn {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.2s ease;
+    }
+    .chat-history-btn:hover {
+      transform: scale(1.05);
+      color: #D1C4E9;
+    }
+    
+    .history-icon {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .chat-history-panel {
+      position: absolute;
+      top: 0;
+      right: -380px;
+      width: 380px;
+      height: 100%;
+      background-color: #151520;
+      box-shadow: -8px 0 20px rgba(0,0,0,0.2);
+      transition: right 0.3s ease;
+      overflow-y: auto;
+      padding: 25px;
+      z-index: 10;
+      display: none;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+    
+    .chat-history-panel.active {
+      right: 0;
+      display: block;
+    }
+    
+    .chat-history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+    }
+    .chat-history-header h3 {
+      font-size: 1.4em;
+      color: #D1C4E9;
+      margin: 0;
+    }
+    
+    .chat-history-item {
+      padding: 15px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      background-color: rgba(138, 43, 226, 0.1);
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s ease;
+      animation: fadeIn 0.3s ease-out;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+      border: 1px solid rgba(138, 43, 226, 0.2);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .chat-history-item:hover {
+      background-color: rgba(138, 43, 226, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .chat-history-item h4 {
+      margin: 0 0 8px 0;
+      color: #D1C4E9;
+      font-size: 1.1em;
+    }
+    
+    .chat-history-item p {
+      margin: 0;
+      color: #B0BEC5;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .chat-history-item .time {
+      font-size: 12px;
+      color: #4CAF50;
+      text-align: right;
+      margin-top: 5px;
+    }
+    
+    .no-history {
+      color: #B0BEC5;
+      text-align: center;
+      margin-top: 50px;
+    }
+    
+    .close-history {
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #B0BEC5;
+      transition: transform 0.2s ease;
+    }
+    .close-history:hover {
+      transform: scale(1.1);
+      color: #D1C4E9;
+    }
+    
+    /* Tombol Hapus Riwayat */
+    .clear-history-btn {
+      background: linear-gradient(45deg, #8A2BE2, #4CAF50);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 20px;
+      width: 100%;
+      transition: background-color 0.3s, transform 0.2s ease;
+    }
+    
+    .clear-history-btn:hover {
+      background: linear-gradient(45deg, #9C27B0, #388E3C);
+      transform: translateY(-2px);
+    }
+    
+    /* Pemberitahuan AI */
+    .ai-notification {
+      background-color: rgba(76, 175, 80, 0.1);
+      border-left: 5px solid #4CAF50;
+      padding: 12px;
+      margin-top: 20px;
+      font-size: 14px;
+      border-radius: 0 8px 8px 0;
+      color: #E0E0E0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* ==================== CONTENT SECTIONS ==================== */
+    .qr-section {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .qr-section h2 {
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+
+    .qr-section p {
+      margin-bottom: 20px;
+      line-height: 1.6;
+      color: #B0BEC5;
+    }
+
+    .contact-section {
+      padding: 20px;
+    }
+
+    .contact-section h2 {
+      margin-bottom: 20px;
+      color: var(--primary-color);
+      text-align: center;
+    }
+
+    .contact-list {
+      list-style: none;
+      margin-top: 20px;
+    }
+
+    .contact-list li {
+      margin-bottom: 15px;
+      padding: 15px;
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(138, 43, 226, 0.2);
+    }
+
+    .contact-list li:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .contact-list a {
+      display: flex;
+      align-items: center;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .contact-list i {
+      margin-right: 15px;
+      font-size: 1.5em;
+      color: var(--primary-color);
+    }
+
+    .contact-info {
+      flex-grow: 1;
+    }
+
+    .contact-info h3 {
+      margin-bottom: 5px;
+      color: #D1C4E9;
+    }
+
+    .contact-info p {
+      color: #B0BEC5;
+      font-size: 0.9em;
+    }
+
+    .web-links-section {
+      padding: 20px;
+    }
+
+    .web-links-section h2 {
+      margin-bottom: 20px;
+      color: var(--primary-color);
+      text-align: center;
+    }
+
+    .web-links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .web-link-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+      border: 1px solid rgba(138, 43, 226, 0.2);
+    }
+
+    .web-link-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .web-link-card i {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+
+    .web-link-card h3 {
+      margin-bottom: 10px;
+      color: #D1C4E9;
+    }
+
+    .web-link-card p {
+      color: #B0BEC5;
+      font-size: 0.9em;
+      margin-bottom: 15px;
+    }
+
+    .web-link-card a {
+      display: inline-block;
+      padding: 8px 15px;
+      background: linear-gradient(45deg, #8A2BE2, #4CAF50);
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .web-link-card a:hover {
+      background: linear-gradient(45deg, #9C27B0, #388E3C);
+    }
+
+    /* Tombol AI di Sidebar */
+    .sidebar-footer {
+      padding: 15px;
+      margin-top: 20px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .sidebar-button {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      background-color: rgba(138, 43, 226, 0.1);
+      border: 1px solid rgba(138, 43, 226, 0.2);
+    }
+
+    .sidebar-button:hover {
+      background-color: rgba(138, 43, 226, 0.2);
+    }
+
+    .sidebar-button i {
+      margin-right: 10px;
+      font-size: 1.2em;
+      width: 24px;
+      text-align: center;
+    }
+
+    /* ==================== HAPUS AKUN SECTION ==================== */
+    .delete-account-section {
+      padding: 30px;
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: rgba(20, 20, 30, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .delete-account-section h2 {
+      margin-bottom: 25px;
+      color: var(--danger-color);
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .warning-box {
+      background-color: rgba(244, 67, 54, 0.1);
+      border: 1px solid var(--danger-color);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    .warning-box h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--danger-color);
+      margin-bottom: 15px;
+    }
+
+    .delete-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .delete-form input {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    .delete-form input:focus {
+      border-color: var(--danger-color);
+      outline: none;
+    }
+
+    .delete-form button {
+      background: linear-gradient(45deg, #f44336, #d32f2f);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .delete-form button:hover {
+      background: linear-gradient(45deg, #d32f2f, #b71c1c);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(244, 67, 54, 0.3);
+    }
+
+    .back-to-safety {
+      display: inline-block;
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .back-to-safety:hover {
+      color: #388E3C;
+      text-decoration: underline;
+    }
+
+    /* ==================== MEDIA UPLOAD CENTER STYLES ==================== */
+    .media-upload-section {
+      padding: 20px;
+    }
+
+    .media-upload-section h2 {
+      margin-bottom: 20px;
+      color: var(--primary-color);
+      text-align: center;
+    }
+    
+    .storage-info {
+      text-align: center;
+      margin-bottom: 25px;
+      padding: 15px;
+      background-color: rgba(138, 43, 226, 0.1);
+      border-radius: 12px;
+      color: #B0BEC5;
+      font-size: 14px;
+    }
+    
+    .storage-bar {
+      height: 8px;
+      background-color: rgba(20, 20, 30, 0.8);
+      border-radius: 4px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+    
+    .storage-used {
+      height: 100%;
+      background: linear-gradient(90deg, #8A2BE2, #4CAF50);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    .upload-section {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 35px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-section {
+      margin-bottom: 30px;
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .file-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .file-card {
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      background-color: var(--card-bg);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .file-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+      border-color: #8A2BE2;
+    }
+
+    .file-preview {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(30, 30, 40, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-icon {
+      font-size: 70px;
+      color: #8A2BE2;
+      text-align: center;
+      transition: transform 0.3s, color 0.3s;
+    }
+    
+    .file-card:hover .file-icon {
+      transform: scale(1.1);
+      color: #4CAF50;
+    }
+
+    .file-type-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(138, 43, 226, 0.85);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .file-info {
+      padding: 20px;
+    }
+
+    .file-name {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #D1C4E9;
+      font-size: 18px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-date {
+      color: #B0BEC5;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    
+    .file-size {
+      font-size: 12px;
+      color: #4CAF50;
+      margin-bottom: 15px;
+    }
+
+    .file-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .download-btn {
+      background: linear-gradient(135deg, #4CAF50, #388E3C);
+      flex: 1;
+      text-align: center;
+      color: white;
+      text-decoration: none;
+      padding: 10px 0;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      transition: transform 0.3s;
+    }
+
+    .download-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+    }
+
+    .delete-btn {
+      background: linear-gradient(135deg, #f44336, #d32f2f);
+      flex: 1;
+      text-align: center;
+      color: white;
+      text-decoration: none;
+      padding: 10px 0;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3);
+    }
+
+    .no-files {
+      text-align: center;
+      color: #B0BEC5;
+      padding: 50px;
+      grid-column: 1 / -1;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+    }
+
+    .no-files i {
+      font-size: 60px;
+      margin-bottom: 20px;
+      display: block;
+      color: #8A2BE2;
+    }
+
+    .no-files p {
+      font-size: 18px;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transform: translateX(200%);
+      transition: transform 0.4s;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #D1C4E9;
+    }
+
+    .form-group input[type="text"], 
+    .form-group input[type="file"] {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border 0.3s;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: white;
+    }
+
+    .form-group input[type="text"]:focus, 
+    .form-group input[type="file"]:focus {
+      border-color: #8A2BE2;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+    }
+
+    .form-group input[type="file"] {
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .upload-section button {
+      background: linear-gradient(135deg, #8A2BE2, #6A1B9A);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    }
+
+    .upload-section button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+    }
+    
+    /* ==================== MEDIA QUERIES UNTUK LAYAR KECIL (MOBILE) ==================== */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 250px;
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .sidebar-toggle {
+        display: flex;
+      }
+      
+      .desktop-container {
+        padding: 15px;
+        border-radius: 10px;
+      }
+
+      h1 {
+        font-size: 2em;
+        padding: 10px;
+      }
+
+      .produk-wrapper {
+        max-width: 100%;
+        padding: 0 5px;
+        gap: 10px;
+      }
+
+      .produk-item {
+        width: calc(50% - 5px);
+        max-width: 180px;
+        padding: 15px;
+        border-radius: 10px;
+      }
+      
+      .produk-item img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
+      }
+
+      .produk-item h2 {
+        font-size: 1.1em;
+      }
+
+      .produk-item p {
+        font-size: 0.8em;
+      }
+
+      .btn-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .payment-btn, .store-btn {
+        width: 90%;
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 10px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+
+      .popup-content {
+        padding: 20px 25px;
+        font-size: 15px;
+        border-radius: 10px;
+      }
+      .popup-content h2 {
+        font-size: 22px;
+      }
+      .popup-content p {
+        margin-bottom: 20px;
+      }
+      .popup-content button {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+
+      .chat-container {
+        width: 98%;
+        height: 90%;
+        border-radius: 15px;
+      }
+      .chat-header {
+        padding: 15px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+      }
+      .chat-title {
+        font-size: 18px;
+      }
+      .chat-header button {
+        font-size: 20px;
+      }
+      .chat-body {
+        padding: 15px;
+        font-size: 15px;
+      }
+      .chat-message {
+        padding: 12px 15px;
+        border-radius: 10px;
+        font-size: 15px;
+      }
+      .chat-input input[type="text"] {
+        padding: 12px;
+        font-size: 15px;
+      }
+      .chat-input button {
+        padding: 12px 20px;
+        font-size: 15px;
+      }
+      .chat-history-panel {
+        width: 100%;
+        right: -100%;
+        border-radius: 15px;
+      }
+      .chat-history-panel.active {
+        right: 0;
+      }
+
+      /* Mobile styles for login form */
+      .login-box {
+        width: 90%;
+        height: 180px;
+      }
+      
+      .login-box:hover {
+        width: 90%;
+        height: 500px;
+      }
+      
+      .login-content {
+        width: 85%;
+      }
+      
+      .top-bar {
+        padding: 12px 15px;
+      }
+      
+      .profile-name {
+        font-size: 1.2em;
+      }
+      
+      .real-time-clock {
+        font-size: 1em;
+      }
+      
+      .delete-account-section {
+        padding: 20px;
+      }
+      
+      .delete-account-section h2 {
+        font-size: 24px;
+      }
+
+      /* Media upload center mobile styles */
+      .file-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .upload-section, .search-section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="salju"></canvas>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="profile-picture">
+        <img src="https://files.catbox.moe/yi6lsr.jpg" alt="Profile Tiyan">
+      </div>
+      <h2>Panel Tiyan</h2>
+      <p>Selamat datang di Panel Store</p>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="#" class="active" data-section="produk-section"><i class="fas fa-box-open"></i> Produk</a></li>
+      <li><a href="#" data-section="qr-section"><i class="fas fa-qrcode"></i> QRIS</a></li>
+      <li><a href="#" data-section="contact-section"><i class="fas fa-address-book"></i> Kontak</a></li>
+      <li><a href="#" data-section="web-links-section"><i class="fas fa-link"></i> Web Links</a></li>
+      <li><a href="#" data-section="media-upload-section"><i class="fas fa-upload"></i> Media Upload</a></li>
+      <li><a href="https://myportofoliotiyan.vercel.app/" target="_blank"><i class="fas fa-user-tie"></i> Portofolio</a></li>
+      <li><a href="https://buylink.id/Tiyanstore" target="_blank"><i class="fas fa-shopping-cart"></i> Topup & PPOB</a></li>
+      <li><a href="https://app.bukaolshop.com/toko/tiyanzstore" target="_blank"><i class="fas fa-mobile-alt"></i> Download App</a></li>
+      <li><a href="https://lynk.id/tiyanzbot" target="_blank"><i class="fas fa-code"></i> Beli Script</a></li>
+      <li><a href="#" data-section="delete-account-section"><i class="fas fa-trash-alt"></i> Hapus Akun</a></li>
+    </ul>
+    
+    <div class="sidebar-footer">
+      <div class="sidebar-button" id="sidebar-chat-button">
+        <i class="fas fa-robot"></i>
+        <span>AI Assistant</span>
+      </div>
+      <div class="sidebar-button" id="logout-link">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="sidebar-toggle" id="sidebarToggle">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Glowing Login Form -->
+  <div class="login-container" id="loginContainer">
+    <div class="login-box">
+      <span class="close-login" id="closeLogin">✕</span>
+      <div class="login-form">
+        <!-- Form Login -->
+        <div class="login-content" id="loginContent">
+          <h2>
+            <i class="fa-solid fa-right-to-bracket"></i>
+              Login
+            <i class="fa-solid fa-heart"></i>
+          </h2>
+          <input type="text" placeholder="Username" id="loginUsername">
+          
+          <div class="password-wrapper">
+            <input type="password" placeholder="Password" id="loginPassword">
+            <i class="fas fa-eye toggle-password" id="toggleLoginPassword"></i>
+          </div>
+          
+          <input type="submit" value="Sign in" id="loginSubmit" />
+          <div class="login-links">
+            <a href="#" id="switchToForgotPassword">Lupa Password?</a>
+            <a href="#" id="switchToSignup">Sign up</a>
+          </div>
+        </div>
+        
+        <!-- Form Signup -->
+        <div class="login-content" id="signupContent" style="display: none;">
+          <h2>
+            <i class="fa-solid fa-user-plus"></i>
+              Sign Up
+            <i class="fa-solid fa-heart"></i>
+          </h2>
+          <input type="text" placeholder="Username" id="signupUsername">
+          <input type="email" placeholder="Email" id="signupEmail">
+          
+          <div class="password-wrapper">
+            <input type="password" placeholder="Password" id="signupPassword">
+            <i class="fas fa-eye toggle-password" id="toggleSignupPassword"></i>
+          </div>
+          
+          <div class="password-wrapper">
+            <input type="password" placeholder="Confirm Password" id="signupConfirmPassword">
+            <i class="fas fa-eye toggle-password" id="toggleSignupConfirmPassword"></i>
+          </div>
+          
+          <input type="submit" value="Create Account" id="signupSubmit" />
+          <div class="login-links">
+            <a href="#" id="switchToLogin">Sudah punya akun? Login</a>
+          </div>
+        </div>
+        
+        <!-- Form Lupa Password -->
+        <div class="login-content" id="forgotPasswordContent" style="display: none;">
+          <h2>
+            <i class="fa-solid fa-key"></i>
+              Lupa Password
+            <i class="fa-solid fa-heart"></i>
+          </h2>
+          <input type="email" placeholder="Email Anda" id="forgotPasswordEmail">
+          <input type="submit" value="Kirim Link Reset" id="sendResetLink" />
+          <div class="login-links">
+            <a href="#" id="backToLoginFromForgot">Kembali ke Login</a>
+          </div>
+        </div>
+        
+        <!-- Form Reset Password -->
+        <div class="login-content" id="resetPasswordContent" style="display: none;">
+          <h2>
+            <i class="fa-solid fa-lock"></i>
+              Reset Password
+            <i class="fa-solid fa-heart"></i>
+          </h2>
+          
+          <div class="password-wrapper">
+            <input type="password" placeholder="Password Baru" id="resetNewPassword">
+            <i class="fas fa-eye toggle-password" id="toggleResetNewPassword"></i>
+          </div>
+          
+          <div class="password-wrapper">
+            <input type="password" placeholder="Konfirmasi Password" id="resetConfirmPassword">
+            <i class="fas fa-eye toggle-password" id="toggleResetConfirmPassword"></i>
+          </div>
+          
+          <input type="submit" value="Reset Password" id="resetPasswordSubmit" />
+          <div class="login-links">
+            <a href="#" id="backToLoginFromReset">Kembali ke Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p id="loading-text">Mengarahkan...</p>
+  </div>
+
+  <div id="popup-warning" class="popup-overlay">
+      <div class="popup-content">
+          <h2>Peringatan Perangkat Mobile</h2>
+          <p>⚠️ Untuk pengalaman visual dan fungsionalitas terbaik, sangat disarankan menggunakan perangkat desktop atau mengaktifkan mode desktop pada browser mobile Anda, dan disarankan untuk berhati-hati dalam bertransaksi pada siapapun dan dimanapun. ⚠️</p>
+          <button id="close-popup">Saya Mengerti</button>
+      </div>
+  </div>
+
+  <!-- Konten Utama (Awalnya disembunyikan) -->
+  <div class="main-content" id="mainContent">
+    <audio id="background-music" loop>
+      <source src="https://nathanprinsley-files.prinsh.com/data-1/mp3/safe-and-sound_rebelution.mp3" type="audio/mpeg">
+      Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <div id="music-control" title="Play/Pause Music">♪</div>
+    
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <!-- Perubahan di sini - posisi nama Tiyan -->
+      <div class="top-bar-center">
+        <div class="profile-name">Tiyan</div>
+      </div>
+      <div class="real-time-clock" id="realTimeClock"></div>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="desktop-container">
+      <!-- Produk Section (Default Active) -->
+      <div id="produk-section" class="content-section active">
+        <div id="barcode-container">
+          <img id="barcode" src="https://cdn.xtermai.xyz/i47/42" alt="Barcode">
+        </div>
+
+        <h1 class="glitch-text">Pembelian Produk Panel</h1>
+        <div id="produk" class="produk-wrapper"></div>
+
+        <div class="btn-container">
+          <button class="store-btn" id="go-to-store">Lanjut ke Web Store</button>
+          <button class="payment-btn" id="go-to-payment-page">Lanjut ke Pembayaran</button>
+        </div>
+
+        <footer>
+          <a href="https://instagram.com/septiyanda_putra" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" class="social-icon">
+            @septiyanda_putra
+          </a>
+          <a href="https://github.com/tiyanzxbella/" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" class="social-icon">
+            tiyanzxbella
+          </a>
+          <a href="https://chat.whatsapp.com/EQkSNg1QgWG0pEaGWwdnuv" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp" class="social-icon">
+            Grup WhatsApp
+          </a>
+        </footer>
+      </div>
+
+      <!-- QRIS Section -->
+      <div id="qr-section" class="content-section">
+        <div class="qr-section">
+          <h2>QRIS Pembayaran</h2>
+          <p>Gunakan QRIS berikut untuk melakukan pembayaran dengan mudah melalui berbagai aplikasi e-wallet atau mobile banking yang mendukung QRIS.</p>
+          
+          <div id="barcode-container">
+            <img id="barcode" src="https://cdn.xtermai.xyz/i47/42" alt="Barcode">
+          </div>
+          
+          <p>Scan QR code di atas menggunakan aplikasi pembayaran favorit Anda seperti DANA, OVO, GoPay, ShopeePay, atau mobile banking.</p>
+          
+          <div class="btn-container">
+            <button class="payment-btn" id="go-to-payment-page">Lanjut ke Pembayaran</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Section -->
+      <div id="contact-section" class="content-section">
+        <div class="contact-section">
+          <h2>Hubungi Kami</h2>
+          <p>Silakan hubungi kami melalui salah satu kontak berikut untuk pertanyaan atau bantuan lebih lanjut:</p>
+          
+          <ul class="contact-list">
+            <li>
+              <a href="https://wa.me/6285972533957" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+                <div class="contact-info">
+                  <h3>WhatsApp</h3>
+                  <p>+62 859-7253-3957</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="https://instagram.com/septiyanda_putra" target="_blank">
+                <i class="fab fa-instagram"></i>
+                <div class="contact-info">
+                  <h3>Instagram</h3>
+                  <p>@septiyanda_putra</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="mailto:support@tiyanstore.com" target="_blank">
+                <i class="fas fa-envelope"></i>
+                <div class="contact-info">
+                  <h3>Email</h3>
+                  <p>support@tiyanstore.com</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="https://chat.whatsapp.com/EQkSNg1QgWG0pEaGWwdnuv" target="_blank">
+                <i class="fas fa-users"></i>
+                <div class="contact-info">
+                  <h3>Grup WhatsApp</h3>
+                  <p>Bergabung dengan komunitas kami</p>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Web Links Section -->
+      <div id="web-links-section" class="content-section">
+        <div class="web-links-section">
+          <h2>Tautan Berguna</h2>
+          <p>Temukan berbagai tautan berguna terkait produk dan layanan kami:</p>
+          
+          <div class="web-links-grid">
+            <div class="web-link-card">
+              <i class="fas fa-shopping-cart"></i>
+              <h3>Web Store</h3>
+              <p>Kunjungi toko online kami untuk melihat semua produk yang tersedia.</p>
+              <a href="https://buylink.id/Tiyanstore" target="_blank">Kunjungi</a>
+            </div>
+            
+            <div class="web-link-card">
+              <i class="fas fa-money-bill-wave"></i>
+              <h3>Pembayaran</h3>
+              <p>Halaman pembayaran dengan berbagai metode yang tersedia.</p>
+              <a href="https://tiyanzxbella.github.io/Website-payment/" target="_blank">Kunjungi</a>
+            </div>
+            
+            <div class="web-link-card">
+              <i class="fas fa-question-circle"></i>
+              <h3>FAQ</h3>
+              <p>Pertanyaan yang sering diajukan tentang produk kami.</p>
+              <a href="#" target="_blank">Kunjungi</a>
+            </div>
+            
+            <div class="web-link-card">
+              <i class="fas fa-book"></i>
+              <h3>Dokumentasi</h3>
+              <p>Panduan penggunaan produk dan layanan kami.</p>
+              <a href="#" target="_blank">Kunjungi</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Media Upload Section -->
+      <div id="media-upload-section" class="content-section">
+        <div class="media-upload-section">
+          <h2>📁 Media Upload Center</h2>
+          <p>Upload, Kelola, dan Download File Media Anda</p>
+          
+          <div class="storage-info">
+            <!-- PERUBAHAN: Kapasitas penyimpanan ditingkatkan menjadi 2GB -->
+            <div id="storage-text">Penyimpanan: <span id="used-storage">0 KB</span> dari 2 GB digunakan</div>
+            <div class="storage-bar">
+              <div class="storage-used" id="storage-bar"></div>
+            </div>
+            <small>Kapasitas penyimpanan lokal terbatas</small>
+          </div>
+          
+          <section class="upload-section">
+            <h2>📤 Upload File Baru</h2>
+            <form id="uploadForm">
+              <div class="form-group">
+                <label for="fileName">✏️ Nama File</label>
+                <input type="text" id="fileName" required placeholder="Berikan nama untuk file Anda">
+              </div>
+              <div class="form-group">
+                <!-- PERUBAHAN: Batas ukuran file ditingkatkan menjadi 500MB -->
+                <label for="fileInput">📂 Pilih File (Foto, Video, Audio, ZIP - maks 500MB)</label>
+                <input type="file" id="fileInput" accept="image/*,video/*,audio/*,.zip,.rar" required>
+              </div>
+              <button type="submit">⬆️ Upload File</button>
+            </form>
+          </section>
+          
+          <section class="search-section">
+            <h2>🔍 Cari File</h2>
+            <div class="form-group">
+              <input type="text" id="searchInput" placeholder="Ketik nama file untuk mencari...">
+            </div>
+          </section>
+          
+          <section class="file-list-section">
+            <h2>🗂 File Tersedia</h2>
+            <div class="file-list" id="fileList">
+              <!-- File akan ditampilkan di sini -->
+            </div>
+          </section>
+        </div>
+      </div>
+      
+      <!-- Hapus Akun Section -->
+      <div id="delete-account-section" class="content-section">
+        <div class="delete-account-section">
+          <h2><i class="fas fa-exclamation-triangle"></i> Hapus Akun</h2>
+          
+          <div class="warning-box">
+            <h3><i class="fas fa-exclamation-circle"></i> PERHATIAN!</h3>
+            <p>Menghapus akun adalah tindakan permanen. Semua data terkait akun Anda akan dihapus secara permanen dan tidak dapat dipulihkan. Pastikan Anda telah mencadangkan semua informasi penting sebelum melanjutkan.</p>
+          </div>
+          
+          <div class="delete-form">
+            <input type="text" id="deleteUsername" placeholder="Username Anda" required>
+            <div class="password-wrapper">
+              <input type="password" id="deletePassword" placeholder="Password Anda" required>
+              <i class="fas fa-eye toggle-password" id="toggleDeletePassword"></i>
+            </div>
+            <button id="deleteAccountBtn">Hapus Akun Secara Permanen</button>
+          </div>
+          
+          <a href="#" class="back-to-safety" id="backToSafety">Kembali ke Halaman Utama</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Chat Container -->
+    <div class="chat-container" id="chat-container">
+      <div class="chat-header">
+        <button id="close-chat">✕</button>
+        <div class="chat-title">AI Assistant Pembelian</div>
+        <button class="chat-history-btn" id="show-history">
+          <svg class="history-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+            <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+          </svg>
+          Riwayat
+        </button>
+        <div id="typing-indicator" style="margin-left: auto; display: none; color: #666; font-size: 14px;">
+          <span class="typing-dots">...</span>
+        </div>
+      </div>
+      
+      <div class="chat-history-panel" id="chat-history-panel">
+        <div class="chat-history-header">
+          <h3>Riwayat Percakapan</h3>
+          <button class="close-history" id="close-history">✕</button>
+        </div>
+        <div id="history-list">
+          <div class="no-history">Tidak ada riwayat percakapan</div>
+        </div>
+        <button class="clear-history-btn" id="clear-history-btn">Hapus Semua Riwayat</button>
+      </div>
+      
+      <div class="chat-body" id="chat-body">
+        <!-- Pesan akan dimuat secara dinamis -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." autocomplete="off">
+        <button id="send-button">Kirim</button>
+      </div>
+      <div class="chat-nav">
+        <button class="store-btn" id="chat-go-to-store">Lanjut ke Web Store</button>
+        <button class="payment-btn" id="chat-go-to-payment">Lanjut ke Pembayaran</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notification" id="notification">File berhasil diupload!</div>
+
+  <script>
+    // ==================== FUNGSI JAM REAL-TIME ====================
+    function updateRealTimeClock() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      document.getElementById('realTimeClock').textContent = timeString;
+      setTimeout(updateRealTimeClock, 1000);
+    }
+    
+    // ==================== SIDEBAR FUNCTIONALITY ====================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarLinks = document.querySelectorAll('.sidebar-menu a[data-section]');
+    const contentSections = document.querySelectorAll('.content-section');
+    const sidebarChatButton = document.getElementById('sidebar-chat-button');
+    const logoutLink = document.getElementById('logout-link');
+
+    // Toggle sidebar on mobile
+    sidebarToggle.addEventListener('click', function() {
+      sidebar.classList.toggle('active');
+    });
+
+    // Switch between content sections (only for links with data-section attribute)
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remove active class from all links
+        document.querySelectorAll('.sidebar-menu a[data-section]').forEach(l => l.classList.remove('active'));
+        
+        // Add active class to clicked link
+        this.classList.add('active');
+        
+        // Hide all content sections
+        contentSections.forEach(section => {
+          section.classList.remove('active');
+        });
+        
+        // Show the selected content section
+        const sectionId = this.getAttribute('data-section');
+        if (sectionId) {
+          document.getElementById(sectionId).classList.add('active');
+        }
+        
+        // Close sidebar on mobile after selection
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('active');
+        }
+      });
+    });
+
+    // Open chat from sidebar button
+    sidebarChatButton.addEventListener('click', function(e) {
+      document.getElementById('chat-container').style.display = 'flex';
+      
+      // Close sidebar on mobile after selection
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('active');
+      }
+    });
+
+    // ==================== LOGIN & SIGNUP SYSTEM ====================
+    // Variabel untuk menyimpan data user (simulasi database)
+    let users = JSON.parse(localStorage.getItem('users')) || [
+      { username: 'admin', email: 'admin@example.com', password: 'admin123' }
+    ];
+
+    // Simpan token reset password (simulasi database)
+    let resetTokens = JSON.parse(localStorage.getItem('resetTokens')) || {};
+
+    // Elemen DOM
+    const loginContainer = document.getElementById('loginContainer');
+    const closeLogin = document.getElementById('closeLogin');
+    const loginSubmit = document.getElementById('loginSubmit');
+    const signupSubmit = document.getElementById('signupSubmit');
+    const switchToSignup = document.getElementById('switchToSignup');
+    const switchToLogin = document.getElementById('switchToLogin');
+    const switchToForgotPassword = document.getElementById('switchToForgotPassword');
+    const backToLoginFromForgot = document.getElementById('backToLoginFromForgot');
+    const backToLoginFromReset = document.getElementById('backToLoginFromReset');
+    const sendResetLink = document.getElementById('sendResetLink');
+    const resetPasswordSubmit = document.getElementById('resetPasswordSubmit');
+    const loginContent = document.getElementById('loginContent');
+    const signupContent = document.getElementById('signupContent');
+    const forgotPasswordContent = document.getElementById('forgotPasswordContent');
+    const resetPasswordContent = document.getElementById('resetPasswordContent');
+    const mainContent = document.getElementById('mainContent');
+
+    // Fungsi toggle password visibility
+    function setupPasswordToggles() {
+      // Login form
+      document.getElementById('toggleLoginPassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('loginPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+      
+      // Signup form
+      document.getElementById('toggleSignupPassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('signupPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+      
+      document.getElementById('toggleSignupConfirmPassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('signupConfirmPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+      
+      // Reset password form
+      document.getElementById('toggleResetNewPassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('resetNewPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+      
+      document.getElementById('toggleResetConfirmPassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('resetConfirmPassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+      
+      // Delete account form
+      document.getElementById('toggleDeletePassword').addEventListener('click', function() {
+        const passwordField = document.getElementById('deletePassword');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+    }
+
+    // Fungsi validasi email
+    function isValidEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // Fungsi validasi password
+    function isValidPassword(password) {
+      return password.length >= 6;
+    }
+
+    // Fungsi untuk update UI setelah login
+    function updateLoginUI(isLoggedIn) {
+      if (isLoggedIn) {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+      }
+    }
+
+    // Fungsi untuk menampilkan konten utama setelah login berhasil
+    function showMainContent() {
+      loginContainer.style.display = 'none';
+      mainContent.style.display = 'block';
+      tryPlayMusic();
+    }
+
+    // Cek apakah user sudah login saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mulai jam real-time
+      updateRealTimeClock();
+      
+      // Setup password toggles
+      setupPasswordToggles();
+      
+      // Selalu tampilkan form login saat halaman dimuat
+      loginContainer.style.display = 'flex';
+      loginContent.style.display = 'flex';
+      signupContent.style.display = 'none';
+      forgotPasswordContent.style.display = 'none';
+      resetPasswordContent.style.display = 'none';
+      
+      // Inisialisasi chat dan efek glitch
+      initChat();
+      startProductGlitchEffect();
+      
+      // Deteksi mobile dan efek salju
+      if (isMobileDevice()) {
+        popupWarning.style.display = 'flex';
+      }
+
+      // Inisialisasi media upload center
+      initMediaUploadCenter();
+      
+      // Tampilkan produk
+      displayProduk();
+    });
+
+    // Tutup form login
+    closeLogin.addEventListener('click', function() {
+      // Jangan biarkan user menutup form login kecuali sudah login
+      const currentUser = localStorage.getItem('currentUser');
+      if (!currentUser) {
+        alert('Anda harus login terlebih dahulu untuk mengakses halaman ini');
+      }
+    });
+
+    // Switch antara login dan sign up
+    switchToSignup.addEventListener('click', function(e) {
+      e.preventDefault();
+      loginContent.style.display = 'none';
+      signupContent.style.display = 'flex';
+      forgotPasswordContent.style.display = 'none';
+      resetPasswordContent.style.display = 'none';
+    });
+
+    switchToLogin.addEventListener('click', function(e) {
+      e.preventDefault();
+      signupContent.style.display = 'none';
+      loginContent.style.display = 'flex';
+      forgotPasswordContent.style.display = 'none';
+      resetPasswordContent.style.display = 'none';
+    });
+
+    // Switch ke form lupa password
+    switchToForgotPassword.addEventListener('click', function(e) {
+      e.preventDefault();
+      loginContent.style.display = 'none';
+      signupContent.style.display = 'none';
+      forgotPasswordContent.style.display = 'flex';
+      resetPasswordContent.style.display = 'none';
+    });
+
+    // Kembali ke login dari form lupa password
+    backToLoginFromForgot.addEventListener('click', function(e) {
+      e.preventDefault();
+      loginContent.style.display = 'flex';
+      signupContent.style.display = 'none';
+      forgotPasswordContent.style.display = 'none';
+      resetPasswordContent.style.display = 'none';
+    });
+
+    // Kembali ke login dari form reset password
+    backToLoginFromReset.addEventListener('click', function(e) {
+      e.preventDefault();
+      loginContent.style.display = 'flex';
+      signupContent.style.display = 'none';
+      forgotPasswordContent.style.display = 'none';
+      resetPasswordContent.style.display = 'none';
+    });
+
+    // Proses login
+    loginSubmit.addEventListener('click', function() {
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      
+      if (!username || !password) {
+        alert('Silakan isi username dan password');
+        return;
+      }
+      
+      const user = users.find(u => u.username === username && u.password === password);
+      
+      if (user) {
+        alert('Login berhasil!');
+        // Simpan data user di localStorage
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        // Update UI untuk user yang login
+        updateLoginUI(true);
+        // Tampilkan konten utama
+        showMainContent();
+        
+        // Reset form
+        document.getElementById('loginUsername').value = '';
+        document.getElementById('loginPassword').value = '';
+      } else {
+        alert('Username atau password salah');
+      }
+    });
+
+    // Proses sign up
+    signupSubmit.addEventListener('click', function() {
+      const username = document.getElementById('signupUsername').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value.trim();
+      const confirmPassword = document.getElementById('signupConfirmPassword').value.trim();
+      
+      // Validasi
+      if (!username || !email || !password || !confirmPassword) {
+        alert('Silakan isi semua field');
+        return;
+      }
+      
+      if (!isValidEmail(email)) {
+        alert('Email tidak valid');
+        return;
+      }
+      
+      if (!isValidPassword(password)) {
+        alert('Password harus minimal 6 karakter');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        alert('Password dan konfirmasi password tidak cocok');
+        return;
+      }
+      
+      // Cek apakah username/email sudah terdaftar
+      if (users.some(u => u.username === username)) {
+        alert('Username sudah digunakan');
+        return;
+      }
+      
+      if (users.some(u => u.email === email)) {
+        alert('Email sudah terdaftar');
+        return;
+      }
+      
+      // Tambahkan user baru
+      const newUser = { username, email, password };
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      alert('Pendaftaran berhasil! Silakan login');
+      signupContent.style.display = 'none';
+      loginContent.style.display = 'flex';
+      
+      // Reset form
+      document.getElementById('signupUsername').value = '';
+      document.getElementById('signupEmail').value = '';
+      document.getElementById('signupPassword').value = '';
+      document.getElementById('signupConfirmPassword').value = '';
+    });
+
+    // ==================== FITUR LUPA PASSWORD ====================
+    // Kirim link reset password
+    sendResetLink.addEventListener('click', function() {
+      const email = document.getElementById('forgotPasswordEmail').value.trim();
+      
+      if (!email) {
+        alert('Silakan masukkan email Anda');
+        return;
+      }
+      
+      if (!isValidEmail(email)) {
+        alert('Format email tidak valid');
+        return;
+      }
+      
+      // Cek apakah email terdaftar
+      const user = users.find(u => u.email === email);
+      if (!user) {
+        alert('Email tidak terdaftar dalam sistem');
+        return;
+      }
+      
+      // Buat token reset (simulasi)
+      const token = generateToken(32);
+      const expiry = Date.now() + 3600000; // 1 jam dari sekarang
+      
+      // Simpan token (dalam aplikasi nyata, ini akan dikirim ke email)
+      resetTokens[token] = {
+        email: email,
+        expiry: expiry
+      };
+      localStorage.setItem('resetTokens', JSON.stringify(resetTokens));
+      
+      // Simulasi pengiriman email
+      alert(`Link reset password telah dikirim ke ${email} (simulasi). Token: ${token}`);
+      
+      // Tampilkan form reset password
+      forgotPasswordContent.style.display = 'none';
+      resetPasswordContent.style.display = 'flex';
+      
+      // Simpan token di localStorage untuk simulasi
+      localStorage.setItem('currentResetToken', token);
+      
+      // Reset form
+      document.getElementById('forgotPasswordEmail').value = '';
+    });
+
+    // Generate token acak
+    function generateToken(length) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let token = '';
+      for (let i = 0; i < length; i++) {
+        token += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return token;
+    }
+
+    // Proses reset password
+    resetPasswordSubmit.addEventListener('click', function() {
+      const newPassword = document.getElementById('resetNewPassword').value.trim();
+      const confirmPassword = document.getElementById('resetConfirmPassword').value.trim();
+      const token = localStorage.getItem('currentResetToken');
+      
+      if (!newPassword || !confirmPassword) {
+        alert('Silakan isi semua field');
+        return;
+      }
+      
+      if (!isValidPassword(newPassword)) {
+        alert('Password harus minimal 6 karakter');
+        return;
+      }
+      
+      if (newPassword !== confirmPassword) {
+        alert('Password dan konfirmasi password tidak cocok');
+        return;
+      }
+      
+      if (!token) {
+        alert('Token tidak valid atau sudah kadaluarsa');
+        return;
+      }
+      
+      // Cek token
+      const tokenData = resetTokens[token];
+      if (!tokenData || tokenData.expiry < Date.now()) {
+        alert('Token tidak valid atau sudah kadaluarsa');
+        return;
+      }
+      
+      // Update password user
+      const userIndex = users.findIndex(u => u.email === tokenData.email);
+      if (userIndex !== -1) {
+        users[userIndex].password = newPassword;
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        // Hapus token yang sudah digunakan
+        delete resetTokens[token];
+        localStorage.setItem('resetTokens', JSON.stringify(resetTokens));
+        localStorage.removeItem('currentResetToken');
+        
+        alert('Password berhasil direset! Silakan login dengan password baru Anda');
+        resetPasswordContent.style.display = 'none';
+        loginContent.style.display = 'flex';
+        
+        // Reset form
+        document.getElementById('resetNewPassword').value = '';
+        document.getElementById('resetConfirmPassword').value = '';
+      } else {
+        alert('User tidak ditemukan');
+      }
+    });
+
+    // ==================== MUSIK OTOMATIS ====================
+    const backgroundMusic = document.getElementById('background-music');
+    const musicControl = document.getElementById('music-control');
+    let isMusicPlaying = false;
+
+    function tryPlayMusic() {
+        backgroundMusic.volume = 0.3;
+        const playPromise = backgroundMusic.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                isMusicPlaying = true;
+                musicControl.textContent = '❚❚';
+            }).catch(error => {
+                isMusicPlaying = false;
+                musicControl.textContent = '♪';
+                console.log("Music play prevented:", error);
+            });
+        } else {
+            isMusicPlaying = true;
+            musicControl.textContent = '❚❚';
+        }
+    }
+
+    function toggleMusic() {
+      if (isMusicPlaying) {
+        backgroundMusic.pause();
+        isMusicPlaying = false;
+        musicControl.textContent = '♪';
+      } else {
+        tryPlayMusic();
+      }
+    }
+
+    musicControl.addEventListener('click', toggleMusic);
+
+    // ==================== QRIS INTERAKTIF ====================
+    const barcodeImage = document.getElementById('barcode');
+    if (barcodeImage) {
+      barcodeImage.addEventListener('click', function() {
+        const imageUrl = this.src;
+        window.open(imageUrl, '_blank');
+      });
+    }
+
+    // ==================== PRODUK DAN FUNGSIONALITAS UTAMA ====================
+    const produk = [
+      { id: 1, nama: 'Panel 1GB', harga: 1000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 1GB cocok untuk penggunaan ringan. Termasuk kuota 1GB, kecepatan tinggi, masa aktif 30 hari, dan support 24/7." },
+      { id: 2, nama: 'Panel 2GB', harga: 2000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 2GB untuk penggunaan menengah. Menawarkan kuota 2GB, bisa dibagi ke beberapa perangkat, tanpa throttle kecepatan, dan garansi pengisian ulang." },
+      { id: 3, nama: 'Panel 3GB', harga: 3000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 3GB ideal untuk kebutuhan harian. Dilengkapi kuota 3GB, stabil untuk browsing dan streaming, serta fitur keamanan standar." },
+      { id: 4, nama: 'Panel 4GB', harga: 4000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 4GB menawarkan keseimbangan. Dengan kuota 4GB, cocok untuk gamer kasual dan pekerja remote, dilengkapi akses cepat ke server." },
+      { id: 5, nama: 'Panel 5GB', harga: 5000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 5GB adalah pilihan populer. Menyediakan kuota 5GB, cocok untuk streaming HD dan video conference, serta dukungan multi-platform." },
+      { id: 6, nama: 'Panel 6GB', harga: 6000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 6GB untuk penggunaan intensif. Dengan kuota 6GB, koneksi sangat stabil untuk download besar dan aktivitas online berat." },
+      { id: 7, nama: 'Panel 7GB', harga: 7000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 7GB memberikan performa ekstra. Kuota 7GB dengan prioritas jaringan, cocok untuk bisnis kecil dan penggunaan keluarga." },
+      { id: 8, nama: 'Panel 8GB', harga: 8000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 8GB adalah solusi lengkap. Kuota 8GB, fitur VPN terintegrasi, dan perlindungan DDoS untuk keamanan lebih." },
+      { id: 9, nama: 'Panel 9GB', harga: 9000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 9GB untuk pengguna tingkat lanjut. Kuota 9GB, dengan opsi kustomisasi server dan performa maksimal untuk aplikasi berat." },
+      { id: 10, nama: 'Panel 10GB', harga: 10000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel 10GB, paket tertinggi reguler. Kuota 10GB, sangat direkomendasikan untuk profesional dan penggunaan data tinggi." },
+      { id: 11, nama: 'Panel Unli', harga: 15000, gambar: 'https://cdn.xtermai.xyz/i6/8LYhd',
+        deskripsi: "Panel Unlimited adalah paket premium kami. Kuota tanpa batas, kecepatan stabil 24/7, prioritas jaringan, dan masa aktif 30 hari. Pilihan terbaik untuk penggunaan berat!" },
+    ];
+
+    function displayProduk() {
+      const produkContainer = document.getElementById('produk');
+      produkContainer.innerHTML = '';
+      for (let i = 0; i < produk.length; i++) {
+        const item = produk[i];
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('produk-item');
+        itemDiv.innerHTML = `
+          <img src="${item.gambar}" alt="${item.nama}">
+          <h2>${item.nama}</h2>
+          <p>Rp ${item.harga.toLocaleString()}</p>
+          <button onclick="beliProduk(${item.id}, event)">Beli</button>
+        `;
+        produkContainer.appendChild(itemDiv);
+      }
+    }
+
+    function beliProduk(id, event) {
+      const produkDipilih = produk.find((item) => item.id === id);
+      if (produkDipilih) {
+        createRipple(event);
+        const productItem = event.currentTarget.closest('.produk-item');
+        const glitch = productItem.querySelector('.produk-glitch');
+        if (glitch) {
+          glitch.style.opacity = '0.5';
+          setTimeout(() => {
+            glitch.style.opacity = '0';
+          }, 300);
+        }
+        const pesan = `Halo, saya ingin membeli ${produkDipilih.nama} seharga Rp ${produkDipilih.harga}`;
+        const nomorWhatsApp = '6285972533957';
+        const urlWhatsApp = `https://wa.me/${nomorWhatsApp}?text=${encodeURIComponent(pesan)}`;
+        setTimeout(() => {
+          window.open(urlWhatsApp, '_blank');
+        }, 300);
+      } else {
+        alert('Produk tidak ditemukan');
+      }
+    }
+
+    function createRipple(event) {
+      const button = event.currentTarget;
+      const circle = document.createElement("span");
+      const diameter = Math.max(button.clientWidth, button.clientHeight);
+      const radius = diameter / 2;
+      circle.classList.add("ripple");
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${event.offsetX - radius}px`;
+      circle.style.top = `${event.offsetY - radius}px`;
+      button.appendChild(circle);
+    }
+
+    document.getElementById('go-to-store').addEventListener('click', function() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loading-text').textContent = 'Mengarahkan ke Web Store...';
+      setTimeout(() => {
+        window.location.href = 'https://buylink.id/Tiyanstore';
+      }, 1000);
+    });
+
+    document.getElementById('go-to-payment-page').addEventListener('click', function() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loading-text').textContent = 'Mengarahkan ke halaman pembayaran...';
+      setTimeout(() => {
+        window.location.href = 'https://tiyanzxbella.github.io/Website-payment/';
+      }, 1000);
+    });
+
+    // ==================== FITUR HAPUS AKUN ====================
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    const backToSafety = document.getElementById('backToSafety');
+    
+    // Kembali ke halaman utama
+    backToSafety.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelector('.sidebar-menu a[data-section="produk-section"]').click();
+    });
+    
+    // Proses hapus akun
+    deleteAccountBtn.addEventListener('click', function() {
+      const username = document.getElementById('deleteUsername').value.trim();
+      const password = document.getElementById('deletePassword').value.trim();
+      
+      if (!username || !password) {
+        alert('Silakan isi username dan password');
+        return;
+      }
+      
+      // Dapatkan user yang login
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      
+      // Verifikasi user
+      if (!currentUser) {
+        alert('Anda belum login');
+        return;
+      }
+      
+      if (currentUser.username !== username) {
+        alert('Username tidak sesuai dengan akun yang sedang login');
+        return;
+      }
+      
+      // Verifikasi password
+      const userIndex = users.findIndex(u => u.username === username && u.password === password);
+      
+      if (userIndex === -1) {
+        alert('Password salah');
+        return;
+      }
+      
+      // Konfirmasi penghapusan
+      if (!confirm('Apakah Anda yakin ingin menghapus akun Anda secara permanen? Tindakan ini tidak dapat dibatalkan.')) {
+        return;
+      }
+      
+      // Hapus akun dari database
+      users.splice(userIndex, 1);
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      // Logout user
+      logoutUser();
+      
+      alert('Akun Anda telah berhasil dihapus');
+    });
+
+    // ==================== AI CHAT ====================
+    const chatContainer = document.getElementById('chat-container');
+    const closeChatButton = document.getElementById('close-chat');
+    const chatBody = document.getElementById('chat-body');
+    const chatInput = document.getElementById('chat-input');
+    const sendButton = document.getElementById('send-button');
+    const typingIndicator = document.getElementById('typing-indicator');
+    const showHistoryBtn = document.getElementById('show-history');
+    const chatHistoryPanel = document.getElementById('chat-history-panel');
+    const closeHistoryBtn = document.getElementById('close-history');
+    const historyList = document.getElementById('history-list');
+    const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+    let conversationHistory = [];
+    const CHAT_HISTORY_KEY = 'yolaAssistantChatHistory';
+    const MAX_HISTORY_ITEMS = 10;
+
+    function initChat() {
+      clearChat();
+    }
+
+    function clearChat() {
+      chatBody.innerHTML = '';
+      conversationHistory = [];
+      addWelcomeMessage();
+    }
+
+    function addWelcomeMessage() {
+      conversationHistory = [{ 
+        role: "assistant", 
+        content: "Halo! Saya adalah AI Assistant yang siap membantu Anda dengan pertanyaan seputar produk dan pembelian.\n\nAnda bisa menanyakan tentang:\n- Detail produk dan spesifikasi\n- Harga dan promo terbaru\n- Metode pembayaran yang tersedia\n- Status pesanan\n- grup wa/grup bot\n\nBagaimana saya bisa membantu Anda hari ini?" 
+      }];
+
+      const welcomeMessageHtml = `
+        <div class="chat-message bot-message">
+          <div class="message-header">
+            <strong>AI Assistant</strong>
+            <span class="message-time">${getCurrentTime()}</span>
+          </div>
+          ${formatMessageWithLinks(conversationHistory[0].content).innerHTML}
+          ${addSuggestedQuestionsHTML()}
+          <div class="ai-notification">
+            <strong>Penting:</strong> AI ini dapat mengenali kata-words dengan typo seperti "prodiukk", "pembayaran", "harga", dll.
+          </div>
+        </div>
+      `;
+      
+      chatBody.innerHTML = welcomeMessageHtml;
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    const suggestedQuestions = [
+      "Apa saja produk yang tersedia?",
+      "Bagaimana cara melakukan pembayaran?",
+      "Apakah ada promo saat ini?",
+      "Berapa harga panel 5GB?",
+      "Bagaimana cara menghubungi customer service?",
+      "Bagaimana cara bergabung ke Grup WhatsApp?"
+    ];
+
+    function addSuggestedQuestionsHTML() {
+      let html = '<div class="suggested-questions">';
+      suggestedQuestions.forEach(question => {
+        html += `<div class="suggested-question" onclick="setSuggestedQuestion('${question.replace(/'/g, "\\'")}')">${question}</div>`;
+      });
+      html += '</div>';
+      return html;
+    }
+
+    function setSuggestedQuestion(question) {
+      chatInput.value = question;
+      sendMessage(); 
+    }
+
+    showHistoryBtn.addEventListener('click', function() {
+      if (chatHistoryPanel.style.display === 'none' || !chatHistoryPanel.style.display) {
+        loadChatHistory();
+        chatHistoryPanel.style.display = 'block';
+        setTimeout(() => {
+          chatHistoryPanel.style.right = '0';
+        }, 10);
+      } else {
+        chatHistoryPanel.style.right = '-380px';
+        setTimeout(() => {
+          chatHistoryPanel.style.display = 'none';
+        }, 300);
+      }
+    });
+
+    closeHistoryBtn.addEventListener('click', function() {
+      chatHistoryPanel.style.right = '-380px';
+      setTimeout(() => {
+          chatHistoryPanel.style.display = 'none';
+        }, 300);
+    });
+
+    function getChatHistory() {
+      const saved = localStorage.getItem(CHAT_HISTORY_KEY);
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function saveCurrentConversationToHistory() {
+      if (conversationHistory.length > 1) {
+        const chatData = {
+          id: Date.now(),
+          timestamp: Date.now(),
+          messages: [...conversationHistory],
+          preview: conversationHistory.find(msg => msg.role === 'user')?.content.substring(0, 100) || "Percakapan baru"
+        };
+
+        let history = getChatHistory();
+        history.push(chatData);
+        if (history.length > MAX_HISTORY_ITEMS) {
+          history = history.slice(history.length - MAX_HISTORY_ITEMS);
+        }
+        localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(history));
+      }
+    }
+
+    function loadChatHistory() {
+      const savedChats = getChatHistory();
+      historyList.innerHTML = '';
+      
+      if (savedChats.length === 0) {
+        historyList.innerHTML = '<div class="no-history">Tidak ada riwayat percakapan</div>';
+      } else {
+        savedChats.slice().reverse().forEach((chat) => {
+          const chatItem = document.createElement('div');
+          chatItem.className = 'chat-history-item';
+          
+          const chatDate = new Date(chat.timestamp);
+          const formattedDate = chatDate.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          });
+          const formattedTime = chatDate.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          
+          chatItem.innerHTML = `
+            <h4>Percakapan pada ${formattedDate}</h4>
+            <p>${chat.preview}</p>
+            <div class="time">${formattedTime}</div>
+          `;
+          
+          chatItem.addEventListener('click', () => {
+            loadSelectedChat(chat.messages);
+            chatHistoryPanel.style.right = '-380px';
+            setTimeout(() => {
+              chatHistoryPanel.style.display = 'none';
+            }, 300);
+          });
+          
+          historyList.appendChild(chatItem);
+        });
+      }
+    }
+
+    function clearAllChatHistory() {
+      if (confirm('Apakah Anda yakin ingin menghapus semua riwayat percakapan? Tindakan ini tidak dapat dibatalkan.')) {
+        localStorage.removeItem(CHAT_HISTORY_KEY);
+        loadChatHistory();
+        alert('Semua riwayat percakapan telah dihapus.');
+      }
+    }
+
+    clearHistoryBtn.addEventListener('click', clearAllChatHistory);
+
+    function loadSelectedChat(messages) {
+      chatBody.innerHTML = '';
+      conversationHistory = [...messages];
+      
+      messages.forEach(msg => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${msg.role === 'user' ? 'user-message' : 'bot-message'}`;
+        
+        const header = document.createElement('div');
+        header.className = 'message-header';
+        header.innerHTML = `<strong>${msg.role === 'user' ? 'Anda' : 'AI Assistant'}</strong><span class="message-time">${getCurrentTime()}</span>`;
+        
+        messageDiv.appendChild(header);
+        
+        const contentDiv = formatMessageWithLinks(msg.content);
+        messageDiv.appendChild(contentDiv);
+        
+        chatBody.appendChild(messageDiv);
+      });
+      
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function formatMessageWithLinks(text) {
+      const div = document.createElement('div');
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      
+      const lines = text.split('\n');
+
+      lines.forEach((line, lineIndex) => {
+        const lineFragment = document.createDocumentFragment();
+        let lastIndex = 0;
+        
+        const matches = [...line.matchAll(urlRegex)];
+        
+        matches.forEach(match => {
+          const url = match[0];
+          const matchIndex = match.index;
+          
+          if (matchIndex > lastIndex) {
+            lineFragment.appendChild(document.createTextNode(line.substring(lastIndex, matchIndex)));
+          }
+          
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = url;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.style.color = '#4CAF50';
+          link.style.textDecoration = 'none';
+          link.style.fontWeight = 'bold';
+          link.style.cursor = 'pointer';
+          link.addEventListener('mouseover', () => { link.style.textDecoration = 'underline'; });
+          link.addEventListener('mouseout', () => { link.style.textDecoration = 'none'; });
+          lineFragment.appendChild(link);
+          
+          lastIndex = matchIndex + url.length;
+        });
+        
+        if (lastIndex < line.length) {
+          lineFragment.appendChild(document.createTextNode(line.substring(lastIndex)));
+        }
+        
+        div.appendChild(lineFragment);
+        
+        if (lineIndex < lines.length - 1) {
+          div.appendChild(document.createElement('br'));
+        }
+      });
+      
+      return div;
+    }
+
+    function showTypingIndicator() {
+      typingIndicator.style.display = 'block';
+    }
+
+    function hideTypingIndicator() {
+      typingIndicator.style.display = 'none';
+    }
+
+    function getCurrentTime() {
+      const now = new Date();
+      return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Fungsi untuk mengenali typo dan mengembalikan kata kunci yang benar
+    function recognizeTypo(word) {
+      const keywordMap = {
+        'produk': ['prodiuk', 'prodak', 'produck', 'produt', 'prooduk', 'produkt', 'product', 'produck', 'item', 'barang'],
+        'pembayaran': ['pembayran', 'pembayarn', 'pembayran', 'pembayarran', 'bayar', 'payment', 'cara bayar', 'metode bayar'],
+        'harga': ['hargga', 'harha', 'harg', 'harganya', 'price', 'brp', 'berapa'],
+        'panel': ['panell', 'pannel', 'panal', 'penel', 'panil'],
+        'unli': ['unli', 'unlimited', 'unlimeted', 'unl', 'tanpa batas'],
+        'gb': ['gb', 'g', 'gigabyte', 'giga'],
+        'whatsapp': ['wa', 'whatsapp', 'watsapp', 'whatsap', 'grup wa', 'grup bot', 'grup whatsapp'],
+        'cs': ['cs', 'customer service', 'cust service', 'cust svc', 'bantuan', 'kontak', 'hubungi'],
+        'promo': ['promosi', 'diskon', 'voucher', 'potongan harga', 'sale'],
+        'fitur': ['isi', 'keunggulan', 'spesifikasi', 'detail', 'deskripsi', 'apa saja'],
+        'status': ['pesanan', 'order', 'cek order', 'status order'],
+        'halo': ['hai', 'hello', 'assalamualaikum', 'salam'],
+        'terima kasih': ['thanks', 'makasih', 'thank you', 'mksh']
+      };
+      
+      const normalizedWord = word.toLowerCase().trim();
+      
+      // Prioritaskan pencarian kata kunci yang tepat atau variasi yang persis
+      for (const [correctWord, variations] of Object.entries(keywordMap)) {
+        if (variations.includes(normalizedWord)) {
+          return correctWord;
+        }
+      }
+      
+      // Jika tidak ada variasi persis, cek apakah kata mengandung kata kunci yang benar
+      for (const correctWord of Object.keys(keywordMap)) {
+        if (normalizedWord.includes(correctWord)) {
+          return correctWord;
+        }
+      }
+      
+      return word;
+    }
+
+    async function getAIResponse(message) {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1500));
+      
+      const words = message.toLowerCase().split(/\s+/);
+      const normalizedWords = words.map(word => recognizeTypo(word));
+      const normalizedMessage = normalizedWords.join(' ');
+
+      // --- Respon Sapaan ---
+      if (normalizedMessage.includes('halo') || normalizedMessage.includes('hai') || normalizedMessage.includes('assalamualaikum')) {
+        const greetings = [
+          "Halo juga! 😊 Senang bisa membantu Anda hari ini. Ada yang bisa saya bantu seputar produk panel kami?",
+          "Hai! 👋 Selamat datang. Silakan tanyakan apa pun tentang produk panel kami.",
+          "Salam! Saya Yola Assistant, siap membantu. Apa yang ingin Anda ketahui hari ini?",
+          "Halo! Apa kabar? Ada yang bisa Yola bantu? 😊"
+        ];
+        return greetings[Math.floor(Math.random() * greetings.length)];
+      }
+
+      // --- Pertanyaan Detail Produk / Fitur ---
+      let foundProduct = null;
+      let foundFeatureInquiry = false;
+      let foundPriceInquiry = false;
+
+      for (const item of produk) {
+        const itemLower = item.nama.toLowerCase();
+        // Cek apakah pesan mengandung nama produk (misal "panel 5gb" atau "5gb")
+        if (normalizedMessage.includes(itemLower) || normalizedMessage.includes(itemLower.replace('panel ', ''))) {
+          foundProduct = item;
+          // Cek apakah ada kata kunci fitur/isi
+          for (const fk of ['isi', 'fitur', 'keunggulan', 'spesifikasi', 'detail', 'deskripsi']) {
+            if (normalizedMessage.includes(fk)) {
+              foundFeatureInquiry = true;
+              break;
+            }
+          }
+          // Cek apakah ada kata kunci harga
+          for (const pk of ['harga', 'price', 'berapa', 'brp']) {
+            if (normalizedMessage.includes(pk)) {
+              foundPriceInquiry = true;
+              break;
+            }
+          }
+          break; // Produk ditemukan, keluar dari loop
+        }
+      }
+
+      if (foundProduct) {
+        if (foundFeatureInquiry) {
+          return `Tentu, ini detail untuk ${foundProduct.nama}:\n\n${foundProduct.deskripsi}\n\nUntuk informasi lebih lanjut atau pembelian, kunjungi: https://buylink.id/Tiyanstore`;
+        } else if (foundPriceInquiry) {
+          return `Harga ${foundProduct.nama} adalah Rp ${foundProduct.harga.toLocaleString()}. Ini sudah termasuk PPN. Anda bisa membelinya di: https://buylink.id/Tiyanstore`;
+        } else {
+          // Respon umum jika nama produk disebut tanpa keyword fitur/harga spesifik
+          return `Anda bertanya tentang ${foundProduct.nama}. Produk ini seharga Rp ${foundProduct.harga.toLocaleString()}. Apakah Anda ingin tahu lebih banyak tentang fitur-fiturnya atau cara membelinya?`;
+        }
+      }
+
+      // --- Pertanyaan Umum Produk/Panel ---
+      if (normalizedMessage.includes('produk') || normalizedMessage.includes('panel')) {
+        if (normalizedMessage.includes('apa saja') || normalizedMessage.includes('daftar')) {
+          let productList = "Tentu, kami menyediakan berbagai produk panel:\n";
+          produk.forEach(item => {
+            productList += `- ${item.nama}: Rp ${item.harga.toLocaleString()}\n`;
+          });
+          productList += "\nSetiap panel dilengkapi dengan fitur dan keunggulan masing-masing. Kunjungi https://buylink.id/Tiyanstore untuk detail lebih lanjut.";
+          return productList;
+        } else {
+          return "Kami menyediakan berbagai panel dengan kuota mulai dari 1GB hingga Unlimited. Setiap produk memiliki keunggulan:\n\n- Panel Reguler (1GB-10GB): Harga ekonomis\n- Panel Unlimited: Tanpa batas kuota\n\nProduk kami mendukung semua operator utama dengan koneksi stabil. Kunjungi https://buylink.id/Tiyanstore untuk informasi lengkap. Ada yang bisa saya bantu lebih spesifik?";
+        }
+      }
+      
+      // --- Respon Lain yang Sudah Ada ---
+      if (normalizedMessage.includes('pembayaran') || normalizedMessage.includes('bayar') || normalizedMessage.includes('payment')) {
+        return "Kami menerima berbagai metode pembayaran:\n\n1. Transfer Bank (BCA, BRI, Mandiri, BNI)\n2. E-Wallet (DANA, OVO, ShopeePay, Gopay)\n3. QRIS\n4. Alfamart/Indomaret\n\nSetelah pembayaran, produk akan dikirim secara instan ke email Anda. Untuk petunjuk lengkap, kunjungi https://tiyanzxbella.github.io/Website-payment/ atau klik tombol 'Lanjut ke Pembayaran' di bawah.";
+      }
+      else if (normalizedMessage.includes('promo') || normalizedMessage.includes('diskon') || normalizedMessage.includes('voucher')) {
+        return "Saat ini kami memiliki promo spesial:\n\n🔥 Paket Hemat 5GB + 5GB hanya Rp 7.500 (normal Rp 10.000)\n🎁 Beli 2 Panel Unli gratis 1 Panel 5GB\n\nPromo berlaku hingga akhir bulan. Gunakan kode 'HEMAT10' untuk diskon tambahan 10%! Info lengkap: https://buylink.id/Tiyanstore";
+      }
+      else if (normalizedMessage.includes('cs') || normalizedMessage.includes('customer service') || normalizedMessage.includes('bantuan')) {
+        return "Tim customer service kami siap membantu 24 jam melalui:\n\n📞 WhatsApp: https://wa.me/6285972533957\n📧 Email: support@tiyanstore.com\n\nAnda juga bisa bergabung dengan grup WhatsApp resmi kami untuk informasi lebih cepat: https://chat.whatsapp.com/EQkSNg1QgWG0pEaGWwdnuv";
+      }
+      else if (normalizedMessage.includes('status') || normalizedMessage.includes('pesanan') || normalizedMessage.includes('order')) {
+        return "Untuk mengecek status pesanan, Anda perlu:\n\n1. ID Transaksi (contoh: TY-20240620-123)\n2. Email yang digunakan saat pembelian\n\nSilakan kirim detail tersebut atau screenshot bukti transfer ke CS kami di https://wa.me/6285972533957 untuk bantuan lebih lanjut.";
+      }
+      else if (normalizedMessage.includes('grup whatsapp') || normalizedMessage.includes('grup wa') || normalizedMessage.includes('grup bot')) {
+        return "Anda bisa bergabung dengan Grup WhatsApp resmi kami untuk mendapatkan informasi terbaru dan berdiskusi dengan komunitas kami:\n\n📱 Klik di sini untuk bergabung: https://chat.whatsapp.com/EQkSNg1QgWG0pEaGWwdnuv\n\nDi grup ini, Anda bisa mendapatkan update promo, bertanya langsung ke admin, dan berbagi pengalaman dengan pengguna lain.";
+      }
+      else if (normalizedMessage.includes('terima kasih')) {
+        return "Sama-sama! 😊 Jika ada pertanyaan lain, jangan ragu untuk bertanya ya. Semoga harimu menyenangkan!";
+      }
+      else {
+        // Fallback response
+        const randomResponses = [
+          "Saya bisa membantu dengan informasi produk dan pembelian. Bisakah Anda menjelaskan lebih detail pertanyaan Anda?",
+          "Maaf, saya belum sepenuhnya memahami pertanyaan Anda. Mungkin Anda bisa menanyakan tentang:\n- Daftar produk\n- Harga dan promo\n- Cara pembayaran\n- Status pesanan",
+          "Untuk pertanyaan yang lebih spesifik, Anda bisa menghubungi tim customer service kami di https://wa.me/6285972533957",
+          "Saya adalah AI Assistant khusus untuk informasi produk. Ada yang bisa saya bantu terkait panel kami?"
+        ];
+        return randomResponses[Math.floor(Math.random() * randomResponses.length)];
+      }
+    }
+
+    async function sendMessage() {
+      const message = chatInput.value.trim();
+      console.log("Attempting to send message:", message); // Debug log 1
+
+      if (message === '') {
+          console.log("Message is empty, not sending."); // Debug log 2
+          return; // Exit if message is empty
+      }
+
+      // Add user message to chat body
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.className = 'chat-message user-message';
+      const userHeader = document.createElement('div');
+      userHeader.className = 'message-header';
+      userHeader.innerHTML = `<strong>Anda</strong><span class="message-time">${getCurrentTime()}</span>`;
+      userMessageDiv.appendChild(userHeader);
+      userMessageDiv.appendChild(document.createTextNode(message)); // This adds the text
+      chatBody.appendChild(userMessageDiv);
+      console.log("User message displayed:", message); // Debug log 3
+
+      // Add user message to conversation history
+      conversationHistory.push({ role: "user", content: message });
+
+      // Clear input field immediately
+      chatInput.value = '';
+      
+      // Scroll to bottom
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Show typing indicator and disable input/button
+      showTypingIndicator();
+      sendButton.disabled = true;
+      chatInput.disabled = true; // Also disable input to prevent double sends
+      console.log("UI disabled, typing indicator shown."); // Debug log 4
+
+      try {
+          const aiResponse = await getAIResponse(message);
+          console.log("AI response generated:", aiResponse); // Debug log 5
+
+          // Add bot message to chat body
+          const botMessageDiv = document.createElement('div');
+          botMessageDiv.className = 'chat-message bot-message';
+          const botHeader = document.createElement('div');
+          botHeader.className = 'message-header';
+          botHeader.innerHTML = `<strong>AI Assistant</strong><span class="message-time">${getCurrentTime()}</span>`;
+          botMessageDiv.appendChild(botHeader);
+          const contentDiv = formatMessageWithLinks(aiResponse);
+          botMessageDiv.appendChild(contentDiv);
+          
+          // Add suggested questions if it's an initial response (conversation is short)
+          // This condition ensures suggested questions appear only after the very first bot response.
+          // Adjust this condition if you want suggested questions to appear more often or less.
+          if (conversationHistory.length <= 2) { 
+            const suggestedDiv = document.createElement('div');
+            suggestedDiv.innerHTML = addSuggestedQuestionsHTML();
+            botMessageDiv.appendChild(suggestedDiv);
+          }
+          
+          chatBody.appendChild(botMessageDiv);
+          console.log("Bot message displayed."); // Debug log 6
+
+          // Add bot message to conversation history
+          conversationHistory.push({ role: "assistant", content: aiResponse });
+
+      } catch (error) {
+          console.error("Error during AI response generation:", error); // Debug log 7
+          const errorMessageDiv = document.createElement('div');
+          errorMessageDiv.className = 'chat-message bot-message';
+          errorMessageDiv.innerHTML = `<div class="message-header"><strong>AI Assistant</strong><span class="message-time">${getCurrentTime()}</span></div><p style="color: red;">Maaf, terjadi kesalahan saat memproses permintaan Anda. Mohon coba lagi.</p>`;
+          chatBody.appendChild(errorMessageDiv);
+      } finally {
+          // Always re-enable UI elements
+          hideTypingIndicator();
+          sendButton.disabled = false;
+          chatInput.disabled = false;
+          chatBody.scrollTop = chatBody.scrollHeight; // Scroll again to show potential error message
+          console.log("UI re-enabled, scrolled to bottom."); // Debug log 8
+      }
+    }
+
+    closeChatButton.addEventListener('click', function() {
+      saveCurrentConversationToHistory();
+      chatContainer.style.display = 'none';
+      clearChat();
+    });
+
+    chatInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    sendButton.addEventListener('click', sendMessage);
+
+    document.getElementById('chat-go-to-store').addEventListener('click', function() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loading-text').textContent = 'Mengarahkan ke Web Store...';
+      setTimeout(() => {
+        window.location.href = 'https://buylink.id/Tiyanstore';
+      }, 1000);
+    });
+
+    document.getElementById('chat-go-to-payment').addEventListener('click', function() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('loading-text').textContent = 'Mengarahkan ke halaman pembayaran...';
+      setTimeout(() => {
+        window.location.href = 'https://tiyanzxbella.github.io/Website-payment/';
+      }, 1000);
+    });
+
+    // ==================== MEDIA UPLOAD CENTER ====================
+    function initMediaUploadCenter() {
+      // Data penyimpanan file
+      let mediaFiles = JSON.parse(localStorage.getItem('mediaFiles')) || [];
+      // PERUBAHAN: Kapasitas penyimpanan ditingkatkan menjadi 2GB (2048 MB)
+      const MAX_STORAGE = 2 * 1024 * 1024 * 1024; // 2 GB
+      
+      // Elemen DOM
+      const uploadForm = document.getElementById('uploadForm');
+      const fileInput = document.getElementById('fileInput');
+      const fileNameInput = document.getElementById('fileName');
+      const searchInput = document.getElementById('searchInput');
+      const fileList = document.getElementById('fileList');
+      const notification = document.getElementById('notification');
+      const storageText = document.getElementById('used-storage');
+      const storageBar = document.getElementById('storage-bar');
+      
+      // Update tampilan penyimpanan
+      function updateStorageDisplay() {
+        const totalSize = mediaFiles.reduce((sum, file) => sum + file.size, 0);
+        const usedPercent = (totalSize / MAX_STORAGE) * 100;
+        
+        // Format ukuran
+        let sizeText;
+        if (totalSize < 1024) {
+          sizeText = `${totalSize} bytes`;
+        } else if (totalSize < 1024 * 1024) {
+          sizeText = `${(totalSize / 1024).toFixed(1)} KB`;
+        } else if (totalSize < 1024 * 1024 * 1024) {
+          sizeText = `${(totalSize / (1024 * 1024)).toFixed(2)} MB`;
+        } else {
+          sizeText = `${(totalSize / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+        }
+        
+        storageText.textContent = `Penyimpanan: ${sizeText} dari 2 GB digunakan`;
+        storageBar.style.width = `${Math.min(usedPercent, 100)}%`;
+        
+        // Warna berdasarkan penggunaan
+        if (usedPercent > 90) {
+          storageBar.style.background = 'linear-gradient(90deg, #f44336, #d32f2f)';
+        } else if (usedPercent > 70) {
+          storageBar.style.background = 'linear-gradient(90deg, #ff9800, #f57c00)';
+        } else {
+          storageBar.style.background = 'linear-gradient(90deg, #8A2BE2, #4CAF50)';
+        }
+      }
+      
+      // Fungsi untuk menampilkan notifikasi
+      function showNotification(message, isError = false) {
+        notification.textContent = message;
+        notification.style.background = isError ? '#f44336' : '#28a745';
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+          notification.classList.remove('show');
+        }, 3000);
+      }
+      
+      // Fungsi untuk menyimpan file
+      function saveFiles() {
+        localStorage.setItem('mediaFiles', JSON.stringify(mediaFiles));
+        updateStorageDisplay();
+      }
+      
+      // Fungsi untuk menampilkan file
+      function displayFiles(filesToDisplay) {
+        fileList.innerHTML = '';
+        
+        if (filesToDisplay.length === 0) {
+          fileList.innerHTML = `
+            <div class="no-files">
+              <i class="fas fa-folder-open"></i>
+              <p>Tidak ada file yang ditemukan</p>
+            </div>
+          `;
+          return;
+        }
+        
+        filesToDisplay.forEach(file => {
+          // Tentukan ikon berdasarkan tipe file
+          let fileIcon = '📄';
+          if (file.type.includes('image')) fileIcon = '🖼️';
+          else if (file.type.includes('video')) fileIcon = '🎬';
+          else if (file.type.includes('audio')) fileIcon = '🎵';
+          else if (file.type.includes('zip') || file.type.includes('rar')) fileIcon = '📦';
+          
+          // Format ukuran file
+          let sizeText;
+          if (file.size < 1024) {
+            sizeText = `${file.size} bytes`;
+          } else if (file.size < 1024 * 1024) {
+            sizeText = `${(file.size / 1024).toFixed(1)} KB`;
+          } else if (file.size < 1024 * 1024 * 1024) {
+            sizeText = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+          } else {
+            sizeText = `${(file.size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+          }
+          
+          const fileCard = document.createElement('div');
+          fileCard.className = 'file-card';
+          fileCard.innerHTML = `
+            <div class="file-preview">
+              <div class="file-icon">${fileIcon}</div>
+              <div class="file-type-tag">${file.type.split('/')[0] || 'File'}</div>
+            </div>
+            <div class="file-info">
+              <div class="file-name" title="${file.name}">${file.name}</div>
+              <div class="file-date">${formatDate(file.date)}</div>
+              <div class="file-size">${sizeText}</div>
+              <div class="file-actions">
+                <a href="${file.data}" download="${file.name}" class="download-btn">
+                  <i class="fas fa-download"></i> Download
+                </a>
+                <div class="delete-btn" data-id="${file.id}">
+                  <i class="fas fa-trash"></i> Hapus
+                </div>
+              </div>
+            </div>
+          `;
+          
+          // Tambahkan event listener untuk tombol hapus
+          const deleteBtn = fileCard.querySelector('.delete-btn');
+          deleteBtn.addEventListener('click', function() {
+            const fileId = this.getAttribute('data-id');
+            deleteFile(fileId);
+          });
+          
+          fileList.appendChild(fileCard);
+        });
+      }
+      
+      // Fungsi untuk menghapus file
+      function deleteFile(fileId) {
+        if (!confirm('Apakah Anda yakin ingin menghapus file ini?')) {
+          return;
+        }
+        
+        const fileIndex = mediaFiles.findIndex(file => file.id == fileId);
+        if (fileIndex !== -1) {
+          mediaFiles.splice(fileIndex, 1);
+          saveFiles();
+          
+          // Tampilkan file yang tersisa (dengan filter video jika tidak sedang pencarian)
+          const searchTerm = searchInput.value.trim().toLowerCase();
+          if (searchTerm) {
+            displayFiles(mediaFiles.filter(file => 
+              file.name.toLowerCase().includes(searchTerm) || 
+              (file.type && file.type.toLowerCase().includes(searchTerm))
+            ));
+          } else {
+            displayFiles(mediaFiles.filter(file => !file.type.includes('video')));
+          }
+          
+          showNotification('File berhasil dihapus');
+        }
+      }
+      
+      // Fungsi untuk memformat tanggal
+      function formatDate(dateString) {
+        const options = { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        };
+        return new Date(dateString).toLocaleDateString('id-ID', options);
+      }
+      
+      // Fungsi untuk membaca file sebagai Data URL
+      function readFileAsDataURL(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+      
+      // Fungsi untuk menangani upload
+      uploadForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const file = fileInput.files[0];
+        const fileName = fileNameInput.value.trim() || file.name;
+        
+        if (!file) {
+          showNotification('Silakan pilih file terlebih dahulu!', true);
+          return;
+        }
+        
+        // PERUBAHAN: Batas ukuran file ditingkatkan menjadi 500MB
+        if (file.size > 500 * 1024 * 1024) { // 500MB
+          showNotification('File terlalu besar! Maksimal 500MB.', true);
+          return;
+        }
+        
+        // Hitung total ukuran penyimpanan
+        const totalSize = mediaFiles.reduce((sum, f) => sum + f.size, 0) + file.size;
+        if (totalSize > MAX_STORAGE) {
+          showNotification('Penyimpanan penuh! Hapus beberapa file.', true);
+          return;
+        }
+        
+        try {
+          // Baca file sebagai Data URL
+          const dataURL = await readFileAsDataURL(file);
+          
+          // Tambahkan file baru
+          const newFile = {
+            id: Date.now(),
+            name: fileName,
+            type: file.type,
+            size: file.size,
+            data: dataURL,
+            date: new Date().toISOString()
+          };
+          
+          mediaFiles.push(newFile);
+          saveFiles();
+          
+          // Tampilkan file yang tersisa (dengan filter video jika tidak sedang pencarian)
+          const searchTerm = searchInput.value.trim().toLowerCase();
+          if (searchTerm) {
+            displayFiles(mediaFiles.filter(file => 
+              file.name.toLowerCase().includes(searchTerm) || 
+              (file.type && file.type.toLowerCase().includes(searchTerm))
+            ));
+          } else {
+            displayFiles(mediaFiles.filter(file => !file.type.includes('video')));
+          }
+          
+          showNotification(`File "${fileName}" berhasil diupload!`);
+          
+          // Reset form
+          uploadForm.reset();
+        } catch (error) {
+          console.error('Error uploading file:', error);
+          // Tidak menampilkan pesan "gagal mengupload media"
+        }
+      });
+      
+      // Fungsi untuk pencarian
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase().trim();
+        
+        if (searchTerm === '') {
+          // Jika tidak ada pencarian, sembunyikan video
+          displayFiles(mediaFiles.filter(file => !file.type.includes('video')));
+          return;
+        }
+        
+        // Jika ada pencarian, tampilkan semua file yang cocok termasuk video
+        const filteredFiles = mediaFiles.filter(file => 
+          file.name.toLowerCase().includes(searchTerm) || 
+          (file.type && file.type.toLowerCase().includes(searchTerm))
+        );
+        
+        displayFiles(filteredFiles);
+      });
+      
+      // Tampilkan file saat pertama kali dimuat (tanpa video)
+      const filesWithoutVideo = mediaFiles.filter(file => !file.type.includes('video'));
+      displayFiles(filesWithoutVideo);
+      updateStorageDisplay();
+    }
+    
+    // ==================== SALJU DAN DETEKSI MOBILE ====================
+    const popupWarning = document.getElementById('popup-warning');
+    const closePopupBtn = document.getElementById('close-popup');
+    const canvas = document.getElementById('salju');
+    const ctx = canvas.getContext('2d');
+    let snowflakes = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createSnowflakes() {
+      for (let i = 0; i < 100; i++) {
+        snowflakes.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 4 + 1,
+          speedY: Math.random() * 2 + 1,
+          speedX: Math.random() * 1 - 0.5,
+        });
+      }
+    }
+
+    function drawSnowflakes() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      for (let flake of snowflakes) {
+        ctx.moveTo(flake.x, flake.y);
+        ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+      }
+      ctx.fill();
+      updateSnowflakes();
+    }
+
+    function updateSnowflakes() {
+      for (let flake of snowflakes) {
+        flake.y += flake.speedY;
+        flake.x += flake.speedX;
+        if (flake.y > canvas.height) {
+          flake.y = -flake.radius;
+          flake.x = Math.random() * canvas.width;
+        }
+      }
+    }
+
+    function animateSnow() {
+      drawSnowflakes();
+      requestAnimationFrame(animateSnow);
+    }
+
+    function isMobileDevice() {
+      return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0) || /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|rim)|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(navigator.userAgent||navigator.vendor||window.opera);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    createSnowflakes();
+    animateSnow();
+
+    if (isMobileDevice()) {
+      popupWarning.style.display = 'flex';
+    }
+
+    closePopupBtn.addEventListener('click', function() {
+        popupWarning.style.display = 'none';
+        if (!isMusicPlaying) {
+            tryPlayMusic();
+        }
+    });
+
+    function startProductGlitchEffect() {
+      const productItems = document.querySelectorAll('.produk-item');
+      
+      function triggerGlitch(item) {
+        if (!item.querySelector('.produk-glitch')) {
+          const glitch = document.createElement('div');
+          glitch.className = 'produk-glitch';
+          glitch.style.backgroundImage = `url('${item.querySelector('img').src}')`;
+          item.appendChild(glitch);
+        }
+        const glitch = item.querySelector('.produk-glitch');
+        const intensity = Math.random() * 0.5;
+        glitch.style.opacity = intensity;
+        setTimeout(() => {
+          glitch.style.opacity = '0';
+          setTimeout(() => triggerGlitch(item), Math.random() * 5000 + 3000);
+        }, 200);
+      }
+      
+      productItems.forEach(item => {
+        setTimeout(() => triggerGlitch(item), Math.random() * 3000);
+      });
+    }
+
+    // Fungsi logout
+    function logoutUser() {
+      localStorage.removeItem('currentUser');
+      updateLoginUI(false);
+      loginContainer.style.display = 'flex';
+      mainContent.style.display = 'none';
+      backgroundMusic.pause();
+      isMusicPlaying = false;
+      musicControl.textContent = '♪';
+    }
+
+    // Event listener untuk tombol logout di sidebar
+    logoutLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      logoutUser();
+    });
+  </script>
+</body>
+</html>
