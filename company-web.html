@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Web - Panel Tiyan Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-image: url('https://files.catbox.moe/7uaeb0.jpg');
+            --bg-color: #0A0A0A;
+            --card-bg: rgba(20, 20, 30, 0.9);
+            --text-color: #E0E0E0;
+            --primary-color: #8A2BE2;
+            --border-color: #444;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px;
+            padding: 40px;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #8A2BE2, #4CAF50);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Selamat Datang di Website Perusahaan Kami</h1>
+        <p>Ini adalah halaman web perusahaan kami. Di sini Anda akan menemukan informasi tentang sejarah, misi, visi, dan tim kami. Kami berdedikasi untuk menyediakan layanan terbaik di industri ini.</p>
+        <p>Kami terus berinovasi dan meningkatkan layanan kami untuk memenuhi kebutuhan pelanggan kami. Terima kasih telah mengunjungi halaman kami.</p>
+        <a href="index.html" class="back-link">Kembali ke Halaman Utama</a>
+    </div>
+</body>
+</html>
